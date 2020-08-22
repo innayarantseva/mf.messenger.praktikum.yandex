@@ -1,0 +1,39 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap'); */
+@font-face {
+    font-family: 'Inter';
+    src: url('assets/fonts/Inter-Light-slnt=0.ttf') format('truetype');
+    font-weight: 300;
+}
+@font-face {
+    font-family: 'Inter';
+    src: url('assets/fonts/Inter-Regular-slnt=0.ttf') format('truetype');
+    font-weight: 400;
+}
+@font-face {
+    font-family: 'Inter';
+    src: url('assets/fonts/Inter-SemiBold-slnt=0.ttf') format('truetype');
+    font-weight: 600;
+}
+@font-face {
+    font-family: 'Inter';
+    src: url('assets/fonts/Inter-Bold-slnt=0.ttf') format('truetype');
+    font-weight: 700;
+}
+
+
+:root {
+    --color-blue-light: #EFF4FF;
+    --color-blue-dark: #3369F3;
+    --color-grey-dark: #1E1E1E;
+    --color-grey-light: #A5A5A5;
+    --color-white: #FFFFFF;
+    --color-red: #FF0000;
+}
+
+html {
+    font-family: 'Inter', 'Helvetica', sans-serif;
+}
+
+a {
+    color: var(--color-blue-dark);
+}

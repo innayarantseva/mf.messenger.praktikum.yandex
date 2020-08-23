@@ -53,9 +53,12 @@ body {
 .Chats-SearchIcon > path {
     fill: var(--color-blue-dark);
 }
-.Chats-UserIcon > circle {
-    fill: var(--color-grey-dark);
+.Chats-User {
+    text-decoration: none;
+    font-size: 24px;
+    line-height: 24px;
 }
+
 
 .Chats-List {
     list-style: none;
@@ -176,7 +179,7 @@ body {
     display: flex;
     align-items: center;
     background-color: var(--color-white);
-    padding: 10px 24px 10px 12px;
+    padding: 12px 24px 12px 12px;
 }
 .Chat-Avatar {
     width: 36px;
@@ -207,11 +210,26 @@ body {
     border-radius: 50%;
     margin-left: auto;
 }
-.Chat-Options:hover {
+.Chat-Options:hover,
+.Chat-Options_active {
     background-color: var(--color-blue-light);
 }
 .Chat-OptionsIcon > circle {
     fill: var(--color-blue-dark);
+}
+.Chat-OptionsMenu {
+    position: absolute;
+    top: 100%;
+    right: 24px;
+
+    list-style: none;
+    padding: 16px 24px;
+    margin: 0;
+
+    border-radius: 12px;
+    border: 1px solid var(--color-blue-dark);
+    color: var(--color-blue-dark);
+    background-color: var(--color-white);
 }
 
 .Chat-Messages {
@@ -247,8 +265,22 @@ body {
     height: 36px;
     border-radius: 50%;
 }
-.Chat-Attach:hover {
+.Chat-Attach:hover,
+.Chat-Attach_active {
     background-color: var(--color-blue-light);
+}
+.Chat-AttachMenu {
+    position: absolute;
+    bottom: 100%;
+
+    list-style: none;
+    padding: 16px 24px;
+    margin: 0;
+
+    border-radius: 12px;
+    border: 1px solid var(--color-blue-dark);
+    color: var(--color-blue-dark);
+    background-color: var(--color-white);
 }
 
 .Chat-NewMessage {

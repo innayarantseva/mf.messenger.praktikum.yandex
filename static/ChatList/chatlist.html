@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Чаты</title>
+        <link rel="stylesheet" href="chatlist.css">
+    </head>
+    <body>
+
+        <article class="Chats">
+            <aside class="Chats-Aside">
+                <nav class="Chats-Nav">
+                    <div class="Chats-Search">
+                        <svg class="Chats-SearchIcon" width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M11.8041 11.4138C10.346 12.8457 7.98208 12.8457 6.52403 11.4138C5.06597 9.98187 5.06597 7.66027 6.52402 6.22834C7.98208 4.79642 10.346 4.79642 11.8041 6.22834C13.2622 7.66027 13.2622 9.98187 11.8041 11.4138ZM12.2525 12.7968C10.2565 14.2961 7.38955 14.1494 5.56401 12.3566C3.57576 10.404 3.57576 7.23816 5.56401 5.28553C7.55226 3.33291 10.7759 3.33291 12.7641 5.28553C14.5896 7.07828 14.739 9.8937 13.2125 11.8539L16.8443 15.4206L15.8843 16.3634L12.2525 12.7968Z" />
+                        </svg>
+                        <input class="Chats-SearchInput" type="text" placeholder="Поиск по чатам">
+                    </div>
+                    <a class="Chats-User" href="#">
+                        <svg class="Chats-UserIcon" width="3" height="15" viewBox="0 0 3 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="1.5" cy="1.5" r="1.5"/>
+                            <circle cx="1.5" cy="7.5" r="1.5"/>
+                            <circle cx="1.5" cy="13.5" r="1.5"/>
+                        </svg>
+                    </a>
+                </nav>
+                <ul class="Chats-List">
+                    <li class="Chats-Chat">
+                        <a href="chatlist-messages.html">
+                            <section class="ChatListItem">
+                                <aside>
+                                    <div class="ChatListItem-Avatar"></div>
+                                </aside>
+
+                                <main class="ChatListItem-Main">
+                                    <header class="ChatListItem-Header">
+                                        <h5 class="ChatListItem-Title">Константин Константинопльский</h5>
+                                        <time class="ChatListItem-Time">12:45</time>
+                                    </header>
+                                    <div class="ChatListItem-Content">
+                                        <p class="ChatListItem-MessagePreview">Длинное сообщение, которе не помещается в одну строку...</p>
+                                        <p class="ChatListItem-Badge">135</p>
+                                    </div>
+                                </main>
+                            </section>
+                        </a>
+                    </li>
+                    <li class="Chats-Chat">
+                        <a href="chatlist-messages.html">
+                            <section class="ChatListItem">
+                                <aside>
+                                    <div class="ChatListItem-Avatar"></div>
+                                </aside>
+
+                                <main class="ChatListItem-Main">
+                                    <header class="ChatListItem-Header">
+                                        <h5 class="ChatListItem-Title">Информационные новости</h5>
+                                        <time class="ChatListItem-Time">00:01</time>
+                                    </header>
+                                    <div class="ChatListItem-Content">
+                                        <p class="ChatListItem-MessagePreview">Произошло нечто 😬Продолжение по ссылке!</p>
+                                        <p class="ChatListItem-Badge">1</p>
+                                    </div>
+                                </main>
+                            </section>
+                        </a>
+                    </li>
+                    <li class="Chats-Chat">
+                        <a href="chatlist-messages.html">
+                            <section class="ChatListItem">
+                                <aside>
+                                    <div class="ChatListItem-Avatar"></div>
+                                </aside>
+
+                                <main class="ChatListItem-Main">
+                                    <header class="ChatListItem-Header">
+                                        <h5 class="ChatListItem-Title">Соня Соня</h5>
+                                        <time class="ChatListItem-Time">Вчера</time>
+                                    </header>
+                                    <div class="ChatListItem-Content">
+                                        <p class="ChatListItem-MessagePreview">
+                                            <b class="ChatListItem-Me">Я:</b>
+                                             Изображение
+                                        </p>
+                                    </div>
+                                </main>
+                            </section>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+
+            <main class="Chats-Main">
+                <div class="Chats-Empty">
+                    <p class="Chats-EmptyMessage">Чтобы начать переписку, выберите чат</p>
+                </div>
+            </main>
+        </article>
+
+    </body>
+</html>

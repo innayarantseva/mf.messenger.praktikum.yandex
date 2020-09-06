@@ -3,45 +3,12 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Настройки пользователя</title>
         <link rel="stylesheet" href="usersettings.css">
     </head>
     <body>
+        <article class="user-settings"></article>
 
-        <article class="UserSettings">
-            <section class="UserSettings-CenteredBlock">
-                <nav>
-                    <a href="../ChatList/chatlist.html">← Все чаты</a>
-                </nav>
-                <main class="UserSettings-Dashboard">
-                    <header class="UserSettings-Header">
-                        <aside class="UserSettings-Avatar"></aside>
-                        <div>
-                            <h1 class="UserSettings-Name">Констанция <br>Константинопльская</h1>
-                            <ul class="UserSettings-Menu">
-                                <li class="UserSettings-MenuItem">
-                                    <a href="usersettings-edit.html">Изменить данные</a>
-                                </li>
-                                <li class="UserSettings-MenuItem">
-                                    <a class="UserSettings-LogOut" href="#">Выйти</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </header>
-
-                    <ul class="UserSettings-Parameters">
-                        <li class="UserSettings-Parameter">
-                            <p class="UserSettings-Label">Логин</p>
-                            <p class="UserSettings-Value">Konstantinoplskaia</p>
-                        </li>
-                        <li class="UserSettings-Parameter">
-                            <p class="UserSettings-Label">Почта</p>
-                            <p class="UserSettings-Value">konstantinoplskaia@mail.dev</p>
-                        </li>
-                    </ul>
-                </main>
-            </section>
-        </article>
-
+        <script src="../assets/js/handlebars.min-v4.7.6.js"></script>
+        <script src="./usersettings.js" type="module"></script>
     </body>
 </html>

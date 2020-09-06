@@ -1,51 +1,63 @@
 @import '../styles.css';
+@import '../components/Button/styles.css';
+@import '../components/Formfield/styles.css';
 
-html {
-    height: 100%;
-}
-body {
-    margin: 0;
-    height: 100%;
-}
-
-.UserSettings {
+.user-settings {
     display: flex;
     height: 100%;
     background-color: var(--color-blue-light);
 }
 
-.UserSettings-CenteredBlock {
+.user-settings__layout {
     margin: 44px auto auto;
 }
 
-.UserSettings-Dashboard {
+.user-settings__dashboard {
     display: flex;
     flex-direction: column;
+    min-width: 360px;
 
     padding: 24px 60px 52px 24px;
     margin-top: 24px;
     background-color: var(--color-white);
     border-radius: 12px;
 }
-.UserSettings-Header {
+
+/* Header */
+.user-settings__header {
     display: flex;
     margin-bottom: 52px;
 }
-.UserSettings-Avatar {
-    width: 80px;
-    height: 80px;
+
+.user-settings__avatar {
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     background-color: #EFEFEF;
-    margin-right: 36px;
+    margin-right: 16px;
 }
-.UserSettings-Name {
-    margin: 0 0 16px;
+
+.user-settings__user-data {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-settings__heading {
+    margin: 0;
     font-weight: 600;
     font-size: 24px;
     line-height: 24px;
     color: var(--color-grey-dark);
 }
-.UserSettings-Menu {
+
+.user-settings__name {
+    margin: 12px 0 auto;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+}
+
+.user-settings__options {
     display: flex;
     list-style: none;
     margin: 0;
@@ -53,79 +65,49 @@ body {
     font-size: 12px;
     line-height: 16px;
 }
-.UserSettings-MenuItem:not(:last-child) {
+.user-settings__option:not(:last-child) {
     margin-right: 24px;
 }
-.UserSettings-LogOut {
+
+.user-settings__log-out {
     color: var(--color-red);
 }
 
-.UserSettings-Parameters {
+/* Secondary user data */
+.user-settings__parameters {
     list-style: none;
     margin: 0;
     padding: 0;
     font-size: 12px;
     line-height: 16px;
 }
-.UserSettings-Parameter:not(:last-child) {
+.user-settings__parameter:not(:last-child) {
     margin-bottom: 16px;
 }
-.UserSettings-Label {
+.user-settings__label {
     color: var(--color-grey-light);
     margin: 0 0 4px;
 }
-.UserSettings-Value {
+.user-settings__value {
     color: var(--color-grey-dark);
     margin: 0;
 }
 
-.UserSettings-Form {
+/* User data changing form */
+.user-settings__form {
     display: flex;
     flex-direction: column;
     width: 100%;
-}
-.UserSettings-Formfield {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-}
-.UserSettings-Formfield:not(:last-child) {
-    margin-bottom: 16px;
-}
-.UserSettings-FormLabel {
-    font-size: 12px;
-    line-height: 16px;
-    color: var(--color-grey-dark);
-    margin-bottom: 6px;
-}
-.UserSettings-Input {
-    height: 32px;
-    border-radius: 12px;
-    border: 1px solid var(--color-grey-dark);
-    font-size: 12px;
-    line-height: 16px;
-    color: var(--color-grey-dark);
-    padding-left: 16px;
-}
-.UserSettings-Input:active,
-.UserSettings-Input:focus {
-    border-color: var(--color-blue-dark);
-    outline: none;
-    box-shadow: 0px 0px 4px 0px var(--color-grey-light);
-}
-.UserSettings-Submit {
-    width: 100%;
-    height: 48px;
-    border-radius: 12px;
-    border: none;
-    color: white;
-    background-color: var(--color-blue-dark);
-    font-size: 16px;
-    line-height: 24px;
-
     margin-top: 40px;
     margin-bottom: 20px;
 }
-.UserSettings-Cancel {
+.user-settings__form > .formfield {
+    margin-bottom: 16px;
+}
+.user-settings__form > .button {
+    margin-top: 40px;
+}
+
+.user-settings__cancel-data-change {
     align-self: center;
 }

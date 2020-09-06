@@ -1,0 +1,54 @@
+/* Conversation Message */
+.message {
+    display: flex;
+    background-color: var(--color-white);
+    border-radius: 12px;
+    padding: 12px;
+    max-width: 600px;
+}
+
+/* Message Direction */
+.message_direction_from {
+    border-top-right-radius: 0;
+    align-self: flex-end;
+}
+.message_direction_to {
+    border-top-left-radius: 0;
+    align-self: flex-start;
+}
+
+/* Aside */
+.message__aside {
+    margin-left: 20px;
+    line-height: 16px;
+    font-size: 12px;
+}
+
+.message__time {
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--color-grey-light);
+}
+
+/* Main */
+.message__author {
+    margin: 0 0 8px;
+    font-weight: 600;
+    font-size: 12px;
+   line-height: 16px;
+}
+
+.message__text {
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--color-grey-dark);
+    margin: 0;
+}
+
+.message__image {
+    border-radius: 12px;
+    width: 436px;
+    height: 290px;
+    max-width: 436px;
+    max-height: 290px;
+}

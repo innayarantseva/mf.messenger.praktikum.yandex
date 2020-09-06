@@ -15,9 +15,10 @@
 .user-settings__dashboard {
     display: flex;
     flex-direction: column;
-    min-width: 360px;
+    min-width: 346px;
+    max-width: 346px;
 
-    padding: 24px 60px 52px 24px;
+    padding: 24px 40px 52px;
     margin-top: 24px;
     background-color: var(--color-white);
     border-radius: 12px;
@@ -51,7 +52,7 @@
 }
 
 .user-settings__name {
-    margin: 12px 0 auto;
+    margin: 6px 0 auto;
     font-size: 16px;
     line-height: 24px;
     font-weight: 400;

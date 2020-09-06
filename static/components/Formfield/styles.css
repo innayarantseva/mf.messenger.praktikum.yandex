@@ -19,6 +19,9 @@
     color: var(--color-grey-dark);
     padding-left: 16px;
 }
+.formfield__input_invalid_true {
+    border-color: var(--color-red);
+}
 .formfield__input:active,
 .formfield__input:focus {
     border-color: var(--color-blue-dark);

@@ -10,12 +10,14 @@
         <script src="assets/js/handlebars.min-v4.7.6.js"></script>
 
         <script id="root" type="text/x-handlebars-template">
-            <section class="Main">
-                <header class="Header">
+            <section class="main"  style="max-width: 620px; padding: 40px;">
+                <header class="header">
                     <h1><b>{{ heading }}</b>: {{ headingInfo }}</h1>
                 </header>
 
-                <main class="Content">
+                <main class="content">
+                    <p>{{description}}</p>
+
                     <ul>
                         {{#links}}
                             <li>

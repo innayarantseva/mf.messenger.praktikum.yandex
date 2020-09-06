@@ -6,7 +6,7 @@ export const layoutTemplate = `<section class="authorization__layout">
             {{> Formfield}}
         {{/formfields}}
 
-        <div class="authorization__error">{{error}}</div>
+        <div class="authorization__error"></div>
 
         {{> Button submitButton }}
     </form>

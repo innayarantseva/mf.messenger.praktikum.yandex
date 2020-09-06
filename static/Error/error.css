@@ -1,14 +1,6 @@
 @import '../styles.css';
 
-html {
-    height: 100%;
-}
-body {
-    margin: 0;
-    height: 100%;
-}
-
-.NotFound {
+.error {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -16,25 +8,25 @@ body {
     background-color: var(--color-blue-light);
 }
 
-.NotFound-CenteredBlock {
+.error__layout {
     margin: 200px auto auto;
     width: 700px;
 }
 
-.NotFound-Message {
+.error__message {
     padding: 16px 42px 24px;
     margin-top: 24px;
     background-color: var(--color-white);
     border: 1px solid var(--color-grey-dark);
     border-radius: 0 12px 12px;
 }
-.NotFound-MessageHeading {
+.error__message-heading {
     margin: 0 0 8px;
     font-size: 16px;
     line-height: 24px;
     font-weight: 600;
 }
-.NotFound-MessageParagraph {
+.error__message-text {
     margin: 0;
     font-size: 24px;
     line-height: 36px;

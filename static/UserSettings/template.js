@@ -23,7 +23,7 @@ export const userSettingsTemplate = `<section class="user-settings__layout">
                 </div>
             </header>
         {{else}}
-            <h1 class="user-settings__heading">Изменить данные</h1>
+            <h1 class="user-settings__heading user-settings__change-heading">Изменить данные</h1>
         {{/if}}
 
         {{#if readMode}}
@@ -38,13 +38,7 @@ export const userSettingsTemplate = `<section class="user-settings__layout">
                 </li>
             </ul>
         {{else}}
-            <form class="user-settings__form">
-                {{#formfields}}
-                    {{> Formfield}}
-                {{/formfields}}
-
-                {{> Button button }}
-            </form>
+            {{> Form form }}
 
             <a class="user-settings__cancel-data-change" href="#">Отмена</a>
         {{/if}}

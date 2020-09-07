@@ -1,6 +1,5 @@
 @import '../styles.css';
-@import '../components/Button/styles.css';
-@import '../components/Formfield/styles.css';
+@import '../components/Form/styles.css';
 
 .user-settings {
     display: flex;
@@ -33,6 +32,7 @@
 .user-settings__avatar {
     width: 100px;
     height: 100px;
+    flex-shrink: 0;
     border-radius: 50%;
     background-color: #EFEFEF;
     margin-right: 16px;
@@ -49,6 +49,10 @@
     font-size: 24px;
     line-height: 24px;
     color: var(--color-grey-dark);
+}
+.user-settings__change-heading {
+    margin-bottom: 40px;
+    align-self: center;
 }
 
 .user-settings__name {
@@ -92,21 +96,6 @@
 .user-settings__value {
     color: var(--color-grey-dark);
     margin: 0;
-}
-
-/* User data changing form */
-.user-settings__form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    margin-top: 40px;
-    margin-bottom: 20px;
-}
-.user-settings__form > .formfield {
-    margin-bottom: 16px;
-}
-.user-settings__form > .button {
-    margin-top: 40px;
 }
 
 .user-settings__cancel-data-change {

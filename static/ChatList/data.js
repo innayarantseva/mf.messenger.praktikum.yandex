@@ -10,7 +10,7 @@ export const chatList = {
             unreadCounter: '1024',
             lastMessage: {
                 date: '12:45',
-                fromMe: 'fromMe',
+                fromMe: false,
                 preview: 'Привет! А что там в итоге с макетами? А то заказчик уже...'
             }
         },

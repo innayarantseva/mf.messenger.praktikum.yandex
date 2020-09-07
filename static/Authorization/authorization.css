@@ -1,6 +1,5 @@
 @import '../styles.css';
-@import '../components/Button/styles.css';
-@import '../components/Formfield/styles.css';
+@import '../components/Form/styles.css';
 
 .authorization {
     display: flex;
@@ -26,24 +25,4 @@
     line-height: 40px;
     font-weight: 600;
     margin: 0 0 28px;
-}
-
-.authorization__form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-.authorization__form > .button {
-    margin-bottom: 20px;
-}
-.authorization__form > .formfield:not(:last-child) {
-    margin-bottom: 16px;
-}
-
-.authorization__error {
-    align-self: center;
-    font-size: 12px;
-    line-height: 16px;
-    color: var(--color-red);
-    margin: 52px 0 16px;
 }

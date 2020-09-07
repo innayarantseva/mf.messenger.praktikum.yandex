@@ -1,0 +1,23 @@
+@import '../Button/styles.css';
+@import '../Formfield/styles.css';
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.form > .button {
+    margin-bottom: 20px;
+}
+.form > .formfield:not(:last-child) {
+    margin-bottom: 16px;
+}
+
+.form__error {
+    align-self: center;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--color-red);
+    margin: 52px 0 16px;
+}

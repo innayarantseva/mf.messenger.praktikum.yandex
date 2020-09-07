@@ -47,6 +47,7 @@ export const validateInput = (value, type, textType) => {
     }
 };
 
+// validate form
 export const validateForm = (formfields) => {
     return formfields.reduce((acc, {value, type, fieldName}) => {
         const validationMessage = validateInput(value, type, fieldName);

@@ -2,12 +2,12 @@ export const registerContext = {
     heading: 'Регистрация',
     form: {
         formfields: [
-            { field: 'firstName', label: 'Имя', type: 'text', placeholder: 'Василий', isRequired: true },
-            { field: 'lastName', label: 'Фамилия', type: 'text', placeholder: 'Васильков', isRequired: true },
-            { field: 'email', label: 'Почта', type: 'email', placeholder: 'vasily@vasilkov.com', isRequired: true },
-            { field: 'phone', label: 'Телефон', type: 'tel', placeholder: '+7 (999) 999-99-99', isRequired: true },
-            { field: 'login', label: 'Логин', type: 'text', placeholder: 'VasVas1994', isRequired: true },
-            { field: 'password', label: 'Пароль', type: 'password', placeholder: '*****', isRequired: true },
+            { field: 'firstName', label: 'Имя', type: 'text', isRequired: true },
+            { field: 'lastName', label: 'Фамилия', type: 'text', isRequired: true },
+            { field: 'email', label: 'Почта', type: 'email', isRequired: true },
+            { field: 'phone', label: 'Телефон', type: 'tel', isRequired: true },
+            { field: 'login', label: 'Логин', type: 'text', isRequired: true },
+            { field: 'password', label: 'Пароль', type: 'password', isRequired: true },
         ],
         submitButton: {
             text: 'Зарегистрироваться',
@@ -24,8 +24,8 @@ export const signInContext = {
     heading: 'Вход',
     form: {
         formfields: [
-            { field: 'login', label: 'Логин', type: 'text', placeholder: 'VasVas1994', isRequired: true },
-            { field: 'password', label: 'Пароль', type: 'password', placeholder: '*****', isRequired: true },
+            { field: 'login', label: 'Логин', type: 'text', isRequired: true },
+            { field: 'password', label: 'Пароль', type: 'password', isRequired: true },
         ],
         submitButton: {
             text: 'Авторизоваться',

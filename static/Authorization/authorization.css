@@ -6,7 +6,7 @@
     flex-direction: column;
     height: 100%;
 
-    background-color: var(--color-blue-light);
+    background-color: var(--color-grey-10);
 }
 
 .authorization__layout {
@@ -16,8 +16,8 @@
     width: 346px;
 
     padding: 40px;
-    margin: 32px auto auto 48px;
-    border-radius: 12px;
+    margin: auto;
+    border-radius: var(--border-radius);
     background-color: var(--color-white);
 }
 .authorization__heading {

@@ -25,7 +25,6 @@ export const handleFormInteractions = (onChange, onValid, selectors = defaultSel
             } else {
                 errorNode.textContent = '';
                 event.target.classList.remove(invalidFormfield);
-                onValid();
             }
 
         };

@@ -1,16 +1,19 @@
 import {searchIcon} from '../assets/icons/search.js';
 
 export const chatsTemplate = `<section class="chats__layout">
+    <header class="chats__header">
+        <a class="chats__user-settings" href="../UserSettings/usersettings.html">
+            <div class="chats__user-avatar"></div>
+            <h5 class="chats__user-name">{{user.displayName}}</h5>
+        </a>
+    </header>
     <aside class="chats__aside">
-        <nav class="chats__nav">
+        <div class="chats__search-row">
             <div class="chats__search">
                 <div class="chats__search-icon">${searchIcon}</div>
                 <input class="chats__search-input" type="text" placeholder="Поиск по чатам">
             </div>
-            <a class="chats__user-settings" href="../UserSettings/usersettings.html">
-                ⚙️
-            </a>
-        </nav>
+        </div>
 
         <ul class="chats__list">
             {{#chats}}

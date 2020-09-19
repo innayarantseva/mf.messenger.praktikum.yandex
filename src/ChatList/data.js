@@ -2,6 +2,10 @@ const today = new Date(Date.now());
 
 export const chatList = {
     title: 'Список чатов',
+    user: {
+        displayName: 'Костя 👩‍💻',
+        avatar: ''
+    },
     chats: [
         {
             avatarUrl: '',

@@ -23,7 +23,7 @@ const renderByContext = (context) => {
 
     // handle secondary action
     const secondaryActionAnchor = document.getElementsByClassName(SECONDARY_ACTION_SELECTOR)[0];
-    const handleSecondaryActionAnchorClick = (event) => {
+    const handleSecondaryActionAnchorClick = (event: Event) => {
         event.preventDefault;
         const newContext = (context === signInContext) ? registerContext : signInContext;
         formData = {};

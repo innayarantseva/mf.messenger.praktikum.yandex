@@ -1,11 +1,15 @@
 {
   "name": "mf.messenger.praktikum.yandex",
   "version": "1.0.0",
-  "description": "Даже законченный проект остаётся только заготовкой, пока им не начнут пользоваться. Но сначала пользователь должен понять, зачем ему пользоваться вашим кодом. В этом помогает файл README.",
+  "description": "Самостоятельный учебный проект, выполненный в рамках Яндекс.Практикума",
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./server/server.js"
+    "build": "tsc -p .",
+    "postbuild": "npm run copy-static && npm run postcss",
+    "start": "npm run build && node ./server/server.js",
+    "copy-static": "copyfiles -u 1 \"./src/**/*.html\" \"./src/**/*.png\" \"./src/**/*.ttf\" ./dist",
+    "postcss": "postcss \"./src/**/*.css\" --base src --dir ./dist"
   },
   "repository": {
     "type": "git",
@@ -20,5 +24,13 @@
   "dependencies": {
     "express": "^4.17.1",
     "handlebars": "^4.7.6"
+  },
+  "devDependencies": {
+    "copyfiles": "^2.3.0",
+    "postcss": "^8.0.5",
+    "postcss-cli": "^7.1.2",
+    "postcss-import": "^12.0.1",
+    "postcss-css-variables": "^0.17.0",
+    "typescript": "^4.0.3"
   }
 }

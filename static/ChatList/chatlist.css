@@ -9,54 +9,77 @@
 
 .chats__layout {
     display: flex;
+    flex-wrap: wrap;
     height: 100%;
 }
 
+/* Header */
+.chats__header {
+    box-sizing: border-box;
+    width: 100%;
+    height: 52px;
+    padding: 8px 16px;
+    background-color: var(--color-grey-1);
+}
+.chats__user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--color-grey-5);
+}
+.chats__user-settings {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+.chats__user-name {
+    margin: 0 0 0 8px;
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 400;
+    color: var(--color-white);
+}
+
+/* Aside */
 .chats__aside {
     width: 346px;
+    height: 100%;
     min-width: 346px;
     background-color: var(--color-white);
-    border-right: 1px solid var(--color-blue-light);
+    border-right: 1px solid var(--color-grey-10);
     overflow-y: scroll;
 }
 
-.chats__nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px;
-
+.chats__search-row {
     position: sticky;
     top: 0;
+    padding: 16px;
     background-color: var(--color-white);
 }
 
 .chats__search {
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 .chats__search-input {
     font-family: 'Inter', 'Helvetica', sans-serif;
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 14px;
+    line-height: 16px;
     border: 1px solid transparent;
-    padding-left: 28px;
+    border-bottom-color: var(--color-grey-5);
+    background-color: var(--color-grey-10);
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    padding: 8px 16px 8px 28px;
 }
 .chats__search-input::placeholder {
-    color: var(--color-blue-dark);
-    text-decoration: underline;
+    color: var(--color-grey-6);
 }
 .chats__search-icon {
     position: absolute;
-    top: 4px;
+    top: 7px;
     left: 4px;
 }
-
-.chats__user-settings {
-    text-decoration: none;
-    font-size: 24px;
-    line-height: 24px;
-}
-
 
 .chats__list {
     list-style: none;
@@ -64,18 +87,18 @@
     margin: 0;
 }
 
+/* Main */
+
 .chats__main {
     display: flex;
     flex-grow: 1;
-    background-color: var(--color-blue-light);
+    height: 100%;
+    background-color: var(--color-grey-10);
 }
 
 .chats__empty {
-    padding: 28px;
-    margin: 20px auto auto 28px;
-    border: 1px solid var(--color-grey-dark);
-    border-radius: 0 12px 12px;
-    background-color: var(--color-white);
+    margin: auto;
+    color: var(--color-grey-5);
 }
 .chats__empty-message {
     font-size: 12px;

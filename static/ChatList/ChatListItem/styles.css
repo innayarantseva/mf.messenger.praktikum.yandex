@@ -3,7 +3,6 @@
 .chats-list-item {
     display: flex;
     padding: 12px 20px;
-    border-top: 1px solid var(--color-blue-light);
 }
 .chats-list-item:hover {
     background-color: var(--color-blue-light);

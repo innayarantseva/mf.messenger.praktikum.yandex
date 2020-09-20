@@ -1,4 +1,9 @@
-export const renderTemplate = (templateString, context) => {
+declare var Handlebars: any;
+
+export const renderTemplate = (
+    templateString: string,
+    context: object
+): HTMLElement => {
     const template = Handlebars.compile(templateString);
     const htmlString = template(context);
 
@@ -9,24 +14,23 @@ export const renderTemplate = (templateString, context) => {
 
         try {
             new DOMParser().parseFromString('test', 'text/html');
-        } catch(error) {
+        } catch (error) {
             return false;
         }
 
         return true;
     })();
 
-    const fragment = document.createDocumentFragment();
+    let element: HTMLElement = null;
 
     if (isParserSupported) {
         const doc = new DOMParser().parseFromString(htmlString, 'text/html');
-
-        for (let i = 0; i < doc.body.children.length; i++) {
-            fragment.appendChild(doc.body.children[i]);
-        }
+        element = <HTMLElement>doc.body.children.item(0);
     } else {
-        fragment.innerHTML = htmlString;
+        const div = document.createElement('div');
+        div.innerHTML = htmlString;
+        element = div;
     }
 
-    return fragment;
+    return element;
 };

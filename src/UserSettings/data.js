@@ -1,9 +1,8 @@
 const userData = {
-    firstName: 'Констанция',
-    lastName: 'Константинопльская',
+    name: 'Констанция Константинопльская',
     displayName: 'Костя 👩‍💻',
     email: 'konstantinoplskaia@mail.dev',
-    login: 'Konstantinoplskaia'
+    login: 'Konstantinoplskaia',
 };
 
 export const data = {
@@ -20,7 +19,7 @@ export const data = {
                 type: 'text',
                 value: userData.firstName,
                 placeholder: 'Василий',
-                isRequired: true
+                isRequired: true,
             },
             {
                 field: 'secondName',
@@ -28,7 +27,7 @@ export const data = {
                 type: 'text',
                 value: userData.lastName,
                 placeholder: 'Васильков',
-                isRequired: true
+                isRequired: true,
             },
             {
                 field: 'displayName',
@@ -36,7 +35,7 @@ export const data = {
                 type: 'text',
                 value: userData.displayName,
                 placeholder: 'Вася',
-                isRequired: true
+                isRequired: true,
             },
             {
                 field: 'login',
@@ -44,7 +43,7 @@ export const data = {
                 type: 'text',
                 value: userData.login,
                 placeholder: 'VasVas1994',
-                isRequired: true
+                isRequired: true,
             },
             {
                 field: 'email',
@@ -52,12 +51,12 @@ export const data = {
                 type: 'email',
                 value: userData.email,
                 placeholder: 'vasily@vasilkov.com',
-                isRequired: true
+                isRequired: true,
             },
         ],
         submitButton: {
             type: 'submit',
-            text: 'Сохранить'
-        }
-    }
+            text: 'Сохранить',
+        },
+    },
 };

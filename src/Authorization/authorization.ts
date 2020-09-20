@@ -1,8 +1,8 @@
-import {renderTemplate} from '../utils/renderTemplate.js';
-import {layoutTemplate} from './template.js';
-import {registerFormPartial} from '../components/Form/registerForm.js';
-import {handleFormInteractions} from '../components/Form/handleFormInteractions.js'
-import {registerContext, signInContext} from './data.js';
+import { renderTemplate } from '../utils/renderTemplate.js';
+import { layoutTemplate } from './template.js';
+import { registerFormPartial } from '../components/Form/registerForm.js';
+import { handleFormInteractions } from '../components/Form/handleFormInteractions.js';
+import { registerContext, signInContext } from './data.js';
 
 let formData = {};
 
@@ -22,14 +22,20 @@ const renderByContext = (context) => {
     document.title = context.heading;
 
     // handle secondary action
-    const secondaryActionAnchor = document.getElementsByClassName(SECONDARY_ACTION_SELECTOR)[0];
+    const secondaryActionAnchor = document.getElementsByClassName(
+        SECONDARY_ACTION_SELECTOR
+    )[0];
     const handleSecondaryActionAnchorClick = (event: Event) => {
         event.preventDefault;
-        const newContext = (context === signInContext) ? registerContext : signInContext;
+        const newContext =
+            context === signInContext ? registerContext : signInContext;
         formData = {};
         renderByContext(newContext);
     };
-    secondaryActionAnchor.addEventListener('click', handleSecondaryActionAnchorClick);
+    secondaryActionAnchor.addEventListener(
+        'click',
+        handleSecondaryActionAnchorClick
+    );
 
     // handle form data changes
     const onFormChande = (fieldName, fieldValue) => {
@@ -37,7 +43,7 @@ const renderByContext = (context) => {
     };
     const onFormValid = () => {
         console.log(formData);
-    }
+    };
     handleFormInteractions(onFormChande, onFormValid);
 };
 

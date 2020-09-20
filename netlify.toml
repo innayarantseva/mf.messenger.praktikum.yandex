@@ -8,4 +8,4 @@
 [build]
     base = "./"
     publish = "./dist"
-    command = "npm ci && npm run build"
+    command = "npm ci && npm run build && npm prune --production"

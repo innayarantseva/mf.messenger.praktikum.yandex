@@ -5,65 +5,92 @@ import get from './getValueByKey.js';
 const getOpeningTagName = (tag) => {
     const matchResult = tag.match(/<(\w+)[\s\w>]/);
     return matchResult ? matchResult[1] : null;
-}
+};
 
 const getClosingTagName = (tag) => {
     const matchResult = tag.match(/<\/(.+?)>/);
     return matchResult ? matchResult[1] : null;
-}
+};
 
 const isTag = (chunk) => {
     return /(<.+?>)/.test(chunk);
-}
+};
 const isClosingTag = (chunk) => {
     return /(<\/(.+?)>)/.test(chunk);
-}
+};
 
 const getTagAttributes = (tag) => {
-    return tag.split(/[\s]/g).slice(1).map((attribute) => {
-        attribute = attribute.replace(/[>"]/g, '');
-        const attrTuple = attribute.split('=');
+    return tag
+        .split(/[\s]/g)
+        .slice(1)
+        .map((attribute) => {
+            attribute = attribute.replace(/[>"]/g, '');
+            const attrTuple = attribute.split('=');
 
-        if (attrTuple.length === 1) { // атрибут без значения будем считать true
-            attrTuple.push(true);
-        }
+            if (attrTuple.length === 1) {
+                // атрибут без значения будем считать true
+                attrTuple.push(true);
+            }
 
-        return attrTuple;
-    });
-}
+            return attrTuple;
+        });
+};
 
 const htmlParser = (htmlStr, context) => {
     let tree = {};
 
-    const chunks = htmlStr.split(/(<.+?>)/gi).map((v) => v.replace(/\n/g, '').trim()).filter((v) => v);
-
+    const chunks = htmlStr
+        .split(/(<.+?>)/gi)
+        .map((v) => v.replace(/\n/g, '').trim())
+        .filter((v) => v);
 
     const stack = [];
     for (let chunk of chunks) {
         if (isTag(chunk)) {
             if (isClosingTag(chunk)) {
-                if (getOpeningTagName(chunk) === getClosingTagName(stack[stack.length - 1])) {
+                if (
+                    getOpeningTagName(chunk) ===
+                    getClosingTagName(stack[stack.length - 1])
+                ) {
                     stack.pop();
                 } else {
-                    throw new Error(`Template string is invalid. Current stack: ${stack}`);
+                    throw new Error(
+                        `Template string is invalid. Current stack: ${stack}`
+                    );
                 }
             } else {
                 if (stack.length) {
                     let currLevel = tree;
 
                     for (let i = 1; i < stack.length; i++) {
-                        let node = currLevel.content.slice().reverse().find(({tagName}) => tagName === getOpeningTagName(stack[i]));
+                        let node = currLevel.content
+                            .slice()
+                            .reverse()
+                            .find(
+                                ({ type }) =>
+                                    type === getOpeningTagName(stack[i])
+                            );
 
                         currLevel = node;
-
                     }
 
                     const tagAttributes = getTagAttributes(chunk);
-                    currLevel.content = [...(currLevel.content || []), { tagName: getOpeningTagName(chunk), content: [], attrs: tagAttributes }];
+                    currLevel.content = [
+                        ...(currLevel.content || []),
+                        {
+                            type: getOpeningTagName(chunk),
+                            content: [],
+                            attrs: tagAttributes,
+                        },
+                    ];
                 } else {
                     const tagAttributes = getTagAttributes(chunk);
 
-                    tree = { tagName: getOpeningTagName(chunk), content: [], attrs: tagAttributes };
+                    tree = {
+                        type: getOpeningTagName(chunk),
+                        content: [],
+                        attrs: tagAttributes,
+                    };
                 }
 
                 stack.push(chunk);
@@ -72,18 +99,19 @@ const htmlParser = (htmlStr, context) => {
             let currLevel = tree;
 
             for (let i = 1; i < stack.length; i++) {
-                let node = currLevel.content.slice().reverse().find(({tagName}) => tagName === getOpeningTagName(stack[i]));
+                let node = currLevel.content
+                    .slice()
+                    .reverse()
+                    .find(({ type }) => type === getOpeningTagName(stack[i]));
                 // написать find last
                 currLevel = node;
-
             }
 
             const TEMPLATE_REGEXP = /\{\{(.*?)\}\}/gi;
             let insertion = chunk;
             let key = null;
 
-
-            while (key = TEMPLATE_REGEXP.exec(chunk)) {
+            while ((key = TEMPLATE_REGEXP.exec(chunk))) {
                 const tmplValue = key[1].trim();
                 const data = get(context, tmplValue);
 
@@ -98,7 +126,8 @@ const htmlParser = (htmlStr, context) => {
 };
 
 const renderElement = (element) => {
-    const domElement = document.createElement(element.tagName);
+    console.log(element);
+    const domElement = document.createElement(element.type);
 
     if (element.attrs.length) {
         element.attrs.forEach(([name, value]) => {
@@ -114,12 +143,51 @@ const renderElement = (element) => {
 
             domElement.appendChild(el);
         }
-    })
+    });
 
     return domElement;
 };
 
-const renderTemplate = (template, context) => renderElement(htmlParser(template, context));
+const renderTemplate = (template, context) =>
+    renderElement(htmlParser(template, context));
 
+console.log(
+    htmlParser(`<section class="user-settings__layout">
+    <nav>
+        <a href="../ChatList/chatlist.html">← Все чаты</a>
+    </nav>
+
+    <main class="user-settings__dashboard">
+        <header class="user-settings__header">
+            <aside class="user-settings__avatar"></aside>
+
+            <div class="user-settings__user-data">
+                <h1 class="user-settings__heading">{{displayName}}</h1>
+                <h3 class="user-settings__name">{{name}}</h3>
+
+                <ul class="user-settings__options">
+                    <li class="user-settings__option">
+                        {{button}}
+                    </li>
+                    <li class="user-settings__option">
+                        <a class="user-settings__log-out" href="../Authorization/authorization.html">Выйти</a>
+                    </li>
+                </ul>
+            </div>
+        </header>
+
+            <ul class="user-settings__parameters">
+                <li class="user-settings__parameter">
+                    <p class="user-settings__label">Логин</p>
+                    <p class="user-settings__value">{{login}}</p>
+                </li>
+                <li class="user-settings__parameter">
+                    <p class="user-settings__label">Почта</p>
+                    <p class="user-settings__value">{{email}}</p>
+                </li>
+            </ul>
+    </main>
+</section>`)
+);
 
 export default renderTemplate;

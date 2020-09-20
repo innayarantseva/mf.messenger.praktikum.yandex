@@ -20,25 +20,6 @@
 }
 
 
-:root {
-    --color-blue-light: #EFF4FF;
-    --color-blue-dark: #3369F3;
-    --color-grey-dark: #1E1E1E;
-    --color-grey-light: #A5A5A5;
-    --color-white: #FFFFFF;
-    --color-red: #EB3534;
-
-    --color-grey-10: #F2F2F2;
-    --color-grey-6: #A6A6A6;
-    --color-grey-5: #8C8C8C;
-    --color-grey-1: #262626;
-
-    --color-blue-6: #3369F3;
-
-    --border-radius: 4px;
-
-}
-
 html {
     font-family: 'Inter', 'Helvetica', sans-serif;
     height: 100%;
@@ -51,4 +32,10 @@ body {
 
 a {
     color: var(--color-blue-dark);
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }

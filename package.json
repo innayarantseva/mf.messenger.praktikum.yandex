@@ -1,36 +1,42 @@
 {
-  "name": "mf.messenger.praktikum.yandex",
-  "version": "1.0.0",
-  "description": "Самостоятельный учебный проект, выполненный в рамках Яндекс.Практикума",
-  "main": "index.html",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc -p .",
-    "postbuild": "npm run copy-static && npm run postcss",
-    "start": "npm run build && node ./server/server.js",
-    "copy-static": "copyfiles -u 1 \"./src/**/*.html\" \"./src/**/*.png\" \"./src/**/*.ttf\" ./dist",
-    "postcss": "postcss \"./src/**/*.css\" --base src --dir ./dist"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/innayarantseva/mf.messenger.praktikum.yandex.git"
-  },
-  "author": "Inna Lytkina",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/innayarantseva/mf.messenger.praktikum.yandex/issues"
-  },
-  "homepage": "https://github.com/innayarantseva/mf.messenger.praktikum.yandex#readme",
-  "dependencies": {
-    "express": "^4.17.1",
-    "handlebars": "^4.7.6"
-  },
-  "devDependencies": {
-    "copyfiles": "^2.3.0",
-    "postcss": "^8.0.5",
-    "postcss-cli": "^7.1.2",
-    "postcss-import": "^12.0.1",
-    "postcss-css-variables": "^0.17.0",
-    "typescript": "^4.0.3"
-  }
+    "name": "mf.messenger.praktikum.yandex",
+    "version": "1.0.0",
+    "description": "Самостоятельный учебный проект, выполненный в рамках Яндекс.Практикума",
+    "main": "index.html",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "tsc -p .",
+        "postbuild": "npm run copy-static && npm run postcss",
+        "start": "npm run build && npm run server",
+        "server": "node ./server/server.js",
+        "copy-static": "copyfiles -u 1 \"./src/**/*.html\" \"./src/**/*.png\" \"./src/**/*.ttf\" ./dist",
+        "postcss": "postcss \"./src/**/*.css\" --base src --dir ./dist",
+        "browserify:templator": "browserify \"./src/utils/renderTemplate.ts\" -p [ tsify ] > bundle.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/innayarantseva/mf.messenger.praktikum.yandex.git"
+    },
+    "author": "Inna Lytkina",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/innayarantseva/mf.messenger.praktikum.yandex/issues"
+    },
+    "homepage": "https://github.com/innayarantseva/mf.messenger.praktikum.yandex#readme",
+    "dependencies": {
+        "express": "^4.17.1",
+        "handlebars": "^4.7.6"
+    },
+    "devDependencies": {
+        "@types/handlebars": "^4.1.0",
+        "@types/node": "^14.11.1",
+        "browserify": "^16.5.2",
+        "copyfiles": "^2.3.0",
+        "postcss": "^8.0.5",
+        "postcss-cli": "^7.1.2",
+        "postcss-css-variables": "^0.17.0",
+        "postcss-import": "^12.0.1",
+        "tsify": "^5.0.2",
+        "typescript": "^4.0.3"
+    }
 }

@@ -1,7 +1,7 @@
-import { renderTemplate } from '../utils/renderTemplate.js';
+import { renderTemplate } from '../../utils/renderTemplate.js';
 import { layoutTemplate } from './template.js';
-import { registerFormPartial } from '../components/Form/registerForm.js';
-import { handleFormInteractions } from '../components/Form/handleFormInteractions.js';
+import { registerFormPartial } from '../../components/Form/registerForm.js';
+import { handleFormInteractions } from '../../components/Form/handleFormInteractions.js';
 import { registerContext, signInContext } from './data.js';
 
 let formData = {};

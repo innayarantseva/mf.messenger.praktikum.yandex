@@ -1,5 +1,5 @@
 import { Block, BlockProps } from '../../lib/Block.js';
-import { compileTemplate } from '../../lib/templator/templator.js';
+import { compileTemplate } from '../../lib/templator.js';
 // в идеале хочу импортить в компонент стили через css-модули из postcss
 
 const template = '<div>{{text}}</div>';
@@ -15,13 +15,11 @@ export class Button extends Block<ButtonProps> {
     constructor(props: ButtonProps) {
         super('button', {
             ...props,
-            classNames: ['button', ...(props.classNames || [])],
+            className: ['button', props.className].join(' '),
         });
     }
 
     render() {
-        return <{ type: string; props: []; children: [] }>(
-            compileTemplate(template, this.props)
-        );
+        return compileTemplate(template, this.props);
     }
 }

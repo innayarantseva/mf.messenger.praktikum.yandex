@@ -9,11 +9,11 @@ const mainSectionContext = {
     Для этого придётся вернуться на эту главную страницу или вручную написать адрес страницы в адресной строке.
     Такая же история с настройками пользователя: они находятся в стадии активных экспериментов 😬`,
     links: [
-        { href: 'Error/error.html', text: 'Ошибка (на примере 500)' },
-        { href: 'Authorization/authorization.html', text: 'Авторизация' },
-        { href: 'ChatList/chatlist.html', text: 'Список чатов' },
+        { href: 'pages/Error/error.html', text: 'Ошибка (на примере 500)' },
+        { href: 'pages/Authorization/authorization.html', text: 'Авторизация' },
+        { href: 'pages/ChatList/chatlist.html', text: 'Список чатов' },
         {
-            href: 'UserSettings/usersettings.html',
+            href: 'pages/UserSettings/usersettings.html',
             text: 'Настройки пользователя',
         },
     ],

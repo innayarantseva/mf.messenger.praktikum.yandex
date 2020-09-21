@@ -1,4 +1,4 @@
-import { searchIcon } from '../assets/icons/search.js';
+import { searchIcon } from '../../assets/icons/search.js';
 
 export const chatsTemplate = `<section class="chats__layout">
     <header class="chats__header">

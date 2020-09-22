@@ -10,7 +10,8 @@ function get(obj, path, defaultValue) {
         }
     }
 
-    return value || defaultValue;
+    // иначе переписывает falsy-значения значением undefined
+    return value === undefined ? defaultValue : value;
 }
 
 export default get;

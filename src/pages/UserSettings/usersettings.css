@@ -1,5 +1,6 @@
 @import '../../colors.css';
 @import '../../components/Form/styles.css';
+@import '../../components/Input/styles.css';
 
 .user-settings {
     display: flex;
@@ -20,7 +21,7 @@
     padding: 24px 40px 52px;
     margin-top: 24px;
     background-color: var(--color-white);
-    border-radius: 12px;
+    border-radius: var(--border-radius);
 }
 
 /* Header */

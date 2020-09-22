@@ -4,18 +4,29 @@ import { compileTemplate } from '../../lib/templator.js';
 
 const template = '<div>{{text}}</div>';
 
-type ButtonProps = BlockProps & {
+export type ButtonProps = {
+    className?: string;
     type?: 'button' | 'reset' | 'submit';
     text: string;
+    onClick?: (event) => void;
 };
 
-export class Button extends Block<ButtonProps> {
-    props: ButtonProps;
+export class Button extends Block<BlockProps> {
+    props: BlockProps;
 
-    constructor(props: ButtonProps) {
+    constructor({
+        className = '',
+        type = 'button',
+        text,
+        onClick,
+    }: ButtonProps) {
         super('button', {
-            ...props,
-            className: ['button', props.className].join(' '),
+            text,
+            attributes: {
+                className: ['button', className].join(' '),
+                onClick,
+                type,
+            },
         });
     }
 

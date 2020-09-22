@@ -13,7 +13,7 @@ export const userSettingsTemplate = `<section class="user-settings__layout">
 
                 <ul class="user-settings__options">
                     <li class="user-settings__option">
-                        {{button}}
+                        <a href="./usersettings-edit.html">Изменить данные</a>
                     </li>
                     <li class="user-settings__option">
                         <a class="user-settings__log-out" href="../Authorization/authorization.html">Выйти</a>
@@ -43,5 +43,6 @@ export const changeUserSettings = `<section class="user-settings__layout">
     <main class="user-settings__dashboard">
         <h1>Изменить данные</h1>
         {{ form }}
+        <a href="./usersettings.html">Отменить</a>
     </main>
 </section>`;

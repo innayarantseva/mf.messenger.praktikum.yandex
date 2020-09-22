@@ -1,10 +1,15 @@
+import { merge } from '../utils/mydash/merge.js';
 import { EventBus } from './EventBus.js';
 // import { render as renderTemplate } from './templator/templator.js';
 
-export type BlockProps = {
-    className?: string;
-    onClick?: (event) => void;
-};
+export type BlockProps = object;
+// {
+//     attributes: {
+//         className?: string;
+//         onClick?: (event) => void;
+//     };
+//     [key: string]: any;
+// };
 
 export type BlockNode = {
     type: string;
@@ -33,7 +38,6 @@ export class Block<T extends BlockProps> {
         this._meta = {
             tagName,
             props,
-            // elementProps,
         };
 
         this.props = this._makePropsProxy(props);
@@ -52,11 +56,14 @@ export class Block<T extends BlockProps> {
     }
 
     _createResources() {
-        const { tagName, props } = this._meta;
+        const {
+            tagName,
+            props: { attributes = {} },
+        } = this._meta;
 
         this._element = this._createElement({
             type: tagName,
-            props,
+            props: attributes,
             children: [],
         });
     }
@@ -75,6 +82,7 @@ export class Block<T extends BlockProps> {
 
         // assign html attrs to element
         this._setProps(el, node.props);
+        this._addEventListeners(el, node.props);
 
         // recursively create els for children
         node.children.forEach((child) => {
@@ -102,6 +110,19 @@ export class Block<T extends BlockProps> {
 
     _isEventProp(propName) {
         return /^on/.test(propName);
+    }
+    _extractEventName(propName) {
+        return propName.slice(2).toLowerCase();
+    }
+    _addEventListeners(element, props) {
+        Object.keys(props).forEach((propName) => {
+            if (this._isEventProp(propName)) {
+                element.addEventListener(
+                    this._extractEventName(propName),
+                    props[propName]
+                );
+            }
+        });
     }
 
     // unknown or forse update
@@ -167,8 +188,6 @@ export class Block<T extends BlockProps> {
     _componentDidUpdate(oldProps, newProps) {
         const response = this.componentDidUpdate(oldProps, newProps);
 
-        console.log('update', { response, oldProps, newProps });
-
         if (response) {
             this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
         }
@@ -187,6 +206,7 @@ export class Block<T extends BlockProps> {
         }
 
         Object.assign(this.props, nextProps);
+        // merge(this.props, nextProps);
 
         this.eventBus().emit(Block.EVENTS.FLOW_CDU, this.props, nextProps);
     };
@@ -203,20 +223,20 @@ export class Block<T extends BlockProps> {
         return (
             typeof node1 !== typeof node2 ||
             (typeof node1 === 'string' && node1 !== node2) ||
-            node1.type !== node2.type
+            node1.type !== node2.type ||
+            (node1.props && node1.props.forceUpdate)
         );
     }
 
     _updateElement(parentNode, newNode, oldNode, index = 0) {
-        // console.log(parentNode, newNode, oldNode);
         // если внутри родителя нет ничего вообще и не нужно ничего вставлять
         if (newNode === null && oldNode === null) {
             return;
         }
 
-        if (!oldNode) {
+        if (typeof oldNode === undefined || oldNode === null) {
             parentNode.appendChild(this._createElement(newNode));
-        } else if (!newNode) {
+        } else if (typeof oldNode === undefined || oldNode === null) {
             parentNode.removeChild(parentNode.childNodes[index]);
         } else if (this._differ(newNode, oldNode)) {
             parentNode.replaceChild(
@@ -274,7 +294,7 @@ export class Block<T extends BlockProps> {
         };
     }
 
-    _makePropsProxy(props: T) {
+    _makePropsProxy(props) {
         const self = this;
 
         const propsProxy = new Proxy(props, {

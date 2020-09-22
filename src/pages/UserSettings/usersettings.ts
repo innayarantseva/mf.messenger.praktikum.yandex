@@ -4,20 +4,12 @@ import { userSettingsTemplate } from './template.js';
 import { data } from './data.js';
 import { compileTemplate } from '../../lib/templator.js';
 
-type UserSettingsProps = BlockProps & {
-    className: string;
-    name: string;
-    displayName: string;
-    email: string;
-    login: string;
-    title: string;
-    button: Button;
-};
-
-export class UserProfile extends Block<UserSettingsProps> {
+export class UserProfile extends Block<BlockProps> {
     constructor() {
         super('div', {
-            className: 'user-settings',
+            attributes: {
+                className: 'user-settings',
+            },
             name: data.userData.name,
             displayName: data.userData.displayName,
             email: data.userData.email,

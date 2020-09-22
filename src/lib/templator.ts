@@ -139,6 +139,16 @@ const htmlParser = (htmlStr, context: object): BlockNode => {
                 const tmplValue = key[1].trim();
                 const data = get(context, tmplValue);
 
+                if (
+                    Array.isArray(data) &&
+                    data.every((item) => item instanceof Block)
+                ) {
+                    currLevel.children = [
+                        ...currLevel.children,
+                        ...data.map((item) => item.getNode()),
+                    ]; // FIXME
+                    insertion = insertion.replace(new RegExp(key[0], 'gi'), '');
+                }
                 if (data instanceof Block) {
                     currLevel.children.push(data.getNode() as BlockNode); // FIXME
                     insertion = insertion.replace(new RegExp(key[0], 'gi'), '');

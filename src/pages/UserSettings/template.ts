@@ -16,7 +16,7 @@ export const userSettingsTemplate = `<section class="user-settings__layout">
                         <a href="./usersettings-edit.html">Изменить данные</a>
                     </li>
                     <li class="user-settings__option">
-                        <a class="user-settings__log-out" href="../Authorization/authorization.html">Выйти</a>
+                        <a class="user-settings__log-out" href="../Authorization/signIn.html">Выйти</a>
                     </li>
                 </ul>
             </div>

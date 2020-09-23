@@ -1,12 +1,29 @@
-import { renderTemplate } from '../../utils/renderTemplate.js';
+import { Block, BlockProps } from '../../lib/Block.js';
 import { errorTemplate } from './template.js';
 import { error500 } from './500.js';
+import { compileTemplate } from '../../lib/templator.js';
 
-const CONTAINER_NAME = 'error';
+export class ErrorPage extends Block<BlockProps> {
+    constructor() {
+        super('section', {
+            attributes: {
+                className: 'error',
+            },
+            ...error500,
+        });
+    }
 
-const context = error500;
-const layout = renderTemplate(errorTemplate, context);
-const container = document.getElementsByClassName(CONTAINER_NAME)[0];
+    render() {
+        return compileTemplate(errorTemplate, this.props);
+    }
+}
 
-container.appendChild(layout);
-document.title = context.title;
+const page = new ErrorPage();
+
+function renderToDom(query, block) {
+    const root = document.querySelector(query);
+    root.appendChild(block.getContent());
+    return root;
+}
+
+renderToDom('.app', page);

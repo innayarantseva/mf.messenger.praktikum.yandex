@@ -37,7 +37,22 @@ const isClosingTag = (chunk) => {
     return /(<\/(.+?)>)/.test(chunk);
 };
 
-const getTagAttributes = (tag) => {
+const getTemplateValue = (chunk, context) => {
+    const TEMPLATE_REGEXP = /\{\{(.*?)\}\}/gi;
+    let insertion = chunk;
+    let key = null;
+
+    while ((key = TEMPLATE_REGEXP.exec(chunk))) {
+        const tmplValue = key[1].trim();
+        const data = get(context, tmplValue);
+
+        insertion = insertion.replace(new RegExp(key[0], 'gi'), data);
+    }
+
+    return insertion;
+};
+
+const getTagAttributes = (tag, context) => {
     return tag
         .split(/[\s]/g)
         .slice(1)
@@ -52,26 +67,20 @@ const getTagAttributes = (tag) => {
 
             const [attrName, attrValue] = attrTuple;
 
-            acc[attrName] = attrValue;
+            acc[attrName] = getTemplateValue(attrValue, context);
 
             return acc;
         }, {});
 };
 
-const createElementTreeNode = (chunk) => {
-    const tagAttributes = getTagAttributes(chunk);
+const createElementTreeNode = (chunk, context) => {
+    const tagAttributes = getTagAttributes(chunk, context);
     return {
         type: getTagName(chunk),
         children: [],
         props: tagAttributes,
     };
 };
-
-// type ElementsTree = {
-//     type: string;
-//     props: Record<string, string | number | boolean | Function>;
-//     children: ElementsTree[];
-// };
 
 const htmlParser = (htmlStr, context: object): BlockNode => {
     // функции-хелперы для работы с деревом: поиск текущего уровня и вставка новой ноды
@@ -91,7 +100,7 @@ const htmlParser = (htmlStr, context: object): BlockNode => {
     };
 
     const appendNodeToTree = (chunk) => {
-        const node = createElementTreeNode(chunk);
+        const node = createElementTreeNode(chunk, context);
 
         if (stack.length) {
             const currLevel = getCurrentTreeLevel();

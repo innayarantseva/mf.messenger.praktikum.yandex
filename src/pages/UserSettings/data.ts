@@ -68,10 +68,5 @@ export const form: FormProps = {
     buttonProps: {
         type: 'submit',
         text: 'Сохранить',
-        onClick: (event) => {
-            event.preventDefault();
-            console.log('click!');
-            // console.log(validateForm());
-        },
     },
 };

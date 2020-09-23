@@ -3,7 +3,7 @@ function get(obj, path, defaultValue) {
     let value = obj;
 
     for (let key of keys) {
-        value = obj[key];
+        value = value[key]; // 🤦🏼‍♀️
 
         if (value === undefined) {
             return defaultValue;

@@ -1,4 +1,3 @@
-import { merge } from '../utils/mydash/merge.js';
 import { EventBus } from './EventBus.js';
 // import { render as renderTemplate } from './templator/templator.js';
 
@@ -197,7 +196,7 @@ export class Block<T extends BlockProps> {
 
     // Может переопределять пользователь, необязательно трогать
     componentDidUpdate(oldProps, newProps) {
-        return true;
+        return false;
     }
 
     setProps = (nextProps) => {
@@ -205,10 +204,9 @@ export class Block<T extends BlockProps> {
             return;
         }
 
-        Object.assign(this.props, nextProps);
-        // merge(this.props, nextProps);
-
-        this.eventBus().emit(Block.EVENTS.FLOW_CDU, this.props, nextProps);
+        const oldProps = this.props;
+        this.props = Object.assign(this.props, nextProps);
+        this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, this.props);
     };
 
     get element() {
@@ -234,9 +232,9 @@ export class Block<T extends BlockProps> {
             return;
         }
 
-        if (typeof oldNode === undefined || oldNode === null) {
+        if (typeof oldNode === 'undefined' || oldNode === null) {
             parentNode.appendChild(this._createElement(newNode));
-        } else if (typeof oldNode === undefined || oldNode === null) {
+        } else if (typeof newNode === 'undefined' || newNode === null) {
             parentNode.removeChild(parentNode.childNodes[index]);
         } else if (this._differ(newNode, oldNode)) {
             parentNode.replaceChild(
@@ -250,11 +248,12 @@ export class Block<T extends BlockProps> {
                 oldNode.props
             );
 
-            for (
-                let i = 0;
-                i < newNode.children.length || i < oldNode.children.length;
-                i++
-            ) {
+            const longestChildrenLen = Math.max(
+                newNode.children.length,
+                oldNode.children.length
+            );
+
+            for (let i = 0; i < longestChildrenLen; i++) {
                 this._updateElement(
                     parentNode.childNodes[index],
                     newNode.children[i],
@@ -269,7 +268,7 @@ export class Block<T extends BlockProps> {
         // процесс рендера возвращает виртуальное дерево элементов
         const newNode = this.render();
 
-        // рендерим виртуальную ноду в элемент, сверяя старое и новое дерево, делая только необходимые замены в доме
+        // рендерим виртуальную ноду в элемент, сверяя старое и новое дерево, делая только необходимые замены в дом
         this._updateElement(this._element, newNode, this._node);
 
         // всегда храним виртуальную ноду для того, чтобы сравнивать её с новой
@@ -299,11 +298,19 @@ export class Block<T extends BlockProps> {
 
         const propsProxy = new Proxy(props, {
             set(target, prop, value) {
-                if (self.props[prop] !== value) {
+                // console.log('set prop', {
+                //     prop,
+                //     oldVal: self.props[prop],
+                //     value,
+                // });
+                const old = self.props[prop];
+                target[prop] = value;
+
+                if (old !== value) {
+                    // console.log(`render because ${old} !== ${value}`);
                     self.eventBus().emit(Block.EVENTS.FLOW_RENDER);
                 }
 
-                target[prop] = value;
                 return true;
             },
 

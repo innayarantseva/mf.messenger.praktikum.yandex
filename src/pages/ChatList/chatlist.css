@@ -1,6 +1,6 @@
 @import '../../colors.css';
-@import './ChatListItem/styles.css';
-@import './Conversation/styles.css';
+@import '../../components/ChatListItem/styles.css';
+@import '../../components/Conversation/styles.css';
 @import './Message/styles.css';
 
 .chats {

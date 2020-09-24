@@ -1,96 +1,106 @@
-import { renderTemplate } from '../../utils/renderTemplate.js';
+import { Block, BlockProps } from '../../lib/Block.js';
 import { chatsTemplate } from './template.js';
-import { chatTemplate } from './ChatListItem/template.js';
-import { conversationTemplate } from './Conversation/template.js';
-import { messageTemplate } from './Message/template.js';
-import { chatList, converstions } from './data.js';
+import { user, chats } from './data.js';
+import { compileTemplate } from '../../lib/templator.js';
+import {
+    ChatListItem,
+    // CHAT_CLASS,
+} from '../../components/ChatListItem/index.js';
+import { Conversations } from '../../components/Conversation/index.js';
+// import { isEqual } from '../../utils/mydash/isEqual.js';
 
-// interactive elements selectors
-const CONTAINER_CLASS_SELECTOR = 'chats';
+// type Chatprops = {
+//     attributes;
+//     user;
+//     content;
+//     chatList;
+//     conversation;
+// };
 
-const CHATS_LIST_CLASS_SELECTOR = 'chats__list';
-const CHAT_SELECTOR = '.chats-list-item';
+class Empty extends Block<BlockProps> {
+    constructor() {
+        super('div', {
+            attributes: {
+                className: 'chats__empty',
+            },
+        });
+    }
 
-const CHAT_OPTIONS_CLASS_SELECTOR = 'conversation__options';
-const CHAT_OPTIONS_MENU_CLASS_SELECTOR = 'conversation__options-menu';
-const CHAT_OPTIONS_MENU_OPENED_CLASS_SELECTOR =
-    'conversation__options-menu_opened_true';
-
-const CHAT_ATTACHEMENT_CLASS_SELECTOR = 'conversation__attachment';
-const CHAT_ATTACHEMENT_MENU_CLASS_SELECTOR = 'conversation__attachment-menu';
-const CHAT_ATTACHEMENT_MENU_OPENED_CLASS_SELECTOR =
-    'conversation__attachment-menu_opened_true';
-
-// заглушка на время
-declare var Handlebars: any;
-
-// compile and register template for Chat as Handlebars partials
-const Chat = Handlebars.compile(chatTemplate);
-const Conversation = Handlebars.compile(conversationTemplate);
-const Message = Handlebars.compile(messageTemplate);
-Handlebars.registerPartial({ Chat, Conversation, Message });
-
-// toggle auth context: from register to sign in and back
-const renderByContext = (context) => {
-    const layout = renderTemplate(chatsTemplate, context);
-    const container = document.getElementsByClassName(
-        CONTAINER_CLASS_SELECTOR
-    )[0];
-
-    container.innerHTML = '';
-    container.appendChild(layout);
-    document.title = context.title;
-
-    // handle chat click
-    const chatsList = document.getElementsByClassName(
-        CHATS_LIST_CLASS_SELECTOR
-    )[0];
-
-    chatsList.addEventListener('click', (event) => {
-        const closestChatItemParent = (event.target as HTMLElement).closest(
-            CHAT_SELECTOR
+    render() {
+        return compileTemplate(
+            'Чтобы начать переписку, выберите чат из меню слева',
+            this.props
         );
+    }
+}
 
-        if (closestChatItemParent) {
-            const chatTitle = (closestChatItemParent as HTMLElement).dataset
-                .chatTitle;
-            const newContext = {
-                ...context,
-                title: chatTitle,
-                conversation: converstions[chatTitle],
-            };
-            renderByContext(newContext);
-        }
-    });
+export class Chats extends Block<BlockProps> {
+    _conversation: Conversations;
 
-    // handle menu buttons clicks
-    const chatOptions = document.getElementsByClassName(
-        CHAT_OPTIONS_CLASS_SELECTOR
-    )[0];
-    if (chatOptions) {
-        chatOptions.addEventListener('click', () => {
-            const chatOptionsMenu = chatOptions.getElementsByClassName(
-                CHAT_OPTIONS_MENU_CLASS_SELECTOR
-            )[0];
-            chatOptionsMenu.classList.toggle(
-                CHAT_OPTIONS_MENU_OPENED_CLASS_SELECTOR
-            );
+    constructor(data) {
+        const conversation = new Conversations({});
+        super('div', {
+            attributes: {
+                className: 'chats',
+            },
+            user,
+            content: undefined,
+            chatList: chats.map(
+                (chat) =>
+                    new ChatListItem({
+                        ...chat,
+                        // onClick: (event) => {
+                        //     const closestChatItemParent = (event.target as HTMLElement).closest(
+                        //         `.${CHAT_CLASS}`
+                        //     );
+
+                        //     if (closestChatItemParent) {
+                        //         const chatTitle = (closestChatItemParent as HTMLElement)
+                        //             .dataset.chatTitle;
+
+                        //         this.setProps({
+                        //             content: conversations[chatTitle],
+                        //         });
+                        //     }
+                        // },
+                    })
+            ),
+            conversation: data ? new Conversations(data) : new Empty(),
         });
+
+        this._conversation = conversation;
     }
 
-    const chatAttachment = document.getElementsByClassName(
-        CHAT_ATTACHEMENT_CLASS_SELECTOR
-    )[0];
-    if (chatAttachment) {
-        chatAttachment.addEventListener('click', () => {
-            const chatAttachmentMenu = chatAttachment.getElementsByClassName(
-                CHAT_ATTACHEMENT_MENU_CLASS_SELECTOR
-            )[0];
-            chatAttachmentMenu.classList.toggle(
-                CHAT_ATTACHEMENT_MENU_OPENED_CLASS_SELECTOR
-            );
-        });
-    }
-};
+    // componentDidUpdate(oldProps, newProps) {
+    //     if (!(oldProps.conversation instanceof Conversations)) {
+    //         this.setProps({
+    //             conversation: new Conversations(newProps.content),
+    //         });
+    //         return true;
+    //     } else {
+    //         console.log('update conversation props in chatlist');
+    //         (this.props as BlockProps & {
+    //             conversation;
+    //         }).conversation.setProps(newProps.content);
 
-renderByContext(chatList);
+    //         // return false;
+    //         return true; // почему в этот раз-то нужно перерендеривать... Ведь у нас уже есть ссылка на элемент, и мы просто меняем у него пропсы.
+    //     }
+    // }
+
+    render() {
+        // console.log(compileTemplate(chatsTemplate, this.props));
+        // console.log('render chatlist');
+        return compileTemplate(chatsTemplate, this.props);
+    }
+}
+
+// const page = new Chats();
+
+// function renderToDom(query, block) {
+//     const root = document.querySelector(query);
+//     root.appendChild(block.getContent());
+//     return root;
+// }
+
+// renderToDom('.app', page);

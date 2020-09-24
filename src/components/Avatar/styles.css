@@ -1,0 +1,27 @@
+@import '../../colors.css';
+
+.avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background-color: #EFEFEF;
+    margin-right: 12px;
+
+    position: relative;
+}
+.avatar-indicator {
+    width: 10px;
+    height: 10px;
+    background-color: var(--color-blue-dark);
+    border-radius: 50%;
+    border: 2px solid var(--color-white);
+
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+
+    opacity: 0;
+}
+.avatar-online-true .avatar-indicator {
+    opacity: 1;
+}

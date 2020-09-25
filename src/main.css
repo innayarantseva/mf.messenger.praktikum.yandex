@@ -19,6 +19,9 @@
     font-weight: 700;
 }
 
+@import './pages/Authorization/authorization.css';
+@import './pages/ChatList/chatlist.css';
+
 
 html {
     font-family: 'Inter', 'Helvetica', sans-serif;

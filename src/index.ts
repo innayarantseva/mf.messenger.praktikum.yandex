@@ -1,4 +1,7 @@
 import { renderTemplate } from './utils/renderTemplate.js';
+import { Router } from './lib/Router.js';
+import { Chats } from './pages/ChatList/chatlist.js';
+import { SignIn } from './pages/Authorization/signIn.js';
 
 const mainSectionContext = {
     heading: 'Мессенджер',
@@ -23,3 +26,23 @@ const source = document.getElementById('root').innerHTML;
 const mainSection = renderTemplate(source, mainSectionContext);
 
 document.body.appendChild(mainSection);
+
+// Можно обновиться на /user и получить сразу пользователя
+const router = new Router('.app');
+
+router.use('/chats', Chats).use('/sign-in', SignIn).start();
+
+// Через секунду контент изменится сам, достаточно дернуть переход
+setTimeout(() => {
+    router.go('/sign-in');
+}, 5000);
+
+// А можно и назад
+setTimeout(() => {
+    router.back();
+}, 10000);
+
+// И снова вперед
+setTimeout(() => {
+    router.forward();
+}, 15000);

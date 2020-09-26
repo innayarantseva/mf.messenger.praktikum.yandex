@@ -11,5 +11,6 @@
     command = "npm ci && npm run build && npm prune --production"
 
 [[redirects]]
-    to = "/"
-    status = 404
+    from = "/*"
+    to = "/index.html"
+    status = 200

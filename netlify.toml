@@ -9,3 +9,7 @@
     base = "./"
     publish = "./dist"
     command = "npm ci && npm run build && npm prune --production"
+
+[[redirects]]
+    to = "/"
+    status = 404

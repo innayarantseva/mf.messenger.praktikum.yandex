@@ -1,3 +1,7 @@
+@import './pages/Authorization/authorization.css';
+@import './pages/ChatList/chatlist.css';
+@import './pages/UserSettings/usersettings.css';
+
 @font-face {
     font-family: 'Inter';
     src: url('assets/fonts/Inter-Light-slnt=0.ttf') format('truetype');

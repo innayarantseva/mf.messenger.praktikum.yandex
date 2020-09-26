@@ -1,11 +1,9 @@
+import { CHAT_CLASS } from './consts.js';
+
 export const chatTemplate = `<li>
-    <section class="chats-list-item" data-chat-title="{{displayName}}">
+    <section class="${CHAT_CLASS}" data-chat-title="{{displayName}}">
         <aside>
-            <div class="chats-list-item__avatar">
-                {{#if isOnline}}
-                    <div class="chats-list-item__avatar-indicator"></div>
-                {{/if}}
-            </div>
+            {{avatar}}
         </aside>
 
         <main class="chats-list-item__main">
@@ -15,14 +13,10 @@ export const chatTemplate = `<li>
             </header>
             <div class="chats-list-item__content">
                 <p class="chats-list-item__message-preview">
-                    {{#if lastMessage.fromMe}}
-                        <b class="chats-list-item__me">Я:</b>
-                    {{/if}}
+                    {{me}}
                     {{lastMessage.preview}}
                 </p>
-                {{#if unreadCounter}}
-                    <p class="chats-list-item__badge">{{unreadCounter}}</p>
-                {{/if}}
+                {{badge}}
             </div>
         </main>
     </section>

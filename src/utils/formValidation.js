@@ -16,7 +16,10 @@ const validateTelInput = (value) => {
 const validatePasswordInput = (value) => {
     if (!value) {
         return 'Это поле должно быть заполнено';
-    } else if (value.length < 6 || !/(?=.*[!@#$%^&*+-_])(?=.*[0-9])/.test(value)) {
+    } else if (
+        value.length < 6 ||
+        !/(?=.*[!@#$%^&*+-_])(?=.*[0-9])/.test(value)
+    ) {
         return 'Пароль должен быть длинее 6 символов и содержать минимум одну букву и одну цифру/спецсимвол';
     }
 };
@@ -40,20 +43,24 @@ const validateTextInput = (value, textType) => {
 
 export const validateInput = (value, type, textType) => {
     switch (type) {
-        case 'email': return validateEmailInput(value);
-        case 'tel': return validateTelInput(value);
-        case 'password': return validatePasswordInput(value);
-        default: return validateTextInput(value, textType);
+        case 'email':
+            return validateEmailInput(value);
+        case 'tel':
+            return validateTelInput(value);
+        case 'password':
+            return validatePasswordInput(value);
+        default:
+            return validateTextInput(value, textType);
     }
 };
 
 // validate form
 export const validateForm = (formfields) => {
-    return formfields.reduce((acc, {value, type, fieldName}) => {
+    return formfields.reduce((acc, { value, type, fieldName }) => {
         const validationMessage = validateInput(value, type, fieldName);
 
         if (validationMessage) {
-            acc.push({fieldName, text: validationMessage});
+            acc.push({ fieldName, text: validationMessage });
         }
 
         return acc;

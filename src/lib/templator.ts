@@ -24,6 +24,7 @@ const SELF_CLOSING_TAGS = [
     'track',
     'wbr',
 ];
+const IS_CLASS = Symbol('class');
 
 const getTagName = (tag) => {
     const matchResult = tag.match(/<\/?(\w+)[\s\w>]/);
@@ -37,29 +38,65 @@ const isClosingTag = (chunk) => {
     return /(<\/(.+?)>)/.test(chunk);
 };
 
-const getTagAttributes = (tag) => {
+const getTemplateValue = (chunk, context) => {
+    // FIXME: сделать универсальной для тегов и атрибутов
+    const TEMPLATE_REGEXP = /\{\{(.*?)\}\}/gi;
+    let insertion = chunk;
+    let key = null;
+
+    while ((key = TEMPLATE_REGEXP.exec(chunk))) {
+        const tmplValue = key[1].trim();
+        const data = get(context, tmplValue);
+
+        insertion = insertion.replace(new RegExp(key[0], 'gi'), data);
+    }
+
+    return insertion;
+};
+
+const getTagAttributes = (tag, context) => {
     return tag
         .split(/[\s]/g)
         .slice(1)
         .reduce((acc, attribute) => {
+            const srcStr = attribute;
             attribute = attribute.replace(/[>"]/g, '');
             const attrTuple = attribute.split('=');
 
             if (attrTuple.length === 1) {
+                // может быть это класс из атрибута
+                if (acc[IS_CLASS]) {
+                    acc.className =
+                        acc.className +
+                        ' ' +
+                        getTemplateValue(attrTuple[0], context);
+
+                    if (srcStr.endsWith('"') || srcStr.endsWith('>')) {
+                        acc[IS_CLASS] = false;
+                    }
+                }
                 // атрибут без значения будем считать true
                 attrTuple.push(true);
+            } else {
+                const [attrName, attrValue] = attrTuple;
+
+                acc[attrName] = getTemplateValue(attrValue, context);
+
+                // если строка не закончилась, следующий одиночный чанк может быть значением класса тоже
+                if (srcStr.startsWith('class') && !srcStr.endsWith('"')) {
+                    acc[IS_CLASS] = true;
+                }
             }
-
-            const [attrName, attrValue] = attrTuple;
-
-            acc[attrName] = attrValue;
 
             return acc;
         }, {});
 };
 
-const createElementTreeNode = (chunk) => {
-    const tagAttributes = getTagAttributes(chunk);
+const createElementTreeNode = (chunk, context) => {
+    // console.log('chunk', chunk);
+    const tagAttributes = getTagAttributes(chunk, context);
+
+    // console.log({ chunk, context, tagAttributes });
     return {
         type: getTagName(chunk),
         children: [],
@@ -67,13 +104,8 @@ const createElementTreeNode = (chunk) => {
     };
 };
 
-// type ElementsTree = {
-//     type: string;
-//     props: Record<string, string | number | boolean | Function>;
-//     children: ElementsTree[];
-// };
-
 const htmlParser = (htmlStr, context: object): BlockNode => {
+    // console.log({ htmlStr, context });
     // функции-хелперы для работы с деревом: поиск текущего уровня и вставка новой ноды
     const getCurrentTreeLevel = () => {
         let currLevel = elementsTree;
@@ -91,7 +123,7 @@ const htmlParser = (htmlStr, context: object): BlockNode => {
     };
 
     const appendNodeToTree = (chunk) => {
-        const node = createElementTreeNode(chunk);
+        const node = createElementTreeNode(chunk, context);
 
         if (stack.length) {
             const currLevel = getCurrentTreeLevel();
@@ -129,7 +161,12 @@ const htmlParser = (htmlStr, context: object): BlockNode => {
                 }
             }
         } else {
-            const currLevel = getCurrentTreeLevel();
+            // если шаблон состоит из пустой строки или текстовой ноды
+            if (chunks.length === 1) {
+                return getTemplateValue(chunk, context);
+            }
+
+            let currLevel = getCurrentTreeLevel();
 
             const TEMPLATE_REGEXP = /\{\{(.*?)\}\}/gi;
             let insertion = chunk;
@@ -138,7 +175,18 @@ const htmlParser = (htmlStr, context: object): BlockNode => {
             while ((key = TEMPLATE_REGEXP.exec(chunk))) {
                 const tmplValue = key[1].trim();
                 const data = get(context, tmplValue);
+                // console.log(key[1], data, context);
 
+                if (
+                    Array.isArray(data) &&
+                    data.every((item) => item instanceof Block)
+                ) {
+                    currLevel.children = [
+                        ...currLevel.children,
+                        ...data.map((item) => item.getNode()),
+                    ]; // FIXME
+                    insertion = insertion.replace(new RegExp(key[0], 'gi'), '');
+                }
                 if (data instanceof Block) {
                     currLevel.children.push(data.getNode() as BlockNode); // FIXME
                     insertion = insertion.replace(new RegExp(key[0], 'gi'), '');
@@ -150,7 +198,13 @@ const htmlParser = (htmlStr, context: object): BlockNode => {
                 }
             }
 
-            currLevel.children.push(insertion);
+            if (insertion !== '') {
+                currLevel.children.push(insertion);
+            }
+
+            // currLevel.children = currLevel.children.filter(
+            //     (v) => v !== undefined && ((v as unknown) as string) !== ''
+            // );
         }
     }
 

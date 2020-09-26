@@ -1,3 +1,5 @@
+@import '../Input/styles.css';
+
 .formfield {
     display: flex;
     flex-direction: column;
@@ -10,33 +12,8 @@
     color: var(--color-grey-1);
     margin-bottom: 4px;
 }
-.formfield__input {
-    height: 32px;
-    border-radius: var(--border-radius) var(--border-radius) 0 0;
-    border: 1px solid transparent;
-    border-bottom-color: var(--color-grey-5);
-    background-color: var(--color-grey-10);
-    font-size: 14px;
-    line-height: 18px;
-    color: var(--color-grey-1);
-    padding-left: 16px;
-}
-.formfield__input_invalid_true {
-    border-bottom-color: var(--color-red);
-}
-.formfield__input:active,
-.formfield__input:focus {
-    border-bottom-color: var(--color-blue-dark);
-    outline: none;
-    /* box-shadow: 0px 0px 4px 0px var(--color-grey-light); */
-}
 
 .formfield__error {
-    /* position: absolute;
-    left: calc(100% + 40px);
-    top: 30px;
-    margin: 4px 16px 0;
-    width: 346px; */
     font-size: 12px;
     line-height: 16px;
     color: var(--color-red);

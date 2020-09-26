@@ -8,27 +8,7 @@
         <link rel="stylesheet" href="colors.css">
     </head>
     <body>
-        <script src="assets/js/handlebars.min-v4.7.6.js"></script>
-
-        <script id="root" type="text/x-handlebars-template">
-            <section class="main"  style="max-width: 620px; padding: 40px;">
-                <header class="header">
-                    <h1><b>{{ heading }}</b>: {{ headingInfo }}</h1>
-                </header>
-
-                <main class="content">
-                    <p>{{description}}</p>
-
-                    <ul>
-                        {{#links}}
-                            <li>
-                                <a href="{{ href }}">{{ text }}</a>
-                            </li>
-                        {{/links}}
-                    </ul>
-                </main>
-            </section>
-        </script>
+        <div class="app"></div>
 
         <script src="index.js" type="module"></script>
     </body>

@@ -1,23 +1,56 @@
 import { Block, BlockProps } from '../../lib/Block.js';
 import { compileTemplate } from '../../lib/templator.js';
+import { validateInput } from '../../utils/formValidation.js';
 // в идеале хочу импортить в компонент стили через css-модули из postcss
 
-type InputProps = BlockProps & {
+export type InputProps = {
     type?;
     placeholder?;
     value?;
     'data-field-name'?;
     required?;
+    className?: string;
+    error?: string;
+    onFocus?: (event) => void;
+    onBlur?: (event) => void;
+    onInput?: (event) => void;
 };
 
-export class Input extends Block<InputProps> {
-    props: InputProps;
+type InputBlockProps = {
+    attributes: InputProps;
+};
+
+export class Input extends Block<BlockProps> {
+    props: BlockProps;
 
     constructor(props: InputProps) {
         super('input', {
-            ...props,
-            className: ['input', props.className].join(' '),
+            value: props.value,
+            attributes: {
+                ...props,
+                className: [
+                    'input',
+                    props.className,
+                    `input_invalid_${Boolean(props.error)}`,
+                ].join(' '),
+                onInput: (event) => {
+                    this.setProps({ value: event.target.value });
+                },
+            },
         });
+    }
+
+    validate() {
+        const value = (this.props as InputProps).value;
+        const inputType = (this.props as InputBlockProps).attributes.type;
+        const fieldName = (this.props as InputBlockProps).attributes[
+            'data-field-name'
+        ];
+        const error = validateInput(value, inputType, fieldName) || '';
+
+        this.setProps({ error });
+
+        return { fieldName, error, value };
     }
 
     render() {

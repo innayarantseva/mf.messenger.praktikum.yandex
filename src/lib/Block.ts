@@ -1,10 +1,14 @@
 import { EventBus } from './EventBus.js';
 // import { render as renderTemplate } from './templator/templator.js';
 
-export type BlockProps = {
-    className?: string;
-    onClick?: (event) => void;
-};
+export type BlockProps = object;
+// {
+//     attributes: {
+//         className?: string;
+//         onClick?: (event) => void;
+//     };
+//     [key: string]: any;
+// };
 
 export type BlockNode = {
     type: string;
@@ -33,7 +37,6 @@ export class Block<T extends BlockProps> {
         this._meta = {
             tagName,
             props,
-            // elementProps,
         };
 
         this.props = this._makePropsProxy(props);
@@ -52,11 +55,14 @@ export class Block<T extends BlockProps> {
     }
 
     _createResources() {
-        const { tagName, props } = this._meta;
+        const {
+            tagName,
+            props: { attributes = {} },
+        } = this._meta;
 
         this._element = this._createElement({
             type: tagName,
-            props,
+            props: attributes,
             children: [],
         });
     }
@@ -75,6 +81,7 @@ export class Block<T extends BlockProps> {
 
         // assign html attrs to element
         this._setProps(el, node.props);
+        this._addEventListeners(el, node.props);
 
         // recursively create els for children
         node.children.forEach((child) => {
@@ -102,6 +109,19 @@ export class Block<T extends BlockProps> {
 
     _isEventProp(propName) {
         return /^on/.test(propName);
+    }
+    _extractEventName(propName) {
+        return propName.slice(2).toLowerCase();
+    }
+    _addEventListeners(element, props) {
+        Object.keys(props).forEach((propName) => {
+            if (this._isEventProp(propName)) {
+                element.addEventListener(
+                    this._extractEventName(propName),
+                    props[propName]
+                );
+            }
+        });
     }
 
     // unknown or forse update
@@ -162,12 +182,10 @@ export class Block<T extends BlockProps> {
     }
 
     // Может переопределять пользователь, необязательно трогать
-    componentDidMount(oldProps) {}
+    componentDidMount(oldProps) { }
 
     _componentDidUpdate(oldProps, newProps) {
         const response = this.componentDidUpdate(oldProps, newProps);
-
-        console.log('update', { response, oldProps, newProps });
 
         if (response) {
             this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
@@ -178,7 +196,7 @@ export class Block<T extends BlockProps> {
 
     // Может переопределять пользователь, необязательно трогать
     componentDidUpdate(oldProps, newProps) {
-        return true;
+        return false;
     }
 
     setProps = (nextProps) => {
@@ -186,9 +204,9 @@ export class Block<T extends BlockProps> {
             return;
         }
 
-        Object.assign(this.props, nextProps);
-
-        this.eventBus().emit(Block.EVENTS.FLOW_CDU, this.props, nextProps);
+        const oldProps = this.props;
+        this.props = Object.assign(this.props, nextProps);
+        this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, this.props);
     };
 
     get element() {
@@ -203,20 +221,20 @@ export class Block<T extends BlockProps> {
         return (
             typeof node1 !== typeof node2 ||
             (typeof node1 === 'string' && node1 !== node2) ||
-            node1.type !== node2.type
+            node1.type !== node2.type ||
+            (node1.props && node1.props.forceUpdate)
         );
     }
 
     _updateElement(parentNode, newNode, oldNode, index = 0) {
-        // console.log(parentNode, newNode, oldNode);
         // если внутри родителя нет ничего вообще и не нужно ничего вставлять
         if (newNode === null && oldNode === null) {
             return;
         }
 
-        if (!oldNode) {
+        if (typeof oldNode === 'undefined' || oldNode === null) {
             parentNode.appendChild(this._createElement(newNode));
-        } else if (!newNode) {
+        } else if (typeof newNode === 'undefined' || newNode === null) {
             parentNode.removeChild(parentNode.childNodes[index]);
         } else if (this._differ(newNode, oldNode)) {
             parentNode.replaceChild(
@@ -230,11 +248,12 @@ export class Block<T extends BlockProps> {
                 oldNode.props
             );
 
-            for (
-                let i = 0;
-                i < newNode.children.length || i < oldNode.children.length;
-                i++
-            ) {
+            const longestChildrenLen = Math.max(
+                newNode.children.length,
+                oldNode.children.length
+            );
+
+            for (let i = 0; i < longestChildrenLen; i++) {
                 this._updateElement(
                     parentNode.childNodes[index],
                     newNode.children[i],
@@ -249,7 +268,7 @@ export class Block<T extends BlockProps> {
         // процесс рендера возвращает виртуальное дерево элементов
         const newNode = this.render();
 
-        // рендерим виртуальную ноду в элемент, сверяя старое и новое дерево, делая только необходимые замены в доме
+        // рендерим виртуальную ноду в элемент, сверяя старое и новое дерево, делая только необходимые замены в дом
         this._updateElement(this._element, newNode, this._node);
 
         // всегда храним виртуальную ноду для того, чтобы сравнивать её с новой
@@ -274,16 +293,24 @@ export class Block<T extends BlockProps> {
         };
     }
 
-    _makePropsProxy(props: T) {
+    _makePropsProxy(props) {
         const self = this;
 
         const propsProxy = new Proxy(props, {
             set(target, prop, value) {
-                if (self.props[prop] !== value) {
+                // console.log('set prop', {
+                //     prop,
+                //     oldVal: self.props[prop],
+                //     value,
+                // });
+                const old = self.props[prop];
+                target[prop] = value;
+
+                if (old !== value) {
+                    // console.log(`render because ${old} !== ${value}`);
                     self.eventBus().emit(Block.EVENTS.FLOW_RENDER);
                 }
 
-                target[prop] = value;
                 return true;
             },
 
@@ -300,7 +327,7 @@ export class Block<T extends BlockProps> {
     }
 
     show() {
-        (this.getContent() as HTMLElement).style.display = 'block'; // FIXME
+        (this.getContent() as HTMLElement).style.display = 'flex'; // FIXME
     }
 
     hide() {

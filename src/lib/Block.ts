@@ -1,14 +1,6 @@
 import { EventBus } from './EventBus.js';
-// import { render as renderTemplate } from './templator/templator.js';
 
 export type BlockProps = object;
-// {
-//     attributes: {
-//         className?: string;
-//         onClick?: (event) => void;
-//     };
-//     [key: string]: any;
-// };
 
 export type BlockNode = {
     type: string;
@@ -75,6 +67,10 @@ export class Block<T extends BlockProps> {
     _createElement(node: BlockNode): HTMLElement | Text {
         if (typeof node === 'string') {
             return document.createTextNode(node);
+        }
+
+        if (node.element) {
+            return node.element;
         }
 
         const el = document.createElement(node.type);
@@ -182,7 +178,7 @@ export class Block<T extends BlockProps> {
     }
 
     // Может переопределять пользователь, необязательно трогать
-    componentDidMount(oldProps) {}
+    componentDidMount(oldProps) { }
 
     _componentDidUpdate(oldProps, newProps) {
         const response = this.componentDidUpdate(oldProps, newProps);
@@ -204,7 +200,7 @@ export class Block<T extends BlockProps> {
             return;
         }
 
-        const oldProps = this.props;
+        const oldProps = { ...this.props }; // deepClone
         this.props = Object.assign(this.props, nextProps);
         this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, this.props);
     };
@@ -226,40 +222,64 @@ export class Block<T extends BlockProps> {
         );
     }
 
-    _updateElement(parentNode, newNode, oldNode, index = 0) {
+    _updateElement(parentNode, newNode, oldNode, index = 0, realDomIndex = index) {
         // если внутри родителя нет ничего вообще и не нужно ничего вставлять
         if (newNode === null && oldNode === null) {
             return;
         }
 
-        if (typeof oldNode === 'undefined' || oldNode === null) {
+        if (typeof oldNode === 'undefined' || oldNode === null) { // если в старом дереве не хватает ноды из нового
             parentNode.appendChild(this._createElement(newNode));
-        } else if (typeof newNode === 'undefined' || newNode === null) {
-            parentNode.removeChild(parentNode.childNodes[index]);
-        } else if (this._differ(newNode, oldNode)) {
+        } else if (typeof newNode === 'undefined' || newNode === null) {  // если в новом дереве нет ноды из старого
+            // мы можем удалять больше одного потомка у родителя.
+            // В этом случае индекс итерируемой виртуальной ноды будет больше кол-ва потомков родителя в реальном DOM-дереве
+            // поэтому будем удалять последний, если по индексу удалить не выйдет
+            const childToRemove = parentNode.childNodes[realDomIndex];
+
+            if (childToRemove) {
+                parentNode.removeChild(childToRemove);
+                return realDomIndex - 1;
+            }
+
+        } else if (this._differ(newNode, oldNode)) { // оба есть, но нода изменилась
             parentNode.replaceChild(
                 this._createElement(newNode),
                 parentNode.childNodes[index]
             );
-        } else if (newNode.type) {
+        } else if (newNode.type) { // ноды не отличаются
+            // нужно обновить свойства ноды parentNode.childNodes[index]
+
+            // FIXME: также не понимаю, почему иногда возникает ошибка, что родителя не существует
             this._updateProps(
                 parentNode.childNodes[index],
                 newNode.props,
                 oldNode.props
             );
 
+            // и перебрать потомков
             const longestChildrenLen = Math.max(
                 newNode.children.length,
                 oldNode.children.length
             );
 
             for (let i = 0; i < longestChildrenLen; i++) {
-                this._updateElement(
+                // возникают проблемы при удалении: если старое виртуальное дерево больше нового, индекс итерации становится
+                // больше реального размера DOM-дерева.
+                // поэтому нужно аккуратно удалять только те ноды, которые нужно удалить.
+
+                // FIXME: не могу отдебажить, почему не удаляются все ноды, но хотя бы приложение не падает в смерть))))
+
+                let realDomIndex = undefined;
+
+                let returned = this._updateElement(
                     parentNode.childNodes[index],
                     newNode.children[i],
                     oldNode.children[i],
-                    i
+                    i,
+                    realDomIndex // нужен только для удаления!
                 );
+
+                realDomIndex = returned;
             }
         }
     }
@@ -298,16 +318,10 @@ export class Block<T extends BlockProps> {
 
         const propsProxy = new Proxy(props, {
             set(target, prop, value) {
-                // console.log('set prop', {
-                //     prop,
-                //     oldVal: self.props[prop],
-                //     value,
-                // });
                 const old = self.props[prop];
                 target[prop] = value;
 
                 if (old !== value) {
-                    // console.log(`render because ${old} !== ${value}`);
                     self.eventBus().emit(Block.EVENTS.FLOW_RENDER);
                 }
 
@@ -327,7 +341,7 @@ export class Block<T extends BlockProps> {
     }
 
     show() {
-        (this.getContent() as HTMLElement).style.display = 'block'; // FIXME
+        (this.getContent() as HTMLElement).style.display = 'flex'; // FIXME
     }
 
     hide() {

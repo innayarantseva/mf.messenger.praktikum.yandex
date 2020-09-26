@@ -3,6 +3,7 @@ import { changeUserSettings } from './template.js';
 import { form } from './data.js';
 import { compileTemplate } from '../../lib/templator.js';
 import { Form } from '../../components/Form/index.js';
+import { NavLink } from '../../components/NavLink/index.js';
 
 export class ChangeUserData extends Block<BlockProps> {
     constructor() {
@@ -11,6 +12,8 @@ export class ChangeUserData extends Block<BlockProps> {
                 className: 'user-settings',
             },
             form: new Form(form),
+            chatsLink: new NavLink({ pathname: '/chats', text: '← Все чаты' }),
+            profileLink: new NavLink({ pathname: '/settings', text: 'Отменить' }),
         });
     }
 
@@ -18,13 +21,3 @@ export class ChangeUserData extends Block<BlockProps> {
         return compileTemplate(changeUserSettings, this.props);
     }
 }
-
-const userProfile = new ChangeUserData();
-
-function renderToDom(query, block) {
-    const root = document.querySelector(query);
-    root.appendChild(block.getContent());
-    return root;
-}
-
-renderToDom('.app', userProfile);

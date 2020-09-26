@@ -3,7 +3,6 @@ import { compileTemplate } from '../../lib/templator.js';
 import { Button, ButtonProps } from '../Button/index.js';
 import { FormField, FormFieldProps } from '../Formfield/index.js';
 import { template } from './template.js';
-// в идеале хочу импортить в компонент стили через css-модули из postcss
 
 export type FormProps = {
     fields: FormFieldProps[];
@@ -23,11 +22,16 @@ export class Form extends Block<BlockProps> {
                 ...buttonProps,
                 onClick: (event) => {
                     event.preventDefault();
-                    console.log(Fields.map((field) => field.validate()));
+
+                    const validationResult = Fields.map((field) => field.validate());
+                    // не знаю, нужно ли оставлять — это задание из прошлого спринта
+                    console.log(validationResult);
+
+                    buttonProps.onClick && buttonProps.onClick(event, validationResult);
                 },
             }),
             attributes: {
-                className,
+                className: [className, 'form'].filter(v => !!v).join(' '),
             },
         });
     }

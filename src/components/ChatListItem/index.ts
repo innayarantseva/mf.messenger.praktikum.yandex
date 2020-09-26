@@ -40,7 +40,7 @@ export class ChatListItem extends Block<BlockProps> {
         displayName,
         unreadCounter = undefined,
         lastMessage,
-        onClick = () => undefined,
+        onClick = (event?) => undefined,
     }) {
         super('div', {
             attributes: {

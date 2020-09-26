@@ -1,21 +1,11 @@
 import { Block, BlockProps } from '../../lib/Block.js';
 import { chatsTemplate } from './template.js';
-import { user, chats } from './data.js';
+import { user, chats, conversations } from './data.js';
 import { compileTemplate } from '../../lib/templator.js';
-import {
-    ChatListItem,
-    // CHAT_CLASS,
-} from '../../components/ChatListItem/index.js';
-import { Conversations } from '../../components/Conversation/index.js';
-// import { isEqual } from '../../utils/mydash/isEqual.js';
-
-// type Chatprops = {
-//     attributes;
-//     user;
-//     content;
-//     chatList;
-//     conversation;
-// };
+import { ChatListItem, CHAT_CLASS, } from '../../components/ChatListItem/index.js';
+import { Conversation } from '../../components/Conversation/index.js';
+import { NavLink } from '../../components/NavLink/index.js';
+import { router } from '../../lib/Router.js';
 
 class Empty extends Block<BlockProps> {
     constructor() {
@@ -35,72 +25,73 @@ class Empty extends Block<BlockProps> {
 }
 
 export class Chats extends Block<BlockProps> {
-    _conversation: Conversations;
+    _conversation: Conversation;
+    _empty: Empty;
 
     constructor(data) {
-        const conversation = new Conversations({});
+        const conversation = new Conversation(data || conversations['Константин Константинопльский']);
+        const empty = new Empty();
+
         super('div', {
             attributes: {
                 className: 'chats',
             },
+            // data
+            data,
             user,
-            content: undefined,
+            // blocks
+            settingsLink: new NavLink({
+                pathname: '/settings',
+                text: user.displayName,
+                className: 'chats__user-name'
+            }),
             chatList: chats.map(
                 (chat) =>
                     new ChatListItem({
                         ...chat,
-                        // onClick: (event) => {
-                        //     const closestChatItemParent = (event.target as HTMLElement).closest(
-                        //         `.${CHAT_CLASS}`
-                        //     );
+                        onClick: (event) => {
+                            const closestChatItemParent = (event.target as HTMLElement).closest(
+                                `.${CHAT_CLASS}`
+                            );
 
-                        //     if (closestChatItemParent) {
-                        //         const chatTitle = (closestChatItemParent as HTMLElement)
-                        //             .dataset.chatTitle;
+                            if (closestChatItemParent) {
+                                const chatTitle = (closestChatItemParent as HTMLElement)
+                                    .dataset.chatTitle;
 
-                        //         this.setProps({
-                        //             content: conversations[chatTitle],
-                        //         });
-                        //     }
-                        // },
+                                router.go('/chats', { data: conversations[chatTitle] })
+                            }
+                        }
                     })
             ),
-            conversation: data ? new Conversations(data) : new Empty(),
+            conversation,
+            empty
         });
 
         this._conversation = conversation;
+        this._empty = empty;
+
+        if (data) {
+            this._empty.hide();
+        } else {
+            this._conversation.hide();
+        }
+
     }
 
-    // componentDidUpdate(oldProps, newProps) {
-    //     if (!(oldProps.conversation instanceof Conversations)) {
-    //         this.setProps({
-    //             conversation: new Conversations(newProps.content),
-    //         });
-    //         return true;
-    //     } else {
-    //         console.log('update conversation props in chatlist');
-    //         (this.props as BlockProps & {
-    //             conversation;
-    //         }).conversation.setProps(newProps.content);
+    componentDidUpdate(oldProps, newProps) {
+        if (newProps.data) { // обновилась дата для блока разговора
+            this._conversation.setProps(newProps.data);
+            this._empty.hide();
+            this._conversation.show();
+        } else { // даты не пришло
+            this._conversation.hide();
+            this._empty.show();
+        }
 
-    //         // return false;
-    //         return true; // почему в этот раз-то нужно перерендеривать... Ведь у нас уже есть ссылка на элемент, и мы просто меняем у него пропсы.
-    //     }
-    // }
+        return false;
+    }
 
     render() {
-        // console.log(compileTemplate(chatsTemplate, this.props));
-        // console.log('render chatlist');
         return compileTemplate(chatsTemplate, this.props);
     }
 }
-
-// const page = new Chats();
-
-// function renderToDom(query, block) {
-//     const root = document.querySelector(query);
-//     root.appendChild(block.getContent());
-//     return root;
-// }
-
-// renderToDom('.app', page);

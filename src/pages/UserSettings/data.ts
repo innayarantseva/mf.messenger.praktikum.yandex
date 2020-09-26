@@ -1,5 +1,13 @@
 import { FormProps } from '../../components/Form/index.js';
-// import { validateForm } from '../../utils/formValidation.js'
+import { router } from '../../lib/Router.js';
+
+const handleFormClick = (event, validationResult) => {
+    const isValid = validationResult.reduce((acc, { error }) => acc && !(error), true);
+
+    if (isValid) {
+        router.go('/settings');
+    }
+}
 
 const userData = {
     firstName: 'Констанция',
@@ -68,5 +76,6 @@ export const form: FormProps = {
     buttonProps: {
         type: 'submit',
         text: 'Сохранить',
+        onClick: handleFormClick
     },
 };

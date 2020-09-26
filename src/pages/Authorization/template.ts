@@ -4,7 +4,7 @@ export const template = `<section class="authorization__layout">
     {{ form }}
 
     <span>
-        <span>{{secondaryAction.info}}</span>
-        <a class="authorization__secondary-action" href="{{secondaryAction.href}}">{{secondaryAction.linkText}}</a>
+        <span>{{secondaryActionText}}</span>
+        {{navLink}}
     </span>
 </section>`;

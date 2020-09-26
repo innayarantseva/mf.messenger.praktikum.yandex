@@ -3,6 +3,7 @@ import { Block, BlockProps } from '../../lib/Block.js';
 import { userSettingsTemplate } from './template.js';
 import { data } from './data.js';
 import { compileTemplate } from '../../lib/templator.js';
+import { NavLink } from '../../components/NavLink/index.js';
 
 export class UserProfile extends Block<BlockProps> {
     constructor() {
@@ -15,6 +16,9 @@ export class UserProfile extends Block<BlockProps> {
             email: data.userData.email,
             login: data.userData.login,
             title: data.title,
+            chatsLink: new NavLink({ pathname: '/chats', text: '← Все чаты' }),
+            settingsLink: new NavLink({ pathname: '/settings/change', text: 'Изменить данные' }),
+            signInLink: new NavLink({ pathname: '/', text: 'Выйти', className: 'user-settings__log-out' }),
             button: new Button({
                 text: 'Изменить данные',
                 className: 'user-settings__change-data',
@@ -26,13 +30,3 @@ export class UserProfile extends Block<BlockProps> {
         return compileTemplate(userSettingsTemplate, this.props);
     }
 }
-
-const userProfile = new UserProfile();
-
-function renderToDom(query, block) {
-    const root = document.querySelector(query);
-    root.appendChild(block.getContent());
-    return root;
-}
-
-renderToDom('.app', userProfile);

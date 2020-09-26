@@ -2,83 +2,61 @@ import { Block, BlockProps } from '../../lib/Block.js';
 import { template } from './template.js';
 import { compileTemplate } from '../../lib/templator.js';
 import { Avatar } from '../Avatar/index.js';
-// import { ChatListItem } from '../../components/ChatListItem/index.js';
+import { Thread } from '../Thread/index.js';
+import { isEqual } from '../../utils/mydash/isEqual.js';
 
-class Header extends Block<BlockProps> {
-    constructor({ isOnline, title }) {
-        super('header', {
-            attributes: {
-                className: 'conversation__header',
-            },
-            title,
-            isOnline,
-            avatar: new Avatar({ isOnline }),
-        });
-    }
 
-    componentDidUpdate(oldProps, newProps) {
-        // if (oldProps.isOnline !== newProps.isOnline) {
-        (this.props as BlockProps & { avatar: Avatar }).avatar.setProps({
-            isOnline: newProps.isOnline,
-        }); // FIXME: написать норм типы
-        // }
+export class Conversation extends Block<BlockProps> {
+    _avatar: Avatar;
+    _threads: Thread[];
 
-        return true;
-    }
-    render() {
-        return compileTemplate(
-            `<div>
-        {{avatar}}
-
-        <div class="conversation__info">
-            <h3 class="conversation__title">{{title}}</h3>
-        </div>
-
-        </div>`,
-            this.props
-        );
-    }
-}
-
-export class Conversations extends Block<BlockProps> {
     constructor({
         title = '',
         isOnline = false,
         description = '',
         conversations = undefined,
     }) {
+        const avatar = new Avatar({ isOnline });
+        const threads = conversations.map(conversation => new Thread(conversation));
+
         super('article', {
             attributes: {
                 className: 'conversation',
             },
-            // header: new Header({ isOnline, title }),
+            // data
             title,
             isOnline,
             description,
-            threads: 'messages!',
             conversations,
-            avatar: new Avatar({ isOnline }),
+            // blocks
+            threads,
+            avatar
         });
+
+        this._avatar = avatar;
+        this._threads = threads;
     }
 
-    // componentDidUpdate(oldProps, newProps) {
-    //     console.log(newProps.conversations);
-    //     // (this.props as BlockProps & { header: Header }).header.setProps({
-    //     //     isOnline: newProps.isOnline,
-    //     //     title: newProps.title,
-    //     // }); // FIXME: написать норм типы
-    //     // console.log(newProps.isOnline);
-    //     (this.props as BlockProps & { avatar: Avatar }).avatar.setProps({
-    //         isOnline: newProps.isOnline,
-    //     }); // FIXME: написать норм типы
 
-    //     // return true;
-    //     return false;
-    // }
+    componentDidUpdate(oldProps, newProps) {
+        if (!isEqual(oldProps.conversations, newProps.conversations)) {
+            this._threads.splice(0, this._threads.length); // стираем старые данные
+
+            newProps.conversations.forEach((thread) => { // добавляем новые
+                this._threads.push(new Thread(thread));
+            })
+
+            // все проверки по одинаковости сделает сам блок
+            this.setProps({ threads: this._threads });
+            return true;
+        }
+
+        this._avatar.setProps({ isOnline: newProps.isOnline });
+
+        return false;
+    }
 
     render() {
-        // console.log(compileTemplate(template, this.props), { ...this.props });
         return compileTemplate(template, this.props);
-        // return compileTemplate('<div>{{header}}</div>', this.props);
     }
 }

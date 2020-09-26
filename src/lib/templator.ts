@@ -66,8 +66,8 @@ const getTagAttributes = (tag, context) => {
             if (attrTuple.length === 1) {
                 // может быть это класс из атрибута
                 if (acc[IS_CLASS]) {
-                    acc.className =
-                        acc.className +
+                    acc.class =
+                        acc.class +
                         ' ' +
                         getTemplateValue(attrTuple[0], context);
 
@@ -93,10 +93,8 @@ const getTagAttributes = (tag, context) => {
 };
 
 const createElementTreeNode = (chunk, context) => {
-    // console.log('chunk', chunk);
     const tagAttributes = getTagAttributes(chunk, context);
 
-    // console.log({ chunk, context, tagAttributes });
     return {
         type: getTagName(chunk),
         children: [],
@@ -105,7 +103,6 @@ const createElementTreeNode = (chunk, context) => {
 };
 
 const htmlParser = (htmlStr, context: object): BlockNode => {
-    // console.log({ htmlStr, context });
     // функции-хелперы для работы с деревом: поиск текущего уровня и вставка новой ноды
     const getCurrentTreeLevel = () => {
         let currLevel = elementsTree;
@@ -175,7 +172,6 @@ const htmlParser = (htmlStr, context: object): BlockNode => {
             while ((key = TEMPLATE_REGEXP.exec(chunk))) {
                 const tmplValue = key[1].trim();
                 const data = get(context, tmplValue);
-                // console.log(key[1], data, context);
 
                 if (
                     Array.isArray(data) &&
@@ -201,10 +197,6 @@ const htmlParser = (htmlStr, context: object): BlockNode => {
             if (insertion !== '') {
                 currLevel.children.push(insertion);
             }
-
-            // currLevel.children = currLevel.children.filter(
-            //     (v) => v !== undefined && ((v as unknown) as string) !== ''
-            // );
         }
     }
 

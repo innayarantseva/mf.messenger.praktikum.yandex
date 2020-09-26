@@ -43,7 +43,6 @@ class Route {
             renderToDom(this._props.rootQuery, this._block);
             return;
         } else if (newBlockProps) {
-            console.log(this._block)
             this._block.setProps(newBlockProps);
         }
 

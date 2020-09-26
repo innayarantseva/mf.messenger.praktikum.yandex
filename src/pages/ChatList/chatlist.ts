@@ -3,27 +3,48 @@ import { chatsTemplate } from './template.js';
 import { user, chats, conversations } from './data.js';
 import { compileTemplate } from '../../lib/templator.js';
 import { ChatListItem, CHAT_CLASS, } from '../../components/ChatListItem/index.js';
-import { Conversations } from '../../components/Conversation/index.js';
+import { Conversation } from '../../components/Conversation/index.js';
 import { NavLink } from '../../components/NavLink/index.js';
 import { router } from '../../lib/Router.js';
 
-export class Chats extends Block<BlockProps> {
-    _conversation: Conversations;
+class Empty extends Block<BlockProps> {
+    constructor() {
+        super('div', {
+            attributes: {
+                className: 'chats__empty',
+            },
+        });
+    }
 
-    constructor(data = conversations['Соня Соня']) {
-        console.log(data);
+    render() {
+        return compileTemplate(
+            'Чтобы начать переписку, выберите чат из меню слева',
+            this.props
+        );
+    }
+}
+
+export class Chats extends Block<BlockProps> {
+    _conversation: Conversation;
+    _empty: Empty;
+
+    constructor(data) {
+        const conversation = new Conversation(data || conversations['Константин Константинопльский']);
+        const empty = new Empty();
 
         super('div', {
             attributes: {
                 className: 'chats',
             },
+            // data
+            data,
             user,
+            // blocks
             settingsLink: new NavLink({
                 pathname: '/settings',
                 text: user.displayName,
                 className: 'chats__user-name'
             }),
-            content: undefined,
             chatList: chats.map(
                 (chat) =>
                     new ChatListItem({
@@ -42,27 +63,31 @@ export class Chats extends Block<BlockProps> {
                         }
                     })
             ),
-            data,
-            conversation: new Conversations(data),
+            conversation,
+            empty
         });
+
+        this._conversation = conversation;
+        this._empty = empty;
+
+        if (data) {
+            this._empty.hide();
+        } else {
+            this._conversation.hide();
+        }
+
     }
 
     componentDidUpdate(oldProps, newProps) {
-        console.log(newProps);
-        if (!(oldProps.conversation instanceof Conversations)) {
-            this.setProps({
-                conversation: new Conversations(newProps.data),
-            });
-            return true;
-        } else {
-            console.log('update conversation props in chatlist');
-            (this.props as BlockProps & {
-                conversation;
-            }).conversation.setProps(newProps.data);
-
-            // return false;
-            // return true; // почему в этот раз-то нужно перерендеривать... Ведь у нас уже есть ссылка на элемент, и мы просто меняем у него пропсы.
+        if (newProps.data) { // обновилась дата для блока разговора
+            this._conversation.setProps(newProps.data);
+            this._empty.hide();
+            this._conversation.show();
+        } else { // даты не пришло
+            this._conversation.hide();
+            this._empty.show();
         }
+
         return false;
     }
 

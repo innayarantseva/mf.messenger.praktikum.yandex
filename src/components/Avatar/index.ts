@@ -26,11 +26,6 @@ export class Avatar extends Block<BlockProps> {
         });
     }
 
-    componentDidUpdate(oldProps, newProps) {
-        console.log('avatar update', { oldProps, newProps });
-        return false;
-    }
-
     render() {
         return compileTemplate(
             '<div class="avatar-online-{{isOnline}}">{{indicator}}</div>',

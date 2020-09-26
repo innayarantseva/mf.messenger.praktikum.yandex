@@ -1,7 +1,7 @@
 @import '../../colors.css';
 @import '../../components/ChatListItem/styles.css';
 @import '../../components/Conversation/styles.css';
-@import './Message/styles.css';
+@import '../../components/Message/styles.css';
 
 .chats {
     height: 100%;

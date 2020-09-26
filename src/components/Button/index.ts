@@ -8,7 +8,7 @@ export type ButtonProps = {
     className?: string;
     type?: 'button' | 'reset' | 'submit';
     text: string;
-    onClick?: (event) => void;
+    onClick?: (event, validationResult?) => void;
 };
 
 export class Button extends Block<BlockProps> {

@@ -5,10 +5,13 @@ function renderToDom(query, block) {
 }
 
 class Route {
-    // _pathname: string;
-    // _blockClass;
-    // _block;
-    // _props;
+    _pathname: string;
+    _blockClass;
+    _block;
+    _props: {
+        rootQuery: string;
+        blockProps
+    };
 
     constructor(pathname, view, props) {
         this._pathname = pathname;
@@ -34,11 +37,14 @@ class Route {
         return pathname === this._pathname;
     }
 
-    render() {
+    render(newBlockProps = undefined) {
         if (!this._block) {
-            this._block = new this._blockClass();
+            this._block = new this._blockClass(this._props.blockProps);
             renderToDom(this._props.rootQuery, this._block);
             return;
+        } else if (newBlockProps) {
+            console.log(this._block)
+            this._block.setProps(newBlockProps);
         }
 
         this._block.show();
@@ -46,14 +52,17 @@ class Route {
 }
 
 export class Router {
-    // routes: Route[];
-    // history: History;
-    // _currentRoute: Route;
-    // _rootQuery: string;
+    routes: Route[];
+    history: History;
+    _currentRoute: Route;
+    _rootQuery: string;
 
     constructor(rootQuery) {
-        if (Router.__instance) {
-            return Router.__instance;
+        // чтобы typescript не ругался на то, что __instance не существует в typeof Router
+        const proto = Object.getPrototypeOf(this);
+
+        if (proto.__instance) {
+            return proto.__instance;
         }
 
         this.routes = [];
@@ -61,12 +70,13 @@ export class Router {
         this._currentRoute = null;
         this._rootQuery = rootQuery;
 
-        Router.__instance = this;
+        proto.__instance = this;
     }
 
-    use(pathname, block) {
+    use(pathname, block, blockProps = undefined) {
         const route = new Route(pathname, block, {
             rootQuery: this._rootQuery,
+            blockProps
         });
         this.routes.push(route);
         return this;
@@ -80,9 +90,11 @@ export class Router {
         this._onRoute(window.location.pathname);
     }
 
-    _onRoute(pathname) {
+    _onRoute(pathname, newBlockProps = undefined) {
         const route = this.getRoute(pathname);
+
         if (!route) {
+            // можно добавить 404?..
             return;
         }
 
@@ -91,13 +103,12 @@ export class Router {
         }
 
         this._currentRoute = route;
-        // route.render(route, pathname);
-        route.render();
+        route.render(newBlockProps);
     }
 
-    go(pathname) {
+    go(pathname, newBlockProps = undefined) {
         this.history.pushState({}, '', pathname);
-        this._onRoute(pathname);
+        this._onRoute(pathname, newBlockProps);
     }
 
     back() {
@@ -113,36 +124,10 @@ export class Router {
     }
 }
 
-// // Можно обновиться на /user и получить сразу пользователя
-// router
-//   .use("/", Chats)
-//   .use("/users", Users)
-//   .start();
 
-// // Через секунду контент изменится сам, достаточно дернуть переход
-// setTimeout(() => {
-//   router.go("/users");
-// }, 1000);
-
-// // А можно и назад
-// setTimeout(() => {
-//   router.back();
-// }, 3000);
-
-// // И снова вперед
-// setTimeout(() => {
-//   router.forward();
-// }, 5000);
+export const router = new Router('.app');
 
 //     Очередной модуль для проекта готов. Вы можете доработать его и слушать
-//     событие <code class="code-inline code-inline_theme_light">hashchange</code>{' '}
-//     (
-//     <a
-//         href="https://developer.mozilla.org/ru/docs/Web/API/Window/hashchange_event"
-//         target="_blank"
-//     >
-//         документация на mdn
-//     </a>
-//     ), реализовав{' '}
-//     <code class="code-inline code-inline_theme_light">HashRouter</code>. Он
+//     событие hashchange
+//     "https://developer.mozilla.org/ru/docs/Web/API/Window/hashchange_event", реализовав HashRouter. Он
 //     удобен в SPA-приложениях, когда работа происходит в рамках одной страницы.

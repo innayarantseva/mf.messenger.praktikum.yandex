@@ -1,6 +1,6 @@
 export const userSettingsTemplate = `<section class="user-settings__layout">
     <nav>
-        <a href="../ChatList/chatlist.html">← Все чаты</a>
+        {{chatsLink}}
     </nav>
 
     <main class="user-settings__dashboard">
@@ -13,10 +13,10 @@ export const userSettingsTemplate = `<section class="user-settings__layout">
 
                 <ul class="user-settings__options">
                     <li class="user-settings__option">
-                        <a href="./usersettings-edit.html">Изменить данные</a>
+                        {{settingsLink}}
                     </li>
                     <li class="user-settings__option">
-                        <a class="user-settings__log-out" href="../Authorization/signIn.html">Выйти</a>
+                        {{signInLink}}
                     </li>
                 </ul>
             </div>
@@ -37,12 +37,17 @@ export const userSettingsTemplate = `<section class="user-settings__layout">
 
 export const changeUserSettings = `<section class="user-settings__layout">
     <nav>
-        <a href="../ChatList/chatlist.html">← Все чаты</a>
+        {{chatsLink}}
     </nav>
 
     <main class="user-settings__dashboard">
         <h1>Изменить данные</h1>
         {{ form }}
-        <a href="./usersettings.html">Отменить</a>
+        {{profileLink}}
     </main>
 </section>`;
+
+// <a href="../ChatList/chatlist.html">← Все чаты</a>
+//<a href="./usersettings.html">Отменить</a>
+// <a href="./usersettings-edit.html">Изменить данные</a>
+//<a class="user-settings__log-out" href="../Authorization/signIn.html">Выйти</a>

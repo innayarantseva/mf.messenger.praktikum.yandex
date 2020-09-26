@@ -182,7 +182,7 @@ export class Block<T extends BlockProps> {
     }
 
     // Может переопределять пользователь, необязательно трогать
-    componentDidMount(oldProps) {}
+    componentDidMount(oldProps) { }
 
     _componentDidUpdate(oldProps, newProps) {
         const response = this.componentDidUpdate(oldProps, newProps);
@@ -327,7 +327,7 @@ export class Block<T extends BlockProps> {
     }
 
     show() {
-        (this.getContent() as HTMLElement).style.display = 'block'; // FIXME
+        (this.getContent() as HTMLElement).style.display = 'flex'; // FIXME
     }
 
     hide() {

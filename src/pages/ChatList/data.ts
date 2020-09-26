@@ -85,7 +85,7 @@ export const conversations = {
     'Информационные новости': {
         title: 'Информационные новости',
         isOnline: false,
-        description: '',
+        description: 'канал',
         conversations: [
             {
                 date: 'Сегодня',

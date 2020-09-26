@@ -1,11 +1,11 @@
 import { Block, BlockProps } from '../../lib/Block.js';
 import { template } from './template.js';
 import {
-    signUpForm as form,
-    signUpSecondaryAction as secondaryAction,
+    signUpForm as form
 } from './data.js';
 import { compileTemplate } from '../../lib/templator.js';
 import { Form } from '../../components/Form/index.js';
+import { NavLink } from '../../components/NavLink/index.js';
 
 export class SignUp extends Block<BlockProps> {
     constructor() {
@@ -15,7 +15,8 @@ export class SignUp extends Block<BlockProps> {
             },
             heading: 'Регистрация',
             form: new Form(form),
-            secondaryAction,
+            secondaryActionText: 'Уже зарегистрированы?',
+            navLink: new NavLink({ pathname: '/', text: 'Войти' })
         });
     }
 
@@ -23,13 +24,3 @@ export class SignUp extends Block<BlockProps> {
         return compileTemplate(template, this.props);
     }
 }
-
-const signUpForm = new SignUp();
-
-function renderToDom(query, block) {
-    const root = document.querySelector(query);
-    root.appendChild(block.getContent());
-    return root;
-}
-
-renderToDom('.app', signUpForm);

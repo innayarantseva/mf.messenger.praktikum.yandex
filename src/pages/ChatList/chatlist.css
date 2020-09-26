@@ -5,6 +5,8 @@
 
 .chats {
     height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .chats__layout {
@@ -35,7 +37,6 @@
 .chats__user-settings {
     display: flex;
     align-items: center;
-    text-decoration: none;
 }
 .chats__user-name {
     margin: 0 0 0 8px;
@@ -43,6 +44,7 @@
     line-height: 16px;
     font-weight: 400;
     color: var(--color-white);
+    text-decoration: none;
 }
 
 /* Aside */

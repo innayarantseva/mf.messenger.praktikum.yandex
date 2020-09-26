@@ -1,4 +1,13 @@
 import { FormProps } from '../../components/Form/index.js';
+import { router } from '../../lib/Router.js';
+
+const handleFormClick = (event, validationResult) => {
+    const isValid = validationResult.reduce((acc, { error }) => acc && !(error), true);
+
+    if (isValid) {
+        router.go('/chats');
+    }
+}
 
 export const signInForm: FormProps = {
     fields: [
@@ -22,6 +31,7 @@ export const signInForm: FormProps = {
     buttonProps: {
         text: 'Войти',
         type: 'submit',
+        onClick: handleFormClick
     },
 };
 export const signInSecondaryAction = {
@@ -92,6 +102,7 @@ export const signUpForm: FormProps = {
     buttonProps: {
         text: 'Зарегистрироваться',
         type: 'submit',
+        onClick: handleFormClick
     },
 };
 export const signUpSecondaryAction = {

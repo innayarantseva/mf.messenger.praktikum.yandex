@@ -1,4 +1,5 @@
 import { EventBus } from './EventBus.js';
+import { cloneDeep } from '../utils/mydash/deepClone.js';
 
 export type BlockProps = object;
 
@@ -200,8 +201,9 @@ export class Block<T extends BlockProps> {
             return;
         }
 
-        const oldProps = { ...this.props }; // deepClone
+        const oldProps = cloneDeep(this.props); // deepClone
         this.props = Object.assign(this.props, nextProps);
+
         this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, this.props);
     };
 

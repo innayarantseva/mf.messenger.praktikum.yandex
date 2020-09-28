@@ -1,5 +1,6 @@
 import { EventBus } from './EventBus.js';
 import { cloneDeep } from '../utils/mydash/deepClone.js';
+import { isEqual } from '../utils/mydash/isEqual.js';
 
 export type BlockProps = object;
 
@@ -66,14 +67,17 @@ export class Block<T extends BlockProps> {
     }
 
     _createElement(node: BlockNode): HTMLElement | Text {
+        // it's a text node
         if (typeof node === 'string') {
             return document.createTextNode(node);
         }
 
+        // element already exists
         if (node.element) {
             return node.element;
         }
 
+        // if not, create a new one
         const el = document.createElement(node.type);
 
         // assign html attrs to element
@@ -121,7 +125,7 @@ export class Block<T extends BlockProps> {
         });
     }
 
-    // unknown or forse update
+    // unknown or forсe update
     _isCustomProp(propName) {
         return this._isEventProp(propName) || propName === 'forceUpdate';
     }
@@ -154,7 +158,8 @@ export class Block<T extends BlockProps> {
     _updateProp(el, propName, newVal, oldVal) {
         if (!newVal) {
             this._removeProp(el, propName, oldVal);
-        } else if (!oldVal || newVal !== oldVal) {
+            // } else if (!oldVal || newVal !== oldVal) { // быстрый костыль, не оч хороший по производительности
+        } else if (!oldVal || newVal) {
             this._setProp(el, propName, newVal);
         }
     }
@@ -166,7 +171,7 @@ export class Block<T extends BlockProps> {
     }
 
     _updateProps(el, newProps, oldProps = {}) {
-        const props = { ...newProps, ...oldProps };
+        const props = Object.assign(oldProps, newProps);
 
         Object.keys(props).forEach((name) => {
             this._updateProp(el, name, newProps[name], oldProps[name]);
@@ -181,11 +186,11 @@ export class Block<T extends BlockProps> {
     // Может переопределять пользователь, необязательно трогать
     componentDidMount(oldProps) { }
 
-    _componentDidUpdate(oldProps, newProps) {
+    _componentDidUpdate(oldProps, newProps, oldNode) {
         const response = this.componentDidUpdate(oldProps, newProps);
 
         if (response) {
-            this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+            this.eventBus().emit(Block.EVENTS.FLOW_RENDER, oldNode);
         }
 
         return response;
@@ -224,25 +229,31 @@ export class Block<T extends BlockProps> {
         );
     }
 
-    _updateElement(parentNode, newNode, oldNode, index = 0, realDomIndex = index) {
+    _updateElement(parentNode, newNode, oldNode, index = 0, insertBefore = null) {
         // если внутри родителя нет ничего вообще и не нужно ничего вставлять
-        if (newNode === null && oldNode === null) {
+        if ((newNode === null || typeof newNode === 'undefined') && (oldNode === null || typeof oldNode === 'undefined')) {
             return;
         }
 
         if (typeof oldNode === 'undefined' || oldNode === null) { // если в старом дереве не хватает ноды из нового
-            parentNode.appendChild(this._createElement(newNode));
+            const newElement = this._createElement(newNode);
+
+            if (insertBefore) {
+                parentNode.insertBefore(newElement, parentNode.childNodes[insertBefore]);
+                // продолжаем добавлять новые ноды по индексу после последней реально существующей ноды
+                return insertBefore;
+            } else {
+                parentNode.appendChild(newElement);
+                // добавляем в конец списка — в реальном дереве уже могут быть потомки
+                // все последующие ноды добавляем на это место, "вытесняя" предыдущие
+                return parentNode.childNodes.length - 1;
+            }
         } else if (typeof newNode === 'undefined' || newNode === null) {  // если в новом дереве нет ноды из старого
-            // мы можем удалять больше одного потомка у родителя.
-            // В этом случае индекс итерируемой виртуальной ноды будет больше кол-ва потомков родителя в реальном DOM-дереве
-            // поэтому будем удалять последний, если по индексу удалить не выйдет
-            const childToRemove = parentNode.childNodes[realDomIndex];
+            const childToRemove = parentNode.childNodes[index];
 
             if (childToRemove) {
                 parentNode.removeChild(childToRemove);
-                return realDomIndex - 1;
             }
-
         } else if (this._differ(newNode, oldNode)) { // оба есть, но нода изменилась
             parentNode.replaceChild(
                 this._createElement(newNode),
@@ -250,13 +261,14 @@ export class Block<T extends BlockProps> {
             );
         } else if (newNode.type) { // ноды не отличаются
             // нужно обновить свойства ноды parentNode.childNodes[index]
+            // плохо обновляются свойства
 
-            // FIXME: также не понимаю, почему иногда возникает ошибка, что родителя не существует
             this._updateProps(
                 parentNode.childNodes[index],
                 newNode.props,
                 oldNode.props
             );
+
 
             // и перебрать потомков
             const longestChildrenLen = Math.max(
@@ -264,24 +276,22 @@ export class Block<T extends BlockProps> {
                 oldNode.children.length
             );
 
-            for (let i = 0; i < longestChildrenLen; i++) {
+            let insertBefore = null;
+            for (let i = longestChildrenLen - 1; i >= 0; i--) {
                 // возникают проблемы при удалении: если старое виртуальное дерево больше нового, индекс итерации становится
                 // больше реального размера DOM-дерева.
-                // поэтому нужно аккуратно удалять только те ноды, которые нужно удалить.
+                // поэтому начнём удалять с конца списка
 
-                // FIXME: не могу отдебажить, почему не удаляются все ноды, но хотя бы приложение не падает в смерть))))
-
-                let realDomIndex = undefined;
-
-                let returned = this._updateElement(
+                // с добавлением придётся тоже обновить логику, так как изначально добавление шло в конец массива потомков
+                insertBefore = this._updateElement(
                     parentNode.childNodes[index],
                     newNode.children[i],
                     oldNode.children[i],
                     i,
-                    realDomIndex // нужен только для удаления!
+                    insertBefore
                 );
 
-                realDomIndex = returned;
+
             }
         }
     }
@@ -291,6 +301,11 @@ export class Block<T extends BlockProps> {
         const newNode = this.render();
 
         // рендерим виртуальную ноду в элемент, сверяя старое и новое дерево, делая только необходимые замены в дом
+
+        // почему-то в старом дереве передаются свойства нод нового дерева, вроде имён классов
+        // хотя структура старого дерева остаётся старой
+        // из-за этого неправильно происходит апдейт элементов, так как новый класс всегда равен старому
+        // это странно
         this._updateElement(this._element, newNode, this._node);
 
         // всегда храним виртуальную ноду для того, чтобы сравнивать её с новой
@@ -309,7 +324,7 @@ export class Block<T extends BlockProps> {
     getNode() {
         return {
             type: this._meta.tagName,
-            props: {},
+            props: (this.props as { attributes }).attributes, // FIXME: для props прописать нормально тип
             children: [this.node],
             element: this.element,
         };

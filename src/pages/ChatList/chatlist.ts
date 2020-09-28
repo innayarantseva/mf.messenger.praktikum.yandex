@@ -29,7 +29,7 @@ export class Chats extends Block<BlockProps> {
     _empty: Empty;
 
     constructor(data) {
-        const conversation = new Conversation(data || conversations['Константин Константинопльский']);
+        const conversation = new Conversation(data || conversations['Соня Соня']);
         const empty = new Empty();
 
         super('div', {

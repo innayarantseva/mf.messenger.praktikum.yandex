@@ -3,6 +3,10 @@ const isObject = (value: unknown) => {
 }
 
 export function cloneDeep<T extends object = object>(obj: T) {
+    if (!isObject(obj)) {
+        return;
+    }
+
     if (Array.isArray(obj)) {
         return obj.reduce((acc, item) => {
             acc.push(isObject(item) ? cloneDeep(item) : item);

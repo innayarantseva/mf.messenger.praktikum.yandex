@@ -4,9 +4,9 @@
 
 // идею взяла из https://medium.com/@deathmood/how-to-write-your-own-virtual-dom-ee74acc13060
 
-import { Block, BlockNode } from './Block.js';
-import get from '../utils/mydash/getValueByKey.js'; // FIXME: исправить импорты на именованные
-import last from '../utils/mydash/last.js';
+import { Block, BlockNode, BlockNodeProps } from './Block';
+import get from '../utils/mydash/getValueByKey'; // FIXME: исправить импорты на именованные
+import last from '../utils/mydash/last';
 
 const SELF_CLOSING_TAGS = [
     'area',
@@ -24,22 +24,31 @@ const SELF_CLOSING_TAGS = [
     'track',
     'wbr',
 ];
-const IS_CLASS = Symbol('class');
 
-const getTagName = (tag) => {
+/** Return given tag's name. */
+export const getTagName = (tag: string): string => {
     const matchResult = tag.match(/<\/?(\w+)[\s\w>]/);
     return matchResult ? matchResult[1] : null;
 };
 
-const isTag = (chunk) => {
+/** Check whether a text chunk is a tag. */
+export const isTag = (chunk: string): boolean => {
     return /(<.+?>)/.test(chunk);
 };
-const isClosingTag = (chunk) => {
+/** Check whether a text chunk is a closing tag. */
+export const isClosingTag = (chunk: string): boolean => {
     return /(<\/(.+?)>)/.test(chunk);
 };
 
-const getTemplateValue = (chunk, context) => {
-    // FIXME: сделать универсальной для тегов и атрибутов
+/**
+ * Return a string, compiled from a template string using provided context.
+ * @param {string} chunk - A template string.
+ * @param {Object} context - Context provided to compile a template.
+ * @returns {string} — A compiled template string.
+ */
+export const getTemplateValue = (chunk, context: object) => {
+    // FIXME: потом допишу типы когда сделаю тип BlockNode нормально
+    // тогда получится сделать ф-ию универсальной для тегов и атрибутов
     const TEMPLATE_REGEXP = /\{\{(.*?)\}\}/gi;
     let insertion = chunk;
     let key = null;
@@ -54,25 +63,33 @@ const getTemplateValue = (chunk, context) => {
     return insertion;
 };
 
-const getTagAttributes = (tag, context) => {
+/**
+ * Create a key-value representation of attributes used in given tag.
+ * @param {string} tag - Tag to get trribute values from.
+ * @param {Object} context - Context provided to compile a template.
+ * @returns {Object} — Key-value pairs object represented attributes key-value pairs.
+ */
+export const getTagAttributes = (tag: string, context: object): BlockNodeProps => {
+    let isClass = false;
+
     return tag
         .split(/[\s]/g)
         .slice(1)
-        .reduce((acc, attribute) => {
+        .reduce<BlockNodeProps>((acc, attribute) => {
             const srcStr = attribute;
             attribute = attribute.replace(/[>"]/g, '');
-            const attrTuple = attribute.split('=');
+            const attrTuple = attribute.split('=') as [string, (string | boolean)?];
 
             if (attrTuple.length === 1) {
                 // может быть это класс из атрибута
-                if (acc[IS_CLASS]) {
+                if (isClass) {
                     acc.class =
                         acc.class +
                         ' ' +
                         getTemplateValue(attrTuple[0], context);
 
                     if (srcStr.endsWith('"') || srcStr.endsWith('>')) {
-                        acc[IS_CLASS] = false;
+                        isClass = false;
                     }
                 }
                 // атрибут без значения будем считать true
@@ -83,8 +100,10 @@ const getTagAttributes = (tag, context) => {
                 acc[attrName] = getTemplateValue(attrValue, context);
 
                 // если строка не закончилась, следующий одиночный чанк может быть значением класса тоже
+                // FIXME: расширить до любого атрибута, в значении которого могут быть пробелы
+                // или написать норм парсер уже
                 if (srcStr.startsWith('class') && !srcStr.endsWith('"')) {
-                    acc[IS_CLASS] = true;
+                    isClass = true;
                 }
             }
 
@@ -92,7 +111,13 @@ const getTagAttributes = (tag, context) => {
         }, {});
 };
 
-const createElementTreeNode = (chunk, context) => {
+/**
+ * Create a virtual DOM tree node.
+ * @param {string} chunk - Chunk to create a node from.
+ * @param {Object} context - Context provided to compile a template.
+ * @returns {Object} — A virtual DOM node tree (BlockNode type).
+ */
+export const createElementTreeNode = (chunk: string, context: object): BlockNode => {
     const tagAttributes = getTagAttributes(chunk, context);
 
     return {
@@ -102,7 +127,7 @@ const createElementTreeNode = (chunk, context) => {
     };
 };
 
-const htmlParser = (htmlStr, context: object): BlockNode => {
+export const htmlParser = (htmlStr, context: object): BlockNode => {
     // функции-хелперы для работы с деревом: поиск текущего уровня и вставка новой ноды
     const getCurrentTreeLevel = () => {
         let currLevel = elementsTree;

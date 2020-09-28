@@ -1,12 +1,12 @@
-import { EventBus } from './EventBus.js';
-import { cloneDeep } from '../utils/mydash/deepClone.js';
-import { isEqual } from '../utils/mydash/isEqual.js';
+import { EventBus } from './EventBus';
+import { cloneDeep } from '../utils/mydash/deepClone';
 
 export type BlockProps = object;
 
+export type BlockNodeProps = Record<string, string | number | boolean | Function>;
 export type BlockNode = {
     type: string;
-    props: Record<string, string | number | boolean | Function>;
+    props: BlockNodeProps;
     children: BlockNode[];
     element?: HTMLElement;
 }; // FIXME: может быть и строкой

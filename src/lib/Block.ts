@@ -3,7 +3,7 @@ import { cloneDeep } from '../utils/mydash/deepClone';
 
 export type BlockProps = object;
 
-export type BlockNodeProps = Record<string, string | number | boolean | Function>;
+export type BlockNodeProps = Record<string, string | number | boolean | object | Function>;
 export type BlockNode = {
     type: string;
     props: BlockNodeProps;
@@ -66,7 +66,8 @@ export class Block<T extends BlockProps> {
         this.eventBus().emit(Block.EVENTS.FLOW_CDM);
     }
 
-    _createElement(node: BlockNode): HTMLElement | Text {
+    /** Creates or extracts an Element. */
+    _createElement(node: BlockNode | string): HTMLElement | Text {
         // it's a text node
         if (typeof node === 'string') {
             return document.createTextNode(node);
@@ -95,26 +96,31 @@ export class Block<T extends BlockProps> {
         return el;
     }
 
-    _setBooleanProp(el, propName, propValue) {
+    /** Sets a boolean prop on given element. */
+    _setBooleanProp(el: HTMLElement, propName: string, propValue: boolean): void {
         if (propValue) {
-            el.setAttribute(propName, propValue);
+            el.setAttribute(propName, '');
             el[propName] = true;
         } else {
             el[propName] = false;
         }
     }
-    _removeBooleanProp(el, propName) {
+    /** Remove a boolean prop on given element. */
+    _removeBooleanProp(el: HTMLElement, propName: string): void {
         el.removeAttribute(propName);
         el[propName] = false;
     }
 
-    _isEventProp(propName) {
+    /** Tests whether a prop name is an event name. */
+    _isEventProp(propName: string): boolean {
         return /^on/.test(propName);
     }
-    _extractEventName(propName) {
+    /** Extracts event name for defining event listener. */
+    _extractEventName(propName: string): string {
         return propName.slice(2).toLowerCase();
     }
-    _addEventListeners(element, props) {
+    /** Adds event listener to element. */
+    _addEventListeners(element: HTMLElement, props): void {
         Object.keys(props).forEach((propName) => {
             if (this._isEventProp(propName)) {
                 element.addEventListener(
@@ -125,13 +131,16 @@ export class Block<T extends BlockProps> {
         });
     }
 
-    // unknown or forсe update
-    _isCustomProp(propName) {
+    /** Checks whether a prop is custom,
+     * which is for now means if it is an event listener or 'forceUpdate'.
+     */
+    _isCustomProp(propName: string): boolean {
         return this._isEventProp(propName) || propName === 'forceUpdate';
     }
 
-    // set/remove/update prop
-    _removeProp(el, propName, propValue) {
+
+    /** Removes a prop from given element. */
+    _removeProp(el: HTMLElement, propName: string, propValue: string | boolean): void {
         if (this._isCustomProp(propName)) {
             return;
         } else if (propName === 'className') {
@@ -143,11 +152,12 @@ export class Block<T extends BlockProps> {
         }
     }
 
-    _setProp(el, propName, propValue) {
+    /** Sets a prop on given element. */
+    _setProp(el: HTMLElement, propName: string, propValue: string | boolean) {
         if (this._isCustomProp(propName)) {
             return;
         } else if (propName === 'className') {
-            el.setAttribute('class', propValue);
+            el.setAttribute('class', propValue.toString());
         } else if (typeof propValue === 'boolean') {
             this._setBooleanProp(el, propName, propValue);
         } else {
@@ -351,10 +361,6 @@ export class Block<T extends BlockProps> {
         });
 
         return propsProxy;
-    }
-
-    _createDocumentElement(tagName: string): HTMLElement {
-        return document.createElement(tagName);
     }
 
     show() {

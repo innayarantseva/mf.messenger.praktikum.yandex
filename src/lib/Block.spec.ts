@@ -1,6 +1,10 @@
+import { cloneDeep } from '../utils/mydash/deepClone';
 import { Block, BlockNode } from './Block';
 
-const blockInstanceProps = { attributes: { className: 'my-class' } }
+const blockInstanceProps = {
+    attributes: { className: 'my-class' },
+    prop: 'propValue'
+};
 const blockInstance = new Block('div', blockInstanceProps);
 
 // базовые функции создания и обновления элемента
@@ -138,3 +142,27 @@ describe('should remove a prop', () => {
 });
 
 // переходы по жизненному циклу
+describe('Block lifecycle', () => {
+    test('fires render and componentDidMount after init', () => {
+        const spyOnLCEvents = jest.spyOn(blockInstance.eventBus(), 'emit');
+
+        blockInstance.init();
+
+        expect(spyOnLCEvents).toHaveBeenCalledWith(Block.EVENTS.FLOW_RENDER);
+        expect(spyOnLCEvents).toHaveBeenCalledWith(Block.EVENTS.FLOW_CDM);
+    });
+
+    // не совсем разобралась со шпионом, продолжаю эксперименты :)
+    // test('fires an update event after setting new props', () => {
+    //     const spyOnLC = jest.spyOn(blockInstance.eventBus(), 'emit');
+
+    //     const oldProps = cloneDeep(blockInstance.props);
+    //     const incomingProps = { prop: 'newPropValue' };
+    //     const newProps = Object.assign(blockInstance.props, incomingProps);
+
+    //     blockInstance.setProps(incomingProps);
+
+    //     expect(spyOnLC).toHaveBeenCalledWith(Block.EVENTS.FLOW_RENDER); // перерендер после обновления свойства
+    //     expect(spyOnLC).toHaveBeenCalledWith(Block.EVENTS.FLOW_CDU, oldProps, newProps);
+    // })
+});

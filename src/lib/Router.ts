@@ -1,10 +1,12 @@
-function renderToDom(query, block) {
+import { Block, BlockProps } from "./Block";
+
+export function renderToDom(query, block) {
     const root = document.querySelector(query);
     root.appendChild(block.getContent());
     return root;
 }
 
-class Route {
+export class Route {
     _pathname: string;
     _blockClass;
     _block;
@@ -13,31 +15,31 @@ class Route {
         blockProps
     };
 
-    constructor(pathname, view, props) {
+    constructor(pathname: string, view, props) {
         this._pathname = pathname;
         this._blockClass = view;
         this._block = null;
         this._props = props;
     }
 
-    navigate(pathname) {
+    navigate(pathname: string): void {
         if (this.match(pathname)) {
             this._pathname = pathname;
             this.render();
         }
     }
 
-    leave() {
+    leave(): void {
         if (this._block) {
             this._block.hide();
         }
     }
 
-    match(pathname) {
+    match(pathname: string): boolean {
         return pathname === this._pathname;
     }
 
-    render(newBlockProps = undefined) {
+    render(newBlockProps = undefined): void {
         if (!this._block) {
             this._block = new this._blockClass(this._props.blockProps);
             renderToDom(this._props.rootQuery, this._block);
@@ -125,8 +127,3 @@ export class Router {
 
 
 export const router = new Router('.app');
-
-//     Очередной модуль для проекта готов. Вы можете доработать его и слушать
-//     событие hashchange
-//     "https://developer.mozilla.org/ru/docs/Web/API/Window/hashchange_event", реализовав HashRouter. Он
-//     удобен в SPA-приложениях, когда работа происходит в рамках одной страницы.

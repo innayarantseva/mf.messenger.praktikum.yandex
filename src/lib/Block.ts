@@ -48,6 +48,7 @@ export class Block<T extends BlockProps> {
         eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
     }
 
+    /** Creates actual DOM element. */
     _createResources() {
         const {
             tagName,
@@ -61,9 +62,10 @@ export class Block<T extends BlockProps> {
         });
     }
 
+    /** Creates actual DOM element and inits first render. */
     init() {
         this._createResources();
-        this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+        this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
 
     /** Creates or extracts an Element. */
@@ -190,7 +192,6 @@ export class Block<T extends BlockProps> {
 
     _componentDidMount(oldProps) {
         this.componentDidMount(oldProps);
-        this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
 
     // Может переопределять пользователь, необязательно трогать
@@ -319,6 +320,10 @@ export class Block<T extends BlockProps> {
         this._updateElement(this._element, newNode, this._node);
 
         // всегда храним виртуальную ноду для того, чтобы сравнивать её с новой
+        if (!this._node) {
+            // первый рендер компонента
+            this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+        }
         this._node = newNode;
     }
 

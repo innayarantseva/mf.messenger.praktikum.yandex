@@ -10,7 +10,9 @@ export const chatsTemplate = `<section class="chats__layout">
         <aside class="chats__aside">
             <div class="chats__search-row">
                 <div class="chats__search">
-                    <div class="chats__search-icon">S</div>
+                    <div class="chats__search-icon">
+                        <i class="material-icons">search</i>
+                    </div>
                     <input class="chats__search-input" type="text" placeholder="Поиск">
                 </div>
             </div>

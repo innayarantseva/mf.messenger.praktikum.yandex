@@ -8,16 +8,11 @@
 }
 
 .form > .button {
-    margin-bottom: 20px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    align-self: flex-start;
+    width: auto;
 }
-.form > .formfield:not(:last-child) {
+.form > .formfield {
     margin-bottom: 16px;
-}
-
-.form__error {
-    align-self: center;
-    font-size: 12px;
-    line-height: 16px;
-    color: var(--color-red);
-    margin: 52px 0 16px;
 }

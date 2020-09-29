@@ -6,18 +6,12 @@
         "module": "ES2015",
         "sourceMap": true,
         "allowUmdGlobalAccess": true,
-        // "moduleResolution": "Node",
+        "moduleResolution": "node",
         "esModuleInterop": true,
-        // "allowSyntheticDefaultImports": true,
-
-        // "baseUrl": ".", // This must be specified if "paths" is.
-        // "paths": {
-        //   "handlebars/*": ["./node_modules/handlebars/*"] // This mapping is relative to "baseUrl"
-        // }
     },
 
     "include": [
         "./src/**/*",
-        // "node_modules/handlebars/*"
-    ]
+    ],
+    "exclude" : ["./src/**/*.spec.ts"]
 }

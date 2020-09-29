@@ -1,6 +1,6 @@
 @import '../Input/styles.css';
 
-.formfield {
+.formfield__layout {
     display: flex;
     flex-direction: column;
     position: relative;
@@ -17,4 +17,5 @@
     font-size: 12px;
     line-height: 16px;
     color: var(--color-red);
+    margin-top: 4px;
 }

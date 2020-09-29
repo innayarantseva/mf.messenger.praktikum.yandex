@@ -1,6 +1,6 @@
 export function isEqual(a: object, b: object): boolean {
     // Код здесь
-    if (typeof a !== 'object' && typeof b !== 'object') {
+    if ((typeof a !== 'object' || !a) || (typeof b !== 'object' || !b)) {
         return false;
     }
 

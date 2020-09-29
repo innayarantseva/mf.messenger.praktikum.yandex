@@ -14,17 +14,28 @@
 .authorization__layout {
     display: flex;
     flex-direction: column;
-    align-items: center;
     width: 346px;
 
-    padding: 40px;
+    padding: 60px 72px;
     margin: auto;
     border-radius: var(--border-radius);
     background-color: var(--color-white);
 }
 .authorization__heading {
-    font-size: 36px;
-    line-height: 40px;
-    font-weight: 600;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 32px;
     margin: 0 0 28px;
+}
+
+.authorization__secondary-action {
+    font-size: 14px;
+    line-height: 18px;
+
+    align-self: flex-start;
+}
+.authorization__secondary-action-desc {
+    border-bottom-color: var(--color-grey-5);
+    padding-right: 8px;
 }

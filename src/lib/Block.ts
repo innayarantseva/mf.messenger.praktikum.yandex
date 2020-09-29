@@ -1,10 +1,12 @@
-import { EventBus } from './EventBus.js';
+import { EventBus } from './EventBus';
+import { cloneDeep } from '../utils/mydash/deepClone';
 
 export type BlockProps = object;
 
+export type BlockNodeProps = Record<string, string | number | boolean | object | Function>;
 export type BlockNode = {
     type: string;
-    props: Record<string, string | number | boolean | Function>;
+    props: BlockNodeProps;
     children: BlockNode[];
     element?: HTMLElement;
 }; // FIXME: может быть и строкой
@@ -46,6 +48,7 @@ export class Block<T extends BlockProps> {
         eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
     }
 
+    /** Creates actual DOM element. */
     _createResources() {
         const {
             tagName,
@@ -59,20 +62,25 @@ export class Block<T extends BlockProps> {
         });
     }
 
+    /** Creates actual DOM element and inits first render. */
     init() {
         this._createResources();
-        this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+        this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
 
-    _createElement(node: BlockNode): HTMLElement | Text {
+    /** Creates or extracts an Element. */
+    _createElement(node: BlockNode | string): HTMLElement | Text {
+        // it's a text node
         if (typeof node === 'string') {
             return document.createTextNode(node);
         }
 
+        // element already exists
         if (node.element) {
             return node.element;
         }
 
+        // if not, create a new one
         const el = document.createElement(node.type);
 
         // assign html attrs to element
@@ -90,26 +98,31 @@ export class Block<T extends BlockProps> {
         return el;
     }
 
-    _setBooleanProp(el, propName, propValue) {
+    /** Sets a boolean prop on given element. */
+    _setBooleanProp(el: HTMLElement, propName: string, propValue: boolean): void {
         if (propValue) {
-            el.setAttribute(propName, propValue);
+            el.setAttribute(propName, '');
             el[propName] = true;
         } else {
             el[propName] = false;
         }
     }
-    _removeBooleanProp(el, propName) {
+    /** Remove a boolean prop on given element. */
+    _removeBooleanProp(el: HTMLElement, propName: string): void {
         el.removeAttribute(propName);
         el[propName] = false;
     }
 
-    _isEventProp(propName) {
+    /** Tests whether a prop name is an event name. */
+    _isEventProp(propName: string): boolean {
         return /^on/.test(propName);
     }
-    _extractEventName(propName) {
+    /** Extracts event name for defining event listener. */
+    _extractEventName(propName: string): string {
         return propName.slice(2).toLowerCase();
     }
-    _addEventListeners(element, props) {
+    /** Adds event listener to element. */
+    _addEventListeners(element: HTMLElement, props): void {
         Object.keys(props).forEach((propName) => {
             if (this._isEventProp(propName)) {
                 element.addEventListener(
@@ -120,13 +133,16 @@ export class Block<T extends BlockProps> {
         });
     }
 
-    // unknown or forse update
-    _isCustomProp(propName) {
+    /** Checks whether a prop is custom,
+     * which is for now means if it is an event listener or 'forceUpdate'.
+     */
+    _isCustomProp(propName: string): boolean {
         return this._isEventProp(propName) || propName === 'forceUpdate';
     }
 
-    // set/remove/update prop
-    _removeProp(el, propName, propValue) {
+
+    /** Removes a prop from given element. */
+    _removeProp(el: HTMLElement, propName: string, propValue: string | boolean): void {
         if (this._isCustomProp(propName)) {
             return;
         } else if (propName === 'className') {
@@ -138,11 +154,12 @@ export class Block<T extends BlockProps> {
         }
     }
 
-    _setProp(el, propName, propValue) {
+    /** Sets a prop on given element. */
+    _setProp(el: HTMLElement, propName: string, propValue: string | boolean) {
         if (this._isCustomProp(propName)) {
             return;
         } else if (propName === 'className') {
-            el.setAttribute('class', propValue);
+            el.setAttribute('class', propValue.toString());
         } else if (typeof propValue === 'boolean') {
             this._setBooleanProp(el, propName, propValue);
         } else {
@@ -153,7 +170,8 @@ export class Block<T extends BlockProps> {
     _updateProp(el, propName, newVal, oldVal) {
         if (!newVal) {
             this._removeProp(el, propName, oldVal);
-        } else if (!oldVal || newVal !== oldVal) {
+            // } else if (!oldVal || newVal !== oldVal) { // быстрый костыль, не оч хороший по производительности
+        } else if (!oldVal || newVal) {
             this._setProp(el, propName, newVal);
         }
     }
@@ -165,7 +183,7 @@ export class Block<T extends BlockProps> {
     }
 
     _updateProps(el, newProps, oldProps = {}) {
-        const props = { ...newProps, ...oldProps };
+        const props = Object.assign(oldProps, newProps);
 
         Object.keys(props).forEach((name) => {
             this._updateProp(el, name, newProps[name], oldProps[name]);
@@ -174,17 +192,16 @@ export class Block<T extends BlockProps> {
 
     _componentDidMount(oldProps) {
         this.componentDidMount(oldProps);
-        this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
 
     // Может переопределять пользователь, необязательно трогать
     componentDidMount(oldProps) { }
 
-    _componentDidUpdate(oldProps, newProps) {
+    _componentDidUpdate(oldProps, newProps, oldNode) {
         const response = this.componentDidUpdate(oldProps, newProps);
 
         if (response) {
-            this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+            this.eventBus().emit(Block.EVENTS.FLOW_RENDER, oldNode);
         }
 
         return response;
@@ -200,8 +217,9 @@ export class Block<T extends BlockProps> {
             return;
         }
 
-        const oldProps = { ...this.props }; // deepClone
+        const oldProps = cloneDeep(this.props); // deepClone
         this.props = Object.assign(this.props, nextProps);
+
         this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, this.props);
     };
 
@@ -222,25 +240,31 @@ export class Block<T extends BlockProps> {
         );
     }
 
-    _updateElement(parentNode, newNode, oldNode, index = 0, realDomIndex = index) {
+    _updateElement(parentNode, newNode, oldNode, index = 0, insertBefore = null) {
         // если внутри родителя нет ничего вообще и не нужно ничего вставлять
-        if (newNode === null && oldNode === null) {
+        if ((newNode === null || typeof newNode === 'undefined') && (oldNode === null || typeof oldNode === 'undefined')) {
             return;
         }
 
         if (typeof oldNode === 'undefined' || oldNode === null) { // если в старом дереве не хватает ноды из нового
-            parentNode.appendChild(this._createElement(newNode));
+            const newElement = this._createElement(newNode);
+
+            if (insertBefore) {
+                parentNode.insertBefore(newElement, parentNode.childNodes[insertBefore]);
+                // продолжаем добавлять новые ноды по индексу после последней реально существующей ноды
+                return insertBefore;
+            } else {
+                parentNode.appendChild(newElement);
+                // добавляем в конец списка — в реальном дереве уже могут быть потомки
+                // все последующие ноды добавляем на это место, "вытесняя" предыдущие
+                return parentNode.childNodes.length - 1;
+            }
         } else if (typeof newNode === 'undefined' || newNode === null) {  // если в новом дереве нет ноды из старого
-            // мы можем удалять больше одного потомка у родителя.
-            // В этом случае индекс итерируемой виртуальной ноды будет больше кол-ва потомков родителя в реальном DOM-дереве
-            // поэтому будем удалять последний, если по индексу удалить не выйдет
-            const childToRemove = parentNode.childNodes[realDomIndex];
+            const childToRemove = parentNode.childNodes[index];
 
             if (childToRemove) {
                 parentNode.removeChild(childToRemove);
-                return realDomIndex - 1;
             }
-
         } else if (this._differ(newNode, oldNode)) { // оба есть, но нода изменилась
             parentNode.replaceChild(
                 this._createElement(newNode),
@@ -248,13 +272,14 @@ export class Block<T extends BlockProps> {
             );
         } else if (newNode.type) { // ноды не отличаются
             // нужно обновить свойства ноды parentNode.childNodes[index]
+            // плохо обновляются свойства
 
-            // FIXME: также не понимаю, почему иногда возникает ошибка, что родителя не существует
             this._updateProps(
                 parentNode.childNodes[index],
                 newNode.props,
                 oldNode.props
             );
+
 
             // и перебрать потомков
             const longestChildrenLen = Math.max(
@@ -262,24 +287,22 @@ export class Block<T extends BlockProps> {
                 oldNode.children.length
             );
 
-            for (let i = 0; i < longestChildrenLen; i++) {
+            let insertBefore = null;
+            for (let i = longestChildrenLen - 1; i >= 0; i--) {
                 // возникают проблемы при удалении: если старое виртуальное дерево больше нового, индекс итерации становится
                 // больше реального размера DOM-дерева.
-                // поэтому нужно аккуратно удалять только те ноды, которые нужно удалить.
+                // поэтому начнём удалять с конца списка
 
-                // FIXME: не могу отдебажить, почему не удаляются все ноды, но хотя бы приложение не падает в смерть))))
-
-                let realDomIndex = undefined;
-
-                let returned = this._updateElement(
+                // с добавлением придётся тоже обновить логику, так как изначально добавление шло в конец массива потомков
+                insertBefore = this._updateElement(
                     parentNode.childNodes[index],
                     newNode.children[i],
                     oldNode.children[i],
                     i,
-                    realDomIndex // нужен только для удаления!
+                    insertBefore
                 );
 
-                realDomIndex = returned;
+
             }
         }
     }
@@ -289,9 +312,18 @@ export class Block<T extends BlockProps> {
         const newNode = this.render();
 
         // рендерим виртуальную ноду в элемент, сверяя старое и новое дерево, делая только необходимые замены в дом
+
+        // почему-то в старом дереве передаются свойства нод нового дерева, вроде имён классов
+        // хотя структура старого дерева остаётся старой
+        // из-за этого неправильно происходит апдейт элементов, так как новый класс всегда равен старому
+        // это странно
         this._updateElement(this._element, newNode, this._node);
 
         // всегда храним виртуальную ноду для того, чтобы сравнивать её с новой
+        if (!this._node) {
+            // первый рендер компонента
+            this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+        }
         this._node = newNode;
     }
 
@@ -307,7 +339,7 @@ export class Block<T extends BlockProps> {
     getNode() {
         return {
             type: this._meta.tagName,
-            props: {},
+            props: (this.props as { attributes }).attributes, // FIXME: для props прописать нормально тип
             children: [this.node],
             element: this.element,
         };
@@ -334,10 +366,6 @@ export class Block<T extends BlockProps> {
         });
 
         return propsProxy;
-    }
-
-    _createDocumentElement(tagName: string): HTMLElement {
-        return document.createElement(tagName);
     }
 
     show() {

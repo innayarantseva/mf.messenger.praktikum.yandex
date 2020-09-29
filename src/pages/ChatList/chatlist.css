@@ -84,8 +84,11 @@
 }
 .chats__search-icon {
     position: absolute;
-    top: 7px;
+    top: 5px;
     left: 4px;
+}
+.chats__search-icon > .material-icons {
+    color: var(--color-grey-5);
 }
 
 .chats__list {

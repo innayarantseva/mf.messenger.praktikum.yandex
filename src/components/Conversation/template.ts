@@ -12,7 +12,9 @@ export const template = `<section class="conversation">
         </div>
 
         <div class="conversation__options">
-            <p>...</p>
+            <div class="conversation__options-icon">
+                <i class="material-icons">more_vert</i>
+            </div>
 
             <ul class="conversation__options-menu">
                 <li>Переименовать чат</li>
@@ -27,7 +29,9 @@ export const template = `<section class="conversation">
 
     <footer class="conversation__footer">
         <div class="conversation__attachment">
-            <p>X</p>
+            <div class="conversation__attachment-icon">
+                <i class="material-icons">attach_file</i>
+            </div>
 
             <ul class="conversation__attachment-menu">
                 <li>Фото или видео</li>
@@ -39,7 +43,9 @@ export const template = `<section class="conversation">
 
         <textarea class="conversation__new-message" placeholder="Напишите сообщение..."></textarea>
 
-        <div class="conversation__send">Отправить</div>
+        <div class="conversation__send">
+            <i class="material-icons">arrow_forward</i>
+        </div>
     </footer>
 </section class="">`;
 

@@ -4,8 +4,6 @@ import { Input, InputProps } from '../Input/index.js';
 import { template } from './template.js';
 import { validateInput } from '../../utils/formValidation.js';
 
-// в идеале хочу импортить в компонент стили через css-модули из postcss
-
 export type FormFieldProps = {
     className?: string;
     label: string;
@@ -49,7 +47,7 @@ export class FormField extends Block<BlockProps> {
             }),
             error,
             attributes: {
-                className,
+                className: [className, 'formfield'].join(' '),
             },
         });
     }

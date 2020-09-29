@@ -3,8 +3,8 @@ export const template = `<section class="authorization__layout">
 
     {{ form }}
 
-    <span>
-        <span>{{secondaryActionText}}</span>
+    <span class="authorization__secondary-action">
+        <span class="authorization__secondary-action-desc">{{secondaryActionText}}</span>
         {{navLink}}
     </span>
 </section>`;

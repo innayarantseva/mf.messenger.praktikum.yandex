@@ -21,11 +21,14 @@ type InputBlockProps = {
 };
 
 export class Input extends Block<BlockProps> {
-    props: BlockProps;
+    props: BlockProps & {
+        attributes: { className, onInput },
+        error,
+        value
+    };
 
     constructor(props: InputProps) {
         super('input', {
-            value: props.value,
             attributes: {
                 ...props,
                 className: [
@@ -37,6 +40,8 @@ export class Input extends Block<BlockProps> {
                     this.setProps({ value: event.target.value });
                 },
             },
+            error: props.error,
+            value: props.value,
         });
     }
 

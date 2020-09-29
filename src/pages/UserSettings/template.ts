@@ -41,13 +41,8 @@ export const changeUserSettings = `<section class="user-settings__layout">
     </nav>
 
     <main class="user-settings__dashboard">
-        <h1>Изменить данные</h1>
+        <h1 class="user-settings__change-heading">Изменить данные</h1>
         {{ form }}
         {{profileLink}}
     </main>
 </section>`;
-
-// <a href="../ChatList/chatlist.html">← Все чаты</a>
-//<a href="./usersettings.html">Отменить</a>
-// <a href="./usersettings-edit.html">Изменить данные</a>
-//<a class="user-settings__log-out" href="../Authorization/signIn.html">Выйти</a>

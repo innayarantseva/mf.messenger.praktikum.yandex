@@ -1,5 +1,5 @@
-import { Block, BlockProps } from '../../lib/Block.js';
-import { compileTemplate } from '../../lib/templator.js';
+import { Block, BlockProps } from '../../lib/Block';
+import { compileTemplate } from '../../lib/templator';
 
 class Indicator extends Block<BlockProps> {
     constructor() {

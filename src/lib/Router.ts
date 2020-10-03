@@ -1,5 +1,3 @@
-import { Block, BlockProps } from "./Block";
-
 export function renderToDom(query, block) {
     const root = document.querySelector(query);
     root.appendChild(block.getContent());

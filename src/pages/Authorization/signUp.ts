@@ -1,11 +1,11 @@
-import { Block, BlockProps } from '../../lib/Block.js';
-import { template } from './template.js';
+import { Block, BlockProps } from '../../lib/Block';
+import { template } from './template';
 import {
     signUpForm as form
-} from './data.js';
-import { compileTemplate } from '../../lib/templator.js';
-import { Form } from '../../components/Form/index.js';
-import { NavLink } from '../../components/NavLink/index.js';
+} from './data';
+import { compileTemplate } from '../../lib/templator';
+import { Form } from '../../components/Form/index';
+import { NavLink } from '../../components/NavLink/index';
 
 export class SignUp extends Block<BlockProps> {
     constructor() {

@@ -1,8 +1,8 @@
-import { Block, BlockProps } from '../../lib/Block.js';
-import { compileTemplate } from '../../lib/templator.js';
-import { Button, ButtonProps } from '../Button/index.js';
-import { FormField, FormFieldProps } from '../Formfield/index.js';
-import { template } from './template.js';
+import { Block, BlockProps } from '../../lib/Block';
+import { compileTemplate } from '../../lib/templator';
+import { Button, ButtonProps } from '../Button/index';
+import { FormField, FormFieldProps } from '../Formfield/index';
+import { template } from './template';
 
 export type FormProps = {
     fields: FormFieldProps[];

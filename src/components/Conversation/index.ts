@@ -1,9 +1,9 @@
-import { Block, BlockProps } from '../../lib/Block.js';
-import { template } from './template.js';
-import { compileTemplate } from '../../lib/templator.js';
-import { Avatar } from '../Avatar/index.js';
-import { Thread } from '../Thread/index.js';
-import { isEqual } from '../../utils/mydash/isEqual.js';
+import { Block, BlockProps } from '../../lib/Block';
+import { template } from './template';
+import { compileTemplate } from '../../lib/templator';
+import { Avatar } from '../Avatar/index';
+import { Thread } from '../Thread/index';
+import { isEqual } from '../../utils/mydash/isEqual';
 
 
 export class Conversation extends Block<BlockProps> {

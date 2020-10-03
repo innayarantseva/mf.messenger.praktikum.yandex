@@ -5,8 +5,8 @@
 // идею взяла из https://medium.com/@deathmood/how-to-write-your-own-virtual-dom-ee74acc13060
 
 import { Block, BlockNode, BlockNodeProps } from './Block';
-import get from '../utils/mydash/getValueByKey'; // FIXME: исправить импорты на именованные
-import last from '../utils/mydash/last';
+import { get } from '../utils/mydash/getValueByKey';
+import last from '../utils/mydash/last'; // FIXME: исправить импорты на именованные
 
 const SELF_CLOSING_TAGS = [
     'area',

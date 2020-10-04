@@ -12,11 +12,15 @@
         "start:dev": "webpack-dev-server",
         "lint": "eslint . && stylelint .",
         "lint:fix": "eslint . --fix",
-        "precommit": "npm run test && npm run lint:fix",
         "server": "node ./server/server.js",
         "copy-static": "copyfiles -u 1 \"./src/**/*.html\" \"./src/**/*.png\" \"./src/**/*.*tf\" ./dist",
         "postcss": "postcss \"./src/**/*.css\" --base src --dir ./dist",
         "browserify:templator": "browserify \"./src/utils/renderTemplate.ts\" -p [ tsify ] > bundle.js"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm run test && npm run lint:fix"
+        }
     },
     "repository": {
         "type": "git",

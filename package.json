@@ -12,7 +12,7 @@
         "start:dev": "webpack-dev-server",
         "lint": "eslint . && stylelint .",
         "lint:fix": "eslint . --fix",
-        "pre-commit": "npm run test && npm run lint:fix",
+        "precommit": "npm run test && npm run lint:fix",
         "server": "node ./server/server.js",
         "copy-static": "copyfiles -u 1 \"./src/**/*.html\" \"./src/**/*.png\" \"./src/**/*.*tf\" ./dist",
         "postcss": "postcss \"./src/**/*.css\" --base src --dir ./dist",

@@ -1,9 +1,10 @@
 import { Block, BlockProps } from '../../lib/Block';
-import { chatTemplate } from './template';
 import { compileTemplate } from '../../lib/templator';
-import { Avatar } from '../Avatar/index';
+import { Avatar } from '../Avatar';
 
+import { chatTemplate } from './template';
 export { CHAT_CLASS } from './consts';
+import './styles.css';
 
 class Me extends Block<BlockProps> {
     constructor() {

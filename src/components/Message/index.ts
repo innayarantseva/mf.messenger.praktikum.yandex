@@ -1,6 +1,7 @@
 import { Block, BlockProps } from '../../lib/Block';
-import { messageTemplate } from './template';
 import { compileTemplate } from '../../lib/templator';
+import { messageTemplate } from './template';
+import './styles.css';
 
 export class Message extends Block<BlockProps> {
     _messages;

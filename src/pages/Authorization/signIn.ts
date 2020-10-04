@@ -4,6 +4,7 @@ import { signInForm as form } from './data';
 import { compileTemplate } from '../../lib/templator';
 import { Form } from '../../components/Form/index';
 import { NavLink } from '../../components/NavLink/index';
+import './styles.css';
 
 export class SignIn extends Block<BlockProps> {
     constructor() {

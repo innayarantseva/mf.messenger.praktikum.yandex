@@ -6,6 +6,9 @@ import { SignUp } from './pages/Authorization/signUp';
 import { UserProfile } from './pages/UserSettings/userProfile';
 import { ChangeUserData } from './pages/UserSettings/changeUserData';
 
+import './colors.css';
+import './main.css';
+
 router
     .use('/chats', Chats)
     .use('/settings', UserProfile)

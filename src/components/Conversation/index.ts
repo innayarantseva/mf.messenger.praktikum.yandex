@@ -1,9 +1,12 @@
 import { Block, BlockProps } from '../../lib/Block';
-import { template } from './template';
 import { compileTemplate } from '../../lib/templator';
-import { Avatar } from '../Avatar/index';
-import { Thread } from '../Thread/index';
 import { isEqual } from '../../utils/mydash/isEqual';
+
+import { Avatar } from '../Avatar';
+import { Thread } from '../Thread';
+
+import { template } from './template';
+import './styles.css';
 
 
 export class Conversation extends Block<BlockProps> {

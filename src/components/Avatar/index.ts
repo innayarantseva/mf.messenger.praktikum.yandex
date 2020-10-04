@@ -1,5 +1,6 @@
 import { Block, BlockProps } from '../../lib/Block';
 import { compileTemplate } from '../../lib/templator';
+import './styles.css';
 
 class Indicator extends Block<BlockProps> {
     constructor() {

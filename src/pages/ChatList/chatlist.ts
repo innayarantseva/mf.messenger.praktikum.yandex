@@ -2,10 +2,11 @@ import { Block, BlockProps } from '../../lib/Block';
 import { chatsTemplate } from './template';
 import { user, chats, conversations } from './data';
 import { compileTemplate } from '../../lib/templator';
-import { ChatListItem, CHAT_CLASS, } from '../../components/ChatListItem/index';
-import { Conversation } from '../../components/Conversation/index';
-import { NavLink } from '../../components/NavLink/index';
+import { ChatListItem, CHAT_CLASS, } from '../../components/ChatListItem';
+import { Conversation } from '../../components/Conversation';
+import { NavLink } from '../../components/NavLink';
 import { router } from '../../lib/Router';
+import './styles.css';
 
 class Empty extends Block<BlockProps> {
     constructor() {

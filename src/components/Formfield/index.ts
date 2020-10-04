@@ -1,8 +1,11 @@
 import { Block, BlockProps } from '../../lib/Block';
 import { compileTemplate } from '../../lib/templator';
-import { Input, InputProps } from '../Input/index';
-import { template } from './template';
 import { validateInput } from '../../utils/formValidation';
+
+import { Input, InputProps } from '../Input';
+
+import { template } from './template';
+import './styles.css';
 
 export type FormFieldProps = {
     className?: string;

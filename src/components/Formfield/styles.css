@@ -1,5 +1,3 @@
-@import '../Input/styles.css';
-
 .formfield__layout {
     display: flex;
     flex-direction: column;

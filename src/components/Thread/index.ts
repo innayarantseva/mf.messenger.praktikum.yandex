@@ -1,7 +1,10 @@
 import { Block, BlockProps } from '../../lib/Block';
-import { template } from './template';
 import { compileTemplate } from '../../lib/templator';
-import { Message } from '../Message/index';
+
+import { Message } from '../Message';
+
+import { template } from './template';
+import './styles.css';
 
 export class Thread extends Block<BlockProps> {
     _messages;

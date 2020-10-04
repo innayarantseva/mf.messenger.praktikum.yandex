@@ -1,6 +1,7 @@
 import { Block, BlockProps } from '../../lib/Block';
 import { compileTemplate } from '../../lib/templator';
 import { validateInput } from '../../utils/formValidation';
+import './styles.css';
 
 export type InputProps = {
     type?;

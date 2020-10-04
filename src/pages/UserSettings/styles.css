@@ -1,7 +1,3 @@
-@import '../../colors.css';
-@import '../../components/Form/styles.css';
-@import '../../components/Input/styles.css';
-
 .user-settings {
     display: flex;
     height: 100%;

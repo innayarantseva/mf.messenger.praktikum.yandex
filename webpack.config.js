@@ -1,4 +1,3 @@
-// webpack.config.js
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
@@ -7,13 +6,15 @@ module.exports = {
     entry: './src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'project-name.bundle.js'
+        publicPath: path.join(__dirname, 'assets'),
+        filename: 'messenger.bundle.js'
     },
     resolve: {
         extensions: ['.ts', '.js', '.json']
     },
     module: {
         rules: [
+            // ts, tsx files
             {
                 test: /\.tsx?$/,
                 use: [
@@ -25,20 +26,41 @@ module.exports = {
                     },
                 ],
                 exclude: /(node_modules)/
-            }
+            },
+            // styles
+            {
+                test: /\.css$/, loaders: [
+                    'style-loader',
+                    'css-loader',
+                    'postcss-loader'
+                ]
+            },
+            // assets: fonts
+            {
+                test: /\.(eot|svg|ttf|woff|woff2)$/,
+                loader: 'file-loader?name=assets/fonts/[name].[ext]'
+            },
+            // assets: images
+            {
+                test: /\.(jpe?g|png|gif)$/i,
+                loader: 'url-loader?limit=10000!img-loader?progressive=true'
+            },
         ]
     },
-    plugins: [new HtmlWebpackPlugin({
-        template: 'src/index.html'
-    })],
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: 'src/index.html'
+        })
+    ],
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
         compress: true,
         port: 4000,
-        open: true,
-        watchContentBase: true, // нужно ли, если включен hot?? Почитать про это побольше
+        // open: true,
         hot: true,
+        writeToDisk: true
 
         // добавить поддержку https
     },
+    watch: true,
 };

@@ -1,7 +1,8 @@
-import { Block, BlockProps } from '../../lib/Block.js';
-import { errorTemplate } from './template.js';
-import { error500 } from './500.js';
-import { compileTemplate } from '../../lib/templator.js';
+import { Block, BlockProps } from '../../lib/Block';
+import { errorTemplate } from './template';
+import { error500 } from './500';
+import { compileTemplate } from '../../lib/templator';
+import './styles.css';
 
 export class ErrorPage extends Block<BlockProps> {
     constructor() {

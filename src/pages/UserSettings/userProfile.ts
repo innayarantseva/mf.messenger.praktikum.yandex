@@ -1,9 +1,13 @@
-import { Button } from '../../components/Button/index.js';
-import { Block, BlockProps } from '../../lib/Block.js';
-import { userSettingsTemplate } from './template.js';
-import { data } from './data.js';
-import { compileTemplate } from '../../lib/templator.js';
-import { NavLink } from '../../components/NavLink/index.js';
+import { Block, BlockProps } from '../../lib/Block';
+import { compileTemplate } from '../../lib/templator';
+// components
+import { Button } from '../../components/Button';
+import { NavLink } from '../../components/NavLink';
+// data
+import { userSettingsTemplate } from './template';
+import { data } from './data';
+
+import './styles.css';
 
 export class UserProfile extends Block<BlockProps> {
     constructor() {

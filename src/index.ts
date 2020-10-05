@@ -1,10 +1,13 @@
-import { router } from './lib/Router.js';
+import { router } from './lib/Router';
 // pages
-import { Chats } from './pages/ChatList/chatlist.js';
-import { SignIn } from './pages/Authorization/signIn.js';
-import { SignUp } from './pages/Authorization/signUp.js';
-import { UserProfile } from './pages/UserSettings/userProfile.js';
-import { ChangeUserData } from './pages/UserSettings/changeUserData.js';
+import { Chats } from './pages/ChatList/chatlist';
+import { SignIn } from './pages/Authorization/signIn';
+import { SignUp } from './pages/Authorization/signUp';
+import { UserProfile } from './pages/UserSettings/userProfile';
+import { ChangeUserData } from './pages/UserSettings/changeUserData';
+
+import './colors.css';
+import './main.css';
 
 router
     .use('/chats', Chats)

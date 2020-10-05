@@ -2,8 +2,8 @@
     "compilerOptions": {
         "allowJs": true,
         "outDir": "./dist",
-        "target": "es2017",
-        "module": "ES2015",
+        "target": "es5",
+        "module": "esnext",
         "sourceMap": true,
         "allowUmdGlobalAccess": true,
         "moduleResolution": "node",
@@ -11,7 +11,8 @@
     },
 
     "include": [
+        ".eslintrc.js",
         "./src/**/*",
     ],
-    "exclude" : ["./src/**/*.spec.ts"]
+    "exclude" : ["node_modules", "dist", "./src/**/*.spec.ts"]
 }

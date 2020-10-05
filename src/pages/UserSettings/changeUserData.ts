@@ -1,9 +1,9 @@
-import { Block, BlockProps } from '../../lib/Block.js';
-import { changeUserSettings } from './template.js';
-import { form } from './data.js';
-import { compileTemplate } from '../../lib/templator.js';
-import { Form } from '../../components/Form/index.js';
-import { NavLink } from '../../components/NavLink/index.js';
+import { Block, BlockProps } from '../../lib/Block';
+import { changeUserSettings } from './template';
+import { form } from './data';
+import { compileTemplate } from '../../lib/templator';
+import { Form } from '../../components/Form/index';
+import { NavLink } from '../../components/NavLink/index';
 
 export class ChangeUserData extends Block<BlockProps> {
     constructor() {

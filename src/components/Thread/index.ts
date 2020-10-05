@@ -1,7 +1,10 @@
-import { Block, BlockProps } from '../../lib/Block.js';
-import { template } from './template.js';
-import { compileTemplate } from '../../lib/templator.js';
-import { Message } from '../Message/index.js';
+import { Block, BlockProps } from '../../lib/Block';
+import { compileTemplate } from '../../lib/templator';
+
+import { Message } from '../Message';
+
+import { template } from './template';
+import './styles.css';
 
 export class Thread extends Block<BlockProps> {
     _messages;

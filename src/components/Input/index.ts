@@ -1,7 +1,7 @@
-import { Block, BlockProps } from '../../lib/Block.js';
-import { compileTemplate } from '../../lib/templator.js';
-import { validateInput } from '../../utils/formValidation.js';
-// в идеале хочу импортить в компонент стили через css-модули из postcss
+import { Block, BlockProps } from '../../lib/Block';
+import { compileTemplate } from '../../lib/templator';
+import { validateInput } from '../../utils/formValidation';
+import './styles.css';
 
 export type InputProps = {
     type?;

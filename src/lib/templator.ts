@@ -133,7 +133,7 @@ export const htmlParser = (htmlStr, context: object): BlockNode => {
         let currLevel = elementsTree;
 
         for (let i = 1; i < stack.length; i++) {
-            let node = currLevel.children
+            const node = currLevel.children
                 .slice()
                 .reverse()
                 .find(({ type }) => type === getTagName(stack[i]));
@@ -163,7 +163,7 @@ export const htmlParser = (htmlStr, context: object): BlockNode => {
     let elementsTree: BlockNode = null;
     const stack = [];
 
-    for (let chunk of chunks) {
+    for (const chunk of chunks) {
         if (isTag(chunk)) {
             if (isClosingTag(chunk)) {
                 if (SELF_CLOSING_TAGS.includes(getTagName(chunk))) {
@@ -188,7 +188,7 @@ export const htmlParser = (htmlStr, context: object): BlockNode => {
                 return getTemplateValue(chunk, context);
             }
 
-            let currLevel = getCurrentTreeLevel();
+            const currLevel = getCurrentTreeLevel();
 
             const TEMPLATE_REGEXP = /\{\{(.*?)\}\}/gi;
             let insertion = chunk;

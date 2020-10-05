@@ -1,7 +1,4 @@
 /* Chat List Item */
-@import '../../colors.css';
-@import '../Avatar/styles.css';
-
 .chats-list-item {
     display: flex;
     padding: 12px 20px;

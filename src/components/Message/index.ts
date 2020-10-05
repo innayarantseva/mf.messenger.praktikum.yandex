@@ -1,6 +1,7 @@
-import { Block, BlockProps } from '../../lib/Block.js';
-import { messageTemplate } from './template.js';
-import { compileTemplate } from '../../lib/templator.js';
+import { Block, BlockProps } from '../../lib/Block';
+import { compileTemplate } from '../../lib/templator';
+import { messageTemplate } from './template';
+import './styles.css';
 
 export class Message extends Block<BlockProps> {
     _messages;

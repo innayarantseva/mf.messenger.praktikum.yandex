@@ -37,12 +37,12 @@ export class Fetch {
         return this.request(url, {...options, method: METHODS.DELETE}, options.timeout);
     }
 
-    request = (url: string, options: RequestOptions, timeout: number = 5000) => {
+    request = (url: string, options: RequestOptions, timeout = 5000) => {
         const { method, headers, data } = options;
 
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
-            let urlObject = new URL(url)
+            const urlObject = new URL(url)
 
             // set query params
             if (method === METHODS.GET && data) {

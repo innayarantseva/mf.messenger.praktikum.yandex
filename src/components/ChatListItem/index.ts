@@ -1,9 +1,10 @@
-import { Block, BlockProps } from '../../lib/Block.js';
-import { chatTemplate } from './template.js';
-import { compileTemplate } from '../../lib/templator.js';
-import { Avatar } from '../Avatar/index.js';
+import { Block, BlockProps } from '../../lib/Block';
+import { compileTemplate } from '../../lib/templator';
+import { Avatar } from '../Avatar';
 
-export { CHAT_CLASS } from './consts.js';
+import { chatTemplate } from './template';
+export { CHAT_CLASS } from './consts';
+import './styles.css';
 
 class Me extends Block<BlockProps> {
     constructor() {

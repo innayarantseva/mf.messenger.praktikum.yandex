@@ -4,7 +4,7 @@
 
 export function merge(lhs, rhs) {
     // Код здесь
-    let result = { ...lhs };
+    const result = { ...lhs };
 
     Object.entries(rhs).forEach(([key, value]) => {
         if (typeof rhs[key] === 'object' && key in lhs) {

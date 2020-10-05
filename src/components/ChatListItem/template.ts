@@ -1,4 +1,4 @@
-import { CHAT_CLASS } from './consts.js';
+import { CHAT_CLASS } from './consts';
 
 export const chatTemplate = `<li>
     <section class="${CHAT_CLASS}" data-chat-title="{{displayName}}">

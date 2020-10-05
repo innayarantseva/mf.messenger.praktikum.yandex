@@ -2,7 +2,7 @@ export function get<T>(obj: T, path: string, defaultValue?: unknown): T[keyof T]
     const keys = path.split('.');
     let value = obj;
 
-    for (let key of keys) {
+    for (const key of keys) {
         value = value[key];
 
         if (value === undefined) {
@@ -11,4 +11,4 @@ export function get<T>(obj: T, path: string, defaultValue?: unknown): T[keyof T]
     }
 
     return value === undefined ? defaultValue : value;
-};
+}

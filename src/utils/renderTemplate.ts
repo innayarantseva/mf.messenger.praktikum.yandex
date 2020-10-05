@@ -1,4 +1,4 @@
-declare var Handlebars: any;
+declare let Handlebars: any;
 
 export const renderTemplate = (
     templateString: string,

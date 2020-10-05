@@ -1,6 +1,6 @@
-import { Block, BlockProps } from '../../lib/Block.js';
-import { compileTemplate } from '../../lib/templator.js';
-// в идеале хочу импортить в компонент стили через css-модули из postcss
+import { Block, BlockProps } from '../../lib/Block';
+import { compileTemplate } from '../../lib/templator';
+import './styles.css';
 
 const template = '<div>{{text}}</div>';
 

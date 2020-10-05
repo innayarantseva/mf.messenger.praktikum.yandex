@@ -8,8 +8,8 @@
 
 function range(start, end, step, isRight = false) {
     if (end === undefined) {
-      end = start;
-      start = 0;
+        end = start;
+        start = 0;
     }
 
     if (step === undefined) {
@@ -21,8 +21,8 @@ function range(start, end, step, isRight = false) {
 
     let startIndex = 0;
     while (resultLength--) {
-      result[isRight ? resultLength : startIndex++] = start;
-      start += step;
+        result[isRight ? resultLength : startIndex++] = start;
+        start += step;
     }
 
     return result;

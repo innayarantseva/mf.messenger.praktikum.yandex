@@ -1,5 +1,5 @@
-import { FormProps } from '../../components/Form/index.js';
-import { router } from '../../lib/Router.js';
+import { FormProps } from '../../components/Form/index';
+import { router } from '../../lib/Router';
 
 const handleFormClick = (event, validationResult) => {
     const isValid = validationResult.reduce((acc, { error }) => acc && !(error), true);

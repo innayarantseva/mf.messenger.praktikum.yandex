@@ -6,7 +6,7 @@ module.exports = {
     entry: './src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        publicPath: path.join(__dirname, 'assets'),
+        // publicPath: path.join(__dirname, 'assets'),
         filename: 'messenger.bundle.js'
     },
     resolve: {
@@ -62,5 +62,5 @@ module.exports = {
 
         // добавить поддержку https
     },
-    watch: true,
+    // watch: true,
 };

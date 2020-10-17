@@ -73,11 +73,14 @@
     line-height: 16px;
 }
 .user-profile__option:not(:last-child) {
-    margin-right: 24px;
+    margin-bottom: 8px;
 }
 
 .user-profile__log-out {
-    color: var(--color-red);
+    background-color: var(--color-red);
+    margin-top: 36px;
+    align-self: flex-start;
+    width: auto;
 }
 
 /* Secondary user data */

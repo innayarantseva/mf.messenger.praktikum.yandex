@@ -16,7 +16,7 @@ export const userSettingsTemplate = `<article class="user-profile">
                             {{settingsLink}}
                         </li>
                         <li class="user-profile__option">
-                            {{signInLink}}
+                            {{passwordLink}}
                         </li>
                     </ul>
                 </div>
@@ -41,6 +41,8 @@ export const userSettingsTemplate = `<article class="user-profile">
                     <p class="user-profile__value">{{phone}}</p>
                 </li>
             </ul>
+
+            {{signInLink}}
         </main>
     </section>
 </article>`;

@@ -43,8 +43,10 @@ export class UserProfile extends Block<BlockProps> {
             }),
             chatsLink: new NavLink({ pathname: '/chats', text: '← Все чаты' }),
             settingsLink: new NavLink({ pathname: '/edit-profile', text: 'Изменить данные' }),
+            passwordLink: new NavLink({ pathname: '/edit-password', text: 'Сменить пароль' }),
             signInLink: new Button({
-                text: 'Выйти',
+                className: 'user-profile__log-out',
+                text: 'Разлогиниться',
                 onClick: () => {
                     logOut()
                         .then((res) => {

@@ -1,5 +1,6 @@
 import { Block, BlockProps } from '../../lib/Block';
 import { compileTemplate } from '../../lib/templator';
+import { isEqual } from '../../utils/mydash/isEqual';
 import './styles.css';
 
 
@@ -11,6 +12,7 @@ export class WithLoader extends Block<BlockProps> {
 
         loading: boolean
     }
+    _block
 
     constructor({ blockClass, data, getData }) {
         super('div', {
@@ -23,7 +25,21 @@ export class WithLoader extends Block<BlockProps> {
             getData,
 
             loading: !data && Boolean(getData)
-        })
+        });
+
+        this._block = data ? this.props.blockClass(data) : null;
+    }
+
+    componentDidUpdate({ data: oldData }, { data: newData }) {
+        console.log(oldData, newData)
+
+        // if (oldData && !isEqual(oldData, newData)) {
+        //     if (this._block) {
+        //         this._block.setProps(newData);
+        //     }
+        // }
+
+        return false;
     }
 
     componentDidMount() {
@@ -31,15 +47,24 @@ export class WithLoader extends Block<BlockProps> {
             this.props.getData()
                 .then((res) => {
                     if (res.ok) {
-                        this.setProps({ data: res.response })
+                        this.setProps({ data: res.response, loading: false })
                     }
                 });
         }
     }
 
     render() {
-        return !this.props.loading
-            ? new this.props.blockClass(this.props.data).render()
-            : compileTemplate('<div class="loader">Происходит загрузка............</div>', {});
+        if (this.props.loading) {
+            return compileTemplate('<div class="loader">Происходит загрузка............</div>', {});
+        } else {
+            if (this._block) {
+                return this._block.render();
+            } else {
+                const block = new this.props.blockClass(this.props.data);
+                this._block = block;
+
+                return block.render();
+            }
+        }
     }
 }

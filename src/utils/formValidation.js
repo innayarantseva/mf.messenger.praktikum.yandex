@@ -59,14 +59,14 @@ const validateTextInput = (value, textType) => {
 
 export const validateInput = (value, type, textType) => {
     switch (type) {
-        case 'email':
-            return validateEmailInput(value);
-        case 'tel':
-            return validateTelInput(value);
-        case 'password':
-            return validatePasswordInput(value);
-        default:
-            return validateTextInput(value, textType);
+    case 'email':
+        return validateEmailInput(value);
+    case 'tel':
+        return validateTelInput(value);
+    case 'password':
+        return validatePasswordInput(value);
+    default:
+        return validateTextInput(value, textType);
     }
 };
 

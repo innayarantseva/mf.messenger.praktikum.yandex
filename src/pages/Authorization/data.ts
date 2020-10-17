@@ -1,22 +1,46 @@
+import { signUp, signIn } from '../../api/authorization';
 import { FormProps } from '../../components/Form/index';
 import { router } from '../../lib/Router';
+import { getRequestFromValidationResult } from '../../utils/formValidation';
 
-const handleFormClick = (event, validationResult) => {
-    const isValid = validationResult.reduce((acc, { error }) => acc && !(error), true);
+
+// FIXME: объединить в одну ф-ию
+const handleSignUpFormSubmit = (event, validationResult) => {
+    // проверка валидности и создание запроса
+    const { isValid, request } = getRequestFromValidationResult(validationResult);
 
     if (isValid) {
-        router.go('/chats');
+        signUp(request)
+            .then((response) => {
+                if (response.ok) {
+                    router.go('/chats');
+                }
+            });
     }
-}
+};
+
+const handleSignInFormSubmit = (event, validationResult) => {
+    // проверка валидности и создание запроса
+    const { isValid, request } = getRequestFromValidationResult(validationResult);
+
+    if (isValid) {
+        signIn(request)
+            .then((response) => {
+                if (response.ok) {
+                    router.go('/chats');
+                }
+            });
+    }
+};
 
 export const signInForm: FormProps = {
     fields: [
         {
-            label: 'Имя',
+            label: 'Логин',
             inputProps: {
                 type: 'text',
                 required: true,
-                'data-field-name': 'firstName',
+                'data-field-name': 'login',
             },
         },
         {
@@ -31,7 +55,7 @@ export const signInForm: FormProps = {
     buttonProps: {
         text: 'Войти',
         type: 'submit',
-        onClick: handleFormClick
+        onClick: handleSignInFormSubmit
     },
 };
 export const signInSecondaryAction = {
@@ -47,7 +71,7 @@ export const signUpForm: FormProps = {
             inputProps: {
                 type: 'text',
                 required: true,
-                'data-field-name': 'firstName',
+                'data-field-name': 'first_name',
             },
         },
         {
@@ -55,7 +79,7 @@ export const signUpForm: FormProps = {
             inputProps: {
                 type: 'text',
                 required: true,
-                'data-field-name': 'secondName',
+                'data-field-name': 'second_name',
             },
         },
         {
@@ -64,14 +88,6 @@ export const signUpForm: FormProps = {
                 type: 'email',
                 required: true,
                 'data-field-name': 'email',
-            },
-        },
-        {
-            label: 'Имя для отображения',
-            inputProps: {
-                type: 'text',
-                required: true,
-                'data-field-name': 'displayName',
             },
         },
         {
@@ -102,7 +118,7 @@ export const signUpForm: FormProps = {
     buttonProps: {
         text: 'Зарегистрироваться',
         type: 'submit',
-        onClick: handleFormClick
+        onClick: handleSignUpFormSubmit
     },
 };
 export const signUpSecondaryAction = {

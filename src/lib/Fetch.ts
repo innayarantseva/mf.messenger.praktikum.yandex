@@ -8,7 +8,7 @@ enum METHODS {
 
 type Headers = Record<string, string>;
 type RequestOptions = {
-    method: keyof typeof  METHODS;
+    method: keyof typeof METHODS;
     headers?: Headers;
     data?; // FIXME
 }
@@ -18,23 +18,25 @@ export type Options = {
     headers?: Headers;
     data?; // FIXME
     timeout?: number;
+    credentials?: string;
+    mode?: string;
 }
 
 export class Fetch {
-    get = function <T>(url: string, options: Options = {}): Promise<T> {
-        return this.request(url, {...options, method: METHODS.GET}, options.timeout);
+    get = function (url: string, options: Options = {}): Promise<XMLHttpRequest> {
+        return this.request(url, { ...options, method: METHODS.GET }, options.timeout);
     }
 
-    post = function <T>(url: string, options: Options = {}): Promise<T> {
-        return this.request(url, {...options, method: METHODS.POST}, options.timeout);
+    post = function (url: string, options: Options = {}): Promise<XMLHttpRequest> {
+        return this.request(url, { ...options, method: METHODS.POST }, options.timeout);
     }
 
-    put = function <T>(url: string, options: Options = {}): Promise<T> {
-        return this.request(url, {...options, method: METHODS.PUT}, options.timeout);
+    put = function (url: string, options: Options = {}): Promise<XMLHttpRequest> {
+        return this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
     }
 
-    delete = function <T>(url: string, options: Options = {}): Promise<T> {
-        return this.request(url, {...options, method: METHODS.DELETE}, options.timeout);
+    delete = function (url: string, options: Options = {}): Promise<XMLHttpRequest> {
+        return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
     }
 
     request = (url: string, options: RequestOptions, timeout = 5000) => {
@@ -46,12 +48,13 @@ export class Fetch {
 
             // set query params
             if (method === METHODS.GET && data) {
-                Object.entries(data).forEach(([param, value])  => {
+                Object.entries(data).forEach(([param, value]) => {
                     urlObject.searchParams.set(param, value.toString());
                 });
             }
 
             xhr.open(method, urlObject.toString());
+            xhr.withCredentials = true;
 
             // set timeout
             xhr.timeout = timeout;
@@ -70,7 +73,7 @@ export class Fetch {
             xhr.ontimeout = reject;
 
             if (method === METHODS.GET || !data) {
-                xhr.send();
+                xhr.send(null);
             } else {
                 xhr.send(data);
             }

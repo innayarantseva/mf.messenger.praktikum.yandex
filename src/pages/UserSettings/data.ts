@@ -1,81 +1,77 @@
-import { FormProps } from '../../components/Form/index';
+import { updateUserProfile } from '../../api/user';
+import { ButtonProps } from '../../components/Button';
+import { getRequestFromValidationResult } from '../../utils/formValidation';
 import { router } from '../../lib/Router';
 
 const handleFormClick = (event, validationResult) => {
-    const isValid = validationResult.reduce((acc, { error }) => acc && !(error), true);
+    const { isValid, request } = getRequestFromValidationResult(validationResult);
 
     if (isValid) {
-        router.go('/settings');
+        // router.go('/settings');
+        updateUserProfile(request)
+            .then((response) => {
+                if (response.ok) {
+                    // TODO: показать зелёную нотификашку
+                    // разобраться, почему не обновляется компонент
+                    router.go('/profile', response.response);
+                }
+            });
     }
 }
 
-const userData = {
-    firstName: 'Констанция',
-    lastName: 'Константинопльская',
-    name: 'Констанция Константинопльская',
-    displayName: 'Костя 👩‍💻',
-    email: 'konstantinoplskaia@mail.dev',
-    login: 'Konstantinoplskaia',
-};
-
-export const data = {
-    title: 'Мои настройки',
-    readMode: true,
-
-    userData,
-};
-
-export const form: FormProps = {
-    fields: [
-        {
-            label: 'Имя',
-            inputProps: {
-                type: 'text',
-                value: userData.firstName,
-                required: true,
-                'data-field-name': 'firstName',
-            },
+export const fields = [
+    {
+        label: 'Имя',
+        inputProps: {
+            type: 'text',
+            required: true,
+            'data-field-name': 'first_name',
         },
-        {
-            label: 'Фамилия',
-            inputProps: {
-                type: 'text',
-                value: userData.lastName,
-                required: true,
-                'data-field-name': 'secondName',
-            },
-        },
-        {
-            label: 'Имя для отображения',
-            inputProps: {
-                type: 'text',
-                value: userData.displayName,
-                required: true,
-                'data-field-name': 'displayName',
-            },
-        },
-        {
-            label: 'Логин',
-            inputProps: {
-                type: 'text',
-                value: userData.login,
-                required: true,
-                'data-field-name': 'login',
-            },
-        },
-        {
-            label: 'Почта',
-            inputProps: {
-                type: 'email',
-                value: userData.email,
-                required: true,
-                'data-field-name': 'email',
-            },
-        },
-    ],
-    buttonProps: {
-        type: 'submit',
-        text: 'Сохранить',
-        onClick: handleFormClick
     },
+    {
+        label: 'Фамилия',
+        inputProps: {
+            type: 'text',
+            required: true,
+            'data-field-name': 'second_name',
+        },
+    },
+    {
+        label: 'Имя для отображения',
+        inputProps: {
+            type: 'text',
+            required: true,
+            'data-field-name': 'display_name',
+        },
+    },
+    {
+        label: 'Логин',
+        inputProps: {
+            type: 'text',
+            required: true,
+            'data-field-name': 'login',
+        },
+    },
+    {
+        label: 'Почта',
+        inputProps: {
+            type: 'email',
+            required: true,
+            'data-field-name': 'email',
+        },
+    },
+    {
+        label: 'Телефон',
+        inputProps: {
+            type: 'tel',
+            required: true,
+            'data-field-name': 'phone',
+        },
+    },
+];
+
+export const buttonProps: ButtonProps = {
+    type: 'submit',
+    text: 'Сохранить',
+    onClick: handleFormClick
 };

@@ -17,10 +17,19 @@ class Indicator extends Block<BlockProps> {
 }
 
 export class Avatar extends Block<BlockProps> {
-    constructor({ isOnline }: { isOnline: boolean }) {
+    constructor({
+        isOnline,
+        className = '',
+        source
+    }: {
+        isOnline: boolean;
+        className?: string;
+        source?: string;
+    }) {
         super('div', {
             attributes: {
-                className: 'avatar',
+                className: ['avatar', className].join(' '),
+                style: `background: url(${source}) var(--color-grey-6)`
             },
             isOnline,
             indicator: new Indicator(),

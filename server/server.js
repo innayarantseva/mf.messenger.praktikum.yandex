@@ -8,7 +8,10 @@ app.use(express.static('dist'));
 app.use('/', router);
 
 // почему-то с нуля не может подгрузиться settings/change
-app.get(['/settings', '/settings/*'], (req, res) => {
+app.get(['/profile', '/profile/*'], (req, res) => {
+    res.sendFile('index.html', { root: path.resolve(__dirname, '../dist') });
+});
+app.get(['/edit-profile', '/edit-profile/*'], (req, res) => {
     res.sendFile('index.html', { root: path.resolve(__dirname, '../dist') });
 });
 app.get(['/chats', '/chats/*'], (req, res) => {

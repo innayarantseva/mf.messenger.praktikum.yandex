@@ -1,18 +1,18 @@
-.user-settings {
+.user-profile {
     display: flex;
     height: 100%;
     background-color: var(--color-grey-10);
 }
 
-.user-settings__layout {
+.user-profile__layout {
     margin: 44px auto auto;
 }
 
-.user-settings__dashboard {
+.user-profile__dashboard {
     display: flex;
     flex-direction: column;
-    min-width: 346px;
-    max-width: 346px;
+    min-width: 480px;
+    max-width: 480px;
 
     padding: 60px 72px;
     margin-top: 24px;
@@ -21,12 +21,13 @@
 }
 
 /* Header */
-.user-settings__header {
+.user-profile__header {
     display: flex;
+    justify-content: space-between;
     margin-bottom: 52px;
 }
 
-.user-settings__avatar {
+.user-profile__avatar {
     width: 100px;
     height: 100px;
     flex-shrink: 0;
@@ -35,19 +36,19 @@
     margin-right: 16px;
 }
 
-.user-settings__user-data {
+.user-profile__user-data {
     display: flex;
     flex-direction: column;
 }
 
-.user-settings__heading {
+.user-profile__heading {
     margin: 0;
     font-weight: 600;
     font-size: 24px;
     line-height: 24px;
     color: var(--color-grey-dark);
 }
-.user-settings__change-heading {
+.user-profile__change-heading {
     font-style: normal;
     font-weight: 400;
     font-size: 28px;
@@ -55,49 +56,50 @@
     margin: 0 0 28px;
 }
 
-.user-settings__name {
+.user-profile__name {
     margin: 6px 0 auto;
     font-size: 16px;
     line-height: 24px;
     font-weight: 400;
 }
 
-.user-settings__options {
+.user-profile__options {
     display: flex;
+    flex-direction: column;
     list-style: none;
     margin: 0;
     padding: 0;
     font-size: 12px;
     line-height: 16px;
 }
-.user-settings__option:not(:last-child) {
+.user-profile__option:not(:last-child) {
     margin-right: 24px;
 }
 
-.user-settings__log-out {
+.user-profile__log-out {
     color: var(--color-red);
 }
 
 /* Secondary user data */
-.user-settings__parameters {
+.user-profile__parameters {
     list-style: none;
     margin: 0;
     padding: 0;
     font-size: 12px;
     line-height: 16px;
 }
-.user-settings__parameter:not(:last-child) {
+.user-profile__parameter:not(:last-child) {
     margin-bottom: 16px;
 }
-.user-settings__label {
+.user-profile__label {
     color: var(--color-grey-light);
     margin: 0 0 4px;
 }
-.user-settings__value {
+.user-profile__value {
     color: var(--color-grey-dark);
     margin: 0;
 }
 
-.user-settings__cancel-data-change {
+.user-profile__cancel-data-change {
     align-self: center;
 }

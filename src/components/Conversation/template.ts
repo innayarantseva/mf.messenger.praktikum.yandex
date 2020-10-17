@@ -1,7 +1,3 @@
-// import { dotsIcon } from '../../../assets/icons/dots.js';
-// import { attachIcon } from '../../../assets/icons/attach.js';
-// import { sendIcon } from '../../assets/icons/send.js';
-
 export const template = `<section class="conversation">
     <header class="conversation__header">
         <div>{{avatar}}</div>

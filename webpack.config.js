@@ -6,7 +6,6 @@ module.exports = {
     entry: './src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        // publicPath: path.join(__dirname, 'assets'),
         filename: 'messenger.bundle.js'
     },
     resolve: {
@@ -58,7 +57,9 @@ module.exports = {
         port: 4000,
         // open: true,
         hot: true,
-        writeToDisk: true
+        writeToDisk: true,
+        // редирект на index.html, если страница не найдена
+        historyApiFallback: true,
 
         // добавить поддержку https
     },

@@ -1,3 +1,5 @@
+export const APP_ROOT_QUERY = '.app';
+
 export function renderToDom(query, block) {
     const root = document.querySelector(query);
     root.appendChild(block.getContent());
@@ -106,6 +108,15 @@ export class Router {
     }
 
     go(pathname, newBlockProps = undefined) {
+        // логика: если зашли по /chats, проверить авторизацию
+        // если не авторизован, перейти на /
+        // если зашли на / или /sign-up и авторизованы
+        // перейти на /chats
+
+        // куда лучше поместить эту логику?
+
+
+
         this.history.pushState({}, '', pathname);
         this._onRoute(pathname, newBlockProps);
     }
@@ -124,4 +135,4 @@ export class Router {
 }
 
 
-export const router = new Router('.app');
+export const router = new Router(APP_ROOT_QUERY);

@@ -7,6 +7,7 @@ import { Conversation } from '../../components/Conversation';
 import { NavLink } from '../../components/NavLink';
 import { router } from '../../lib/Router';
 import './styles.css';
+import { getUserInfo } from '../../api/authorization';
 
 class Empty extends Block<BlockProps> {
     constructor() {
@@ -30,6 +31,7 @@ export class Chats extends Block<BlockProps> {
     _empty: Empty;
 
     constructor(data) {
+        // если нет даты, нарисовать пустоту
         const conversation = new Conversation(data || conversations['Соня Соня']);
         const empty = new Empty();
 
@@ -77,6 +79,10 @@ export class Chats extends Block<BlockProps> {
             this._conversation.hide();
         }
 
+    }
+
+    componentDidMount() {
+        getUserInfo()
     }
 
     componentDidUpdate(oldProps, newProps) {

@@ -7,6 +7,16 @@
 
     position: relative;
 }
+
+.avatar-editable-true {
+
+}
+
+.avatar-online-true .avatar-indicator {
+    opacity: 1;
+}
+
+
 .avatar-indicator {
     width: 10px;
     height: 10px;
@@ -19,7 +29,4 @@
     right: 0px;
 
     opacity: 0;
-}
-.avatar-online-true .avatar-indicator {
-    opacity: 1;
 }

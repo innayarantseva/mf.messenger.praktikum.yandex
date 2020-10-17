@@ -1,0 +1,12 @@
+.with-loader-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}

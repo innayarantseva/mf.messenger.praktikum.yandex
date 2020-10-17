@@ -1,0 +1,42 @@
+.notification {
+    z-index: 99;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: var(--color-blue-500);
+    color: var(--color-white);
+    padding: 8px 12px;
+    max-width: 400px;
+}
+
+.notification__layout {
+    display: flex;
+    align-items: flex-start;
+}
+
+.notification__icon {
+    display: flex;
+}
+.notification__icon-close {
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity ease-in-out .1s;
+}
+.notification__icon-close:hover {
+    opacity: .75;
+}
+.notification__icon-close > .material-icons {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.notification__text {
+    font-size: 14px;
+    line-height: 18px;
+    margin: 3px 16px 3px 8px;
+}
+
+.notification-type-error {
+    background: var(--color-red);
+
+}

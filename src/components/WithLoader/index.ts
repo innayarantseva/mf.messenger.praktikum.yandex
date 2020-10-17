@@ -27,7 +27,7 @@ export class WithLoader extends Block<BlockProps> {
             loading: !data && Boolean(getData)
         });
 
-        this._block = data ? this.props.blockClass(data) : null;
+        this._block = data ? new this.props.blockClass(data) : null;
     }
 
     componentDidUpdate({ data: oldData }, { data: newData }) {

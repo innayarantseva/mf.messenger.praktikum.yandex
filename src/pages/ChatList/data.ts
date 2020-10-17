@@ -1,3 +1,43 @@
+import { router } from '../../lib/Router';
+import { getRequestFromValidationResult } from '../../utils/formValidation';
+import { createChat } from '../../api/chats';
+import { FormProps } from '../../components/Form';
+
+
+const handleCreateChatFormSubmit = (event, validationResult) => {
+    // проверка валидности и создание запроса
+    const { isValid, request } = getRequestFromValidationResult(validationResult);
+
+    if (isValid) {
+        createChat(request)
+            .then((response) => {
+                if (response.ok) {
+                    console.log(response)
+                    router.go('/chats', { chats: response.response });
+                }
+            });
+    }
+};
+
+export const NewChatForm: FormProps = {
+    fields: [
+        {
+            label: 'Название чата',
+            inputProps: {
+                type: 'text',
+                required: true,
+                'data-field-name': 'title',
+            }
+        }
+    ],
+    buttonProps: {
+        text: 'Создать новый чат',
+        onClick: handleCreateChatFormSubmit,
+        type: 'submit'
+    }
+};
+
+// mock data
 const today = new Date(Date.now());
 
 export const user = {

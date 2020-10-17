@@ -3,56 +3,25 @@ import { compileTemplate } from '../../lib/templator';
 import { Avatar } from '../Avatar';
 
 import { chatTemplate } from './template';
-export { CHAT_CLASS } from './consts';
 import './styles.css';
 
-class Me extends Block<BlockProps> {
-    constructor() {
-        super('b', {
-            attributes: {
-                className: 'chats-list-item__me',
-            },
-        });
-    }
-
-    render() {
-        return compileTemplate('Я:', this.props);
-    }
-}
-
-class Badge extends Block<BlockProps> {
-    constructor({ unreadCounter }: { unreadCounter: number }) {
-        super('p', {
-            attributes: {
-                className: 'chats-list-item__badge',
-            },
-            unreadCounter,
-        });
-    }
-
-    render() {
-        return compileTemplate('{{unreadCounter}}', this.props);
-    }
-}
 
 export class ChatListItem extends Block<BlockProps> {
     constructor({
-        isOnline,
-        displayName,
-        unreadCounter = undefined,
-        lastMessage,
-        onClick = (event?) => undefined,
+        title,
+        id,
+        onClick = () => undefined,
+    }: {
+        title: string;
+        id: number;
+        onClick: (id: number) => void,
     }) {
-        super('div', {
+        super('li', {
             attributes: {
-                className: 'chats',
-                onClick,
+                onClick: () => onClick(id),
             },
-            avatar: new Avatar({ isOnline }),
-            badge: unreadCounter ? new Badge({ unreadCounter }) : '',
-            me: lastMessage.fromMe ? new Me() : '',
-            lastMessage,
-            displayName,
+            avatar: new Avatar({}),
+            title
         });
     }
 

@@ -47,17 +47,15 @@
     margin: 0 0;
 }
 
-.conversation__status {
+.conversation__users {
     font-size: 12px;
     line-height: 16px;
     color: var(--color-grey-light);
     margin: 4px 0 0;
 }
-.conversation__status-online-true {
-    color: var(--color-blue-6);
-}
 
 .conversation__options {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -69,12 +67,26 @@
 .conversation__options:hover,
 .conversation__options_active {
     background-color: var(--color-grey-10);
+    transition: background-color ease-in-out .2s;
+}
+.conversation__options:active {
+    background-color: var(--color-grey-9);
+}
+
+.conversation__option {
+    white-space: nowrap;
+    padding: 4px 16px;
+}
+.conversation__option:hover {
+    background-color: var(--color-grey-2);
 }
 
 .conversation__options-icon {
     width: 24px;
     height: 24px;
     padding: 4px;
+
+    cursor: pointer;
 }
 .conversation__options-icon > .material-icons {
     color: var(--color-grey-5);
@@ -83,16 +95,17 @@
 .conversation__options-menu {
     position: absolute;
     top: 100%;
-    right: 24px;
+    right: 0;
 
     list-style: none;
-    padding: 16px 24px;
+    padding: 8px 0;
     margin: 0;
 
-    border-radius: 12px;
-    border: 1px solid var(--color-blue-dark);
-    color: var(--color-blue-dark);
-    background-color: var(--color-white);
+    font-size: 12px;
+
+    border-radius: var(--border-radius);
+    color: var(--color-white);
+    background-color: var(--color-grey-1);
 
     display: none;
 }
@@ -101,6 +114,15 @@
 }
 
 /* Messages */
+.sorry {
+    background-color: var(--color-white);
+    border-radius: var(--border-radius);
+    color: var(--color-grey-1);
+    padding: 12px 16px;
+
+    align-self: flex-start;
+}
+
 .conversation__messages {
     display: flex;
     flex-direction: column;
@@ -127,46 +149,6 @@
     bottom: 0;
     background-color: var(--color-white);
     padding: 10px;
-}
-
-.conversation__attachment {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-}
-.conversation__attachment:hover,
-.conversation__attachment_active {
-    background-color: var(--color-grey-10);
-}
-
-.conversation__attachment-icon {
-    width: 24px;
-    height: 24px;
-    padding: 4px;
-}
-.conversation__attachment-icon > .material-icons {
-    color: var(--color-grey-5);
-}
-
-.conversation__attachment-menu {
-    position: absolute;
-    bottom: 100%;
-    left: 4px;
-
-    list-style: none;
-    padding: 16px 24px;
-    margin: 0;
-
-    border-radius: 12px;
-    border: 1px solid var(--color-blue-dark);
-    color: var(--color-blue-dark);
-    background-color: var(--color-white);
-
-    display: none;
-}
-.conversation__attachment-menu_opened_true {
-    display: block;
 }
 
 .conversation__new-message {

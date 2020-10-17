@@ -9,12 +9,43 @@ import { ChangeUserData } from './pages/UserSettings/changeUserData';
 import { ChangeUserPassword } from './pages/UserSettings/changeUserPassword';
 
 import { getUserInfo } from './api/authorization';
+import { getChats } from './api/chats';
 
 import './colors.css';
 import './main.css';
+import { FetcherResponse } from './api/fetcher';
+
+const getChatsData = (): Promise<FetcherResponse> => {
+
+    return new Promise((resolve) => {
+        getUserInfo()
+            .then((res) => {
+                if (res.ok) {
+                    return res.response;
+                } else {
+                    resolve(res);
+                }
+            })
+            .then((userData) => {
+                getChats()
+                    .then((res) => {
+                        if (res.ok) {
+                            resolve({
+                                ok: true,
+                                response: {
+                                    userData,
+                                    chats: res.response
+                                }
+                            })
+                        };
+                    })
+            });
+    });
+
+}
 
 router
-    .use('/chats', WithLoader, { blockClass: Chats, getData: getUserInfo })
+    .use('/chats', WithLoader, { blockClass: Chats, getData: getChatsData })
     .use('/profile', WithLoader, { blockClass: UserProfile, getData: getUserInfo })
     .use('/edit-profile', WithLoader, { blockClass: ChangeUserData, getData: getUserInfo })
     .use('/edit-password', WithLoader, { blockClass: ChangeUserPassword })

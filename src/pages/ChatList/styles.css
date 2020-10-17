@@ -1,3 +1,24 @@
+.chats-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.chats-container__emtpy {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    max-width: 480px;
+}
+.chats-container__emtpy-text {
+    margin: 0;
+}
+.chats-container__emtpy > .form {
+    margin-top: 48px;
+}
+
+
+
 .chats {
     height: 100%;
     display: flex;

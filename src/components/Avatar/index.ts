@@ -18,11 +18,11 @@ class Indicator extends Block<BlockProps> {
 
 export class Avatar extends Block<BlockProps> {
     constructor({
-        isOnline,
+        isOnline = false,
         className = '',
         source
     }: {
-        isOnline: boolean;
+        isOnline?: boolean;
         className?: string;
         source?: string;
     }) {

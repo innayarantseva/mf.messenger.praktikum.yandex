@@ -4,7 +4,7 @@ import { pageNotification } from '../lib/showNotification';
 
 export type FetcherResponse = {
     ok: boolean;
-    response?: string | JSON;
+    response?: string | object;
 }
 
 const getErrorText = (

@@ -1,26 +1,32 @@
 import { Block, BlockProps } from '../../lib/Block';
 import { compileTemplate } from '../../lib/templator';
-import { isEqual } from '../../utils/mydash/isEqual';
+// import { isEqual } from '../../utils/mydash/isEqual';
 
 import { Avatar } from '../Avatar';
-import { Thread } from '../Thread';
 
 import { template } from './template';
 import './styles.css';
 
 
+const getUsersString = (users: { display_name, first_name, second_name }[]) => {
+    return users.reduce((acc, { display_name, first_name, second_name }) => {
+        const userName = display_name ? display_name : `${first_name} ${second_name}`;
+
+        acc.push(userName);
+
+        return acc;
+    }, []);
+}
+
 export class Conversation extends Block<BlockProps> {
     _avatar: Avatar;
-    _threads: Thread[];
 
     constructor({
         title = '',
-        isOnline = false,
-        description = '',
-        conversations = undefined,
+        users,
+        isOnline = false
     }) {
         const avatar = new Avatar({ isOnline });
-        const threads = conversations.map(conversation => new Thread(conversation));
 
         super('article', {
             attributes: {
@@ -28,36 +34,42 @@ export class Conversation extends Block<BlockProps> {
             },
             // data
             title,
-            isOnline,
-            description,
-            conversations,
-            // blocks
-            threads,
+            users: getUsersString(users),
             avatar
         });
 
         this._avatar = avatar;
-        this._threads = threads;
     }
 
+    componentDidMount() {
+        const optionsButton = (this._element as HTMLElement).querySelector('.conversation__options');
+        const optionsMenu = (this._element as HTMLElement).querySelector('.conversation__options-menu');
 
-    componentDidUpdate(oldProps, newProps) {
-        if (!isEqual(oldProps.conversations, newProps.conversations)) {
-            this._threads.splice(0, this._threads.length); // стираем старые данные
-
-            newProps.conversations.forEach((thread) => { // добавляем новые
-                this._threads.push(new Thread(thread));
+        if (optionsButton && optionsMenu) {
+            optionsButton.addEventListener('click', () => {
+                optionsMenu.classList.toggle('conversation__options-menu_opened_true');
             })
-
-            // все проверки по одинаковости сделает сам блок
-            this.setProps({ threads: this._threads });
-            return true;
         }
-
-        this._avatar.setProps({ isOnline: newProps.isOnline });
-
-        return false;
     }
+
+
+    // componentDidUpdate(oldProps, newProps) {
+    //     if (!isEqual(oldProps.conversations, newProps.conversations)) {
+    //         this._threads.splice(0, this._threads.length); // стираем старые данные
+
+    //         newProps.conversations.forEach((thread) => { // добавляем новые
+    //             this._threads.push(new Thread(thread));
+    //         })
+
+    //         // все проверки по одинаковости сделает сам блок
+    //         this.setProps({ threads: this._threads });
+    //         return true;
+    //     }
+
+    //     this._avatar.setProps({ isOnline: newProps.isOnline });
+
+    //     return false;
+    // }
 
     render() {
         return compileTemplate(template, this.props);

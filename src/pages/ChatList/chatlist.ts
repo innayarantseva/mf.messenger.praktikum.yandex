@@ -1,13 +1,14 @@
 import { Block, BlockProps } from '../../lib/Block';
-import { chatsTemplate } from './template';
-import { user, chats, conversations } from './data';
+import { chatsTemplate, chatsContainer, noChats } from './template';
 import { compileTemplate } from '../../lib/templator';
-import { ChatListItem, CHAT_CLASS, } from '../../components/ChatListItem';
-import { Conversation } from '../../components/Conversation';
+import { ChatListItem } from '../../components/ChatListItem';
 import { NavLink } from '../../components/NavLink';
-import { router } from '../../lib/Router';
+import { Form } from '../../components/Form';
+import { getChatUsers } from '../../api/chats';
+import { NewChatForm } from './data';
+import { Conversation } from '../../components/Conversation';
 import './styles.css';
-import { getUserInfo } from '../../api/authorization';
+
 
 class Empty extends Block<BlockProps> {
     constructor() {
@@ -26,73 +27,86 @@ class Empty extends Block<BlockProps> {
     }
 }
 
+
+class ChatsList extends Block<BlockProps> {
+    props: {
+        chats,
+        conversation
+    }
+
+    constructor(chats = []) {
+        super('div', {
+            attributes: {
+                className: 'chats-container',
+            },
+            chats
+        });
+    }
+
+    render() {
+        if (!this.props.chats.length) {
+            return compileTemplate(
+                noChats,
+                { createNewChatForm: new Form(NewChatForm) }
+            );
+        } else {
+            const chatList = this.props.chats.map((chat) =>
+                new ChatListItem({
+                    ...chat,
+                    onClick: (id) => {
+                        console.log(id);
+                        getChatUsers(id)
+                            .then((res) => {
+                                if (res.ok) {
+                                    this.setProps({
+                                        conversation: {
+                                            title: chat.title,
+                                            users: res.response
+                                        }
+                                    })
+                                }
+                            })
+                    }
+                })
+            );
+
+            const conversationContainer = this.props.conversation
+                ? new Conversation(this.props.conversation)
+                : new Empty();
+
+            return compileTemplate(chatsContainer, { chatList, conversationContainer })
+        }
+    }
+}
+
 export class Chats extends Block<BlockProps> {
-    _conversation: Conversation;
-    _empty: Empty;
+    _chatsContainer
 
     constructor(data) {
-        // если нет даты, нарисовать пустоту
-        const conversation = new Conversation(data || conversations['Соня Соня']);
-        const empty = new Empty();
+
+        const chatsContainer = new ChatsList(data.chats);
 
         super('div', {
             attributes: {
                 className: 'chats',
             },
-            // data
+
             data,
-            user,
-            // blocks
+
+            chatsContainer,
             settingsLink: new NavLink({
-                pathname: '/settings',
-                text: user.displayName,
+                pathname: '/profile',
+                text: data.userData.display_name,
                 className: 'chats__user-name'
             }),
-            chatList: chats.map(
-                (chat) =>
-                    new ChatListItem({
-                        ...chat,
-                        onClick: (event) => {
-                            const closestChatItemParent = (event.target as HTMLElement).closest(
-                                `.${CHAT_CLASS}`
-                            );
-
-                            if (closestChatItemParent) {
-                                const chatTitle = (closestChatItemParent as HTMLElement)
-                                    .dataset.chatTitle;
-
-                                router.go('/chats', { data: conversations[chatTitle] })
-                            }
-                        }
-                    })
-            ),
-            conversation,
-            empty
         });
 
-        this._conversation = conversation;
-        this._empty = empty;
-
-        if (data) {
-            this._empty.hide();
-        } else {
-            this._conversation.hide();
-        }
-
-    }
-
-    componentDidMount() {
-        getUserInfo()
+        this._chatsContainer = chatsContainer;
     }
 
     componentDidUpdate(oldProps, newProps) {
-        if (newProps.data) { // обновилась дата для блока разговора
-            this._conversation.setProps(newProps.data);
-            this._empty.hide();
-            this._conversation.show();
-        } else { // даты не пришло
-            this._conversation.hide();
-            this._empty.show();
+        if (newProps.chats) {
+            this._chatsContainer.setProps(newProps.chats);
         }
 
         return false;

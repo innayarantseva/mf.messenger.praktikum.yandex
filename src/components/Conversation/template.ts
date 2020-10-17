@@ -4,7 +4,7 @@ export const template = `<section class="conversation">
 
         <div class="conversation__info">
             <h3 class="conversation__title">{{title}}</h3>
-            <p class="conversation__status conversation__status-online-{{isOnline}}">{{description}}</p>
+            <p class="conversation__users">{{users}}</p>
         </div>
 
         <div class="conversation__options">
@@ -13,30 +13,20 @@ export const template = `<section class="conversation">
             </div>
 
             <ul class="conversation__options-menu">
-                <li>Переименовать чат</li>
-                <li>Удалить</li>
+                <li class="conversation__option">Добавить пользователя</li>
+                <li class="conversation__option">Переименовать чат</li>
+                <li class="conversation__option">Удалить</li>
             </ul>
         </div>
     </header>
 
     <main class="conversation__messages">
-        {{threads}}
+        <p class="sorry">
+            Нам очень жаль, но переписываться пока что нельзя. У всего есть свои недостатки!
+        </p>
     </main>
 
     <footer class="conversation__footer">
-        <div class="conversation__attachment">
-            <div class="conversation__attachment-icon">
-                <i class="material-icons">attach_file</i>
-            </div>
-
-            <ul class="conversation__attachment-menu">
-                <li>Фото или видео</li>
-                <li>Файл</li>
-                <li>Локация</li>
-                <li>Стикер</li>
-            </ul>
-        </div>
-
         <textarea class="conversation__new-message" placeholder="Напишите сообщение..."></textarea>
 
         <div class="conversation__send">
@@ -44,11 +34,3 @@ export const template = `<section class="conversation">
         </div>
     </footer>
 </section class="">`;
-
-// {{#conversations}}
-//             <h5 class="conversation__messages-date">{{date}}</h5>
-
-//             {{#messages}}
-//                 {{> Message}}
-//             {{/messages}}
-//         {{/conversations}}

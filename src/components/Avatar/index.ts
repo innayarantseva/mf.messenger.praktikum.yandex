@@ -29,7 +29,7 @@ export class Avatar extends Block<BlockProps> {
         super('div', {
             attributes: {
                 className: ['avatar', className].join(' '),
-                style: `background: url(${source}) var(--color-grey-6)`
+                style: Boolean(source) && `background-image: url('https://ya-praktikum.tech${source}')`
             },
             isOnline,
             indicator: new Indicator(),

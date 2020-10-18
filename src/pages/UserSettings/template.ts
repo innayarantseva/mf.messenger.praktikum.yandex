@@ -9,7 +9,7 @@ export const userSettingsTemplate = `<article class="user-profile">
             <header class="user-profile__header">
                 <div class="user-profile__user-data">
                     <h1 class="user-profile__heading">{{name}}</h1>
-                    <h3 class="user-profile__name">{{displayName}}</h3>
+                    <h3 class="user-profile__name">В чатах: {{displayName}}</h3>
 
                     <ul class="user-profile__options">
                         <li class="user-profile__option">

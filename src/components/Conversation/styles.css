@@ -61,25 +61,24 @@
     align-items: center;
     width: 28px;
     height: 28px;
-    border-radius: 50%;
     margin-left: auto;
 }
-.conversation__options:hover,
-.conversation__options_active {
-    background-color: var(--color-grey-10);
-    transition: background-color ease-in-out .2s;
+.conversation__options:hover > .conversation__options-icon > .material-icons,
+.conversation__options_active > .conversation__options-icon > .material-icons {
+    color: var(--color-blue-6);
+    transition: color ease-in-out .2s;
 }
-.conversation__options:active {
-    background-color: var(--color-grey-9);
+.conversation__options:active > .conversation__options-icon > .material-icons {
+    color: var(--color-blue-5);
 }
 
-.conversation__option {
+/* .conversation__option {
     white-space: nowrap;
     padding: 4px 16px;
 }
 .conversation__option:hover {
     background-color: var(--color-grey-2);
-}
+} */
 
 .conversation__options-icon {
     width: 24px;
@@ -92,7 +91,7 @@
     color: var(--color-grey-5);
 }
 
-.conversation__options-menu {
+/* .conversation__options-menu {
     position: absolute;
     top: 100%;
     right: 0;
@@ -111,7 +110,7 @@
 }
 .conversation__options-menu_opened_true {
     display: block;
-}
+} */
 
 /* Messages */
 .sorry {

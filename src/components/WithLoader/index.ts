@@ -30,17 +30,16 @@ export class WithLoader extends Block<BlockProps> {
         this._block = data ? new this.props.blockClass(data) : null;
     }
 
-    componentDidUpdate({ data: oldData }, { data: newData }) {
-        console.log(oldData, newData)
+    // обновление не работает 🤬
+    // componentDidUpdate({ data: oldData }, { data: newData }) {
+    //     if (oldData && !isEqual(oldData, newData)) {
+    //         if (this._block) {
+    //             this._block.setProps({ data: { ...oldData, ...newData } });
+    //         }
+    //     }
 
-        // if (oldData && !isEqual(oldData, newData)) {
-        //     if (this._block) {
-        //         this._block.setProps(newData);
-        //     }
-        // }
-
-        return false;
-    }
+    //     return false;
+    // }
 
     componentDidMount() {
         if (this.props.loading) {

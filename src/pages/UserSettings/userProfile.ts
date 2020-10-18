@@ -30,7 +30,7 @@ export class UserProfile extends Block<BlockProps> {
             },
             // data
             name,
-            displayName: display_name,
+            displayName: display_name || name,
             email,
             login,
             phone,

@@ -5,11 +5,10 @@
     background-color: #EFEFEF;
     margin-right: 12px;
 
+    background-color: var(--color-grey-6);
+    background-size: cover;
+
     position: relative;
-}
-
-.avatar-editable-true {
-
 }
 
 .avatar-online-true .avatar-indicator {

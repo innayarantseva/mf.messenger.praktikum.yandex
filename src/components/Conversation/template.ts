@@ -9,14 +9,8 @@ export const template = `<section class="conversation">
 
         <div class="conversation__options">
             <div class="conversation__options-icon">
-                <i class="material-icons">more_vert</i>
+                <i class="material-icons">settings</i>
             </div>
-
-            <ul class="conversation__options-menu">
-                <li class="conversation__option">Добавить пользователя</li>
-                <li class="conversation__option">Переименовать чат</li>
-                <li class="conversation__option">Удалить</li>
-            </ul>
         </div>
     </header>
 

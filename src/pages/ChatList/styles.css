@@ -125,6 +125,7 @@
 .chats__empty {
     margin: auto;
     color: var(--color-grey-5);
+    font-size: 12px;
 }
 .chats__empty-message {
     font-size: 12px;

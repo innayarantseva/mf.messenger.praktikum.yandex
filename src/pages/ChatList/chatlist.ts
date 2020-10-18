@@ -6,7 +6,7 @@ import { NavLink } from '../../components/NavLink';
 import { Form } from '../../components/Form';
 import { getChatUsers } from '../../api/chats';
 import { NewChatForm } from './data';
-import { Conversation } from '../../components/Conversation';
+import { ChatSettings } from '../../components/ChatSettings';
 import './styles.css';
 
 
@@ -31,6 +31,7 @@ class Empty extends Block<BlockProps> {
 class ChatsList extends Block<BlockProps> {
     props: {
         chats,
+        foundUsers,
         conversation
     }
 
@@ -54,12 +55,12 @@ class ChatsList extends Block<BlockProps> {
                 new ChatListItem({
                     ...chat,
                     onClick: (id) => {
-                        console.log(id);
                         getChatUsers(id)
                             .then((res) => {
                                 if (res.ok) {
                                     this.setProps({
                                         conversation: {
+                                            id,
                                             title: chat.title,
                                             users: res.response
                                         }
@@ -70,8 +71,9 @@ class ChatsList extends Block<BlockProps> {
                 })
             );
 
+            // FIXME: сделать один инстанс и обновлять его
             const conversationContainer = this.props.conversation
-                ? new Conversation(this.props.conversation)
+                ? new ChatSettings(this.props.conversation)
                 : new Empty();
 
             return compileTemplate(chatsContainer, { chatList, conversationContainer })
@@ -83,8 +85,9 @@ export class Chats extends Block<BlockProps> {
     _chatsContainer
 
     constructor(data) {
-
         const chatsContainer = new ChatsList(data.chats);
+
+        const name = data.userData.display_name || `${data.userData.first_name} ${data.userData.second_name}`
 
         super('div', {
             attributes: {
@@ -96,7 +99,7 @@ export class Chats extends Block<BlockProps> {
             chatsContainer,
             settingsLink: new NavLink({
                 pathname: '/profile',
-                text: data.userData.display_name,
+                text: name,
                 className: 'chats__user-name'
             }),
         });

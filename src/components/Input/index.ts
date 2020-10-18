@@ -11,6 +11,7 @@ export type InputProps = {
     required?;
     className?: string;
     error?: string;
+    accept?: string;
     onFocus?: (event) => void;
     onBlur?: (event) => void;
     onInput?: (event) => void;
@@ -33,8 +34,8 @@ export class Input extends Block<BlockProps> {
                 ...props,
                 className: [
                     'input',
-                    props.className,
                     `input_invalid_${Boolean(props.error)}`,
+                    props.className,
                 ].join(' '),
                 onInput: (event) => {
                     this.setProps({ value: event.target.value });
@@ -46,8 +47,8 @@ export class Input extends Block<BlockProps> {
     }
 
     validate() {
-        const value = (this.props as InputProps).value;
         const inputType = (this.props as InputBlockProps).attributes.type;
+        const value = inputType === 'file' ? (this._element as HTMLInputElement).files : (this.props as InputProps).value;
         const fieldName = (this.props as InputBlockProps).attributes[
             'data-field-name'
         ];

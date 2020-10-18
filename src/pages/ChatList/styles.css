@@ -54,6 +54,10 @@
     display: flex;
     align-items: center;
 }
+.chats__user-settings > .avatar {
+    width: 36px;
+    height: 36px;
+}
 .chats__user-name {
     margin: 0 0 0 8px;
     font-size: 14px;
@@ -71,6 +75,10 @@
     background-color: var(--color-white);
     border-right: 1px solid var(--color-grey-10);
     overflow-y: scroll;
+}
+.chats__aside > .form {
+    padding: 20px;
+    width: auto;
 }
 
 .chats__search-row {

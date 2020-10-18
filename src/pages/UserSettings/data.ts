@@ -2,6 +2,7 @@ import { updateUserProfile, updateUserPassword } from '../../api/user';
 import { ButtonProps } from '../../components/Button';
 import { getRequestFromValidationResult } from '../../utils/formValidation';
 import { router } from '../../lib/Router';
+import { pageNotification } from '../../lib/showNotification';
 
 const handleFormClick = (event, validationResult) => {
     const { isValid, request } = getRequestFromValidationResult(validationResult);
@@ -10,7 +11,10 @@ const handleFormClick = (event, validationResult) => {
         updateUserProfile(request)
             .then((response) => {
                 if (response.ok) {
-                    // TODO: показать зелёную нотификашку
+                    pageNotification.showNotification({
+                        text: 'Обновили данные успешно. Обновите страницу, чтобы убедиться :)',
+                        type: 'info'
+                    })
                     // разобраться, почему не обновляется компонент
                     router.go('/profile', { data: response.response });
                 }
@@ -25,6 +29,10 @@ const handleChangePassword = (event, validationResult) => {
         updateUserPassword(request)
             .then((response) => {
                 if (response.ok) {
+                    pageNotification.showNotification({
+                        text: 'Обновили пароль успешно',
+                        type: 'info'
+                    })
                     // TODO: показать зелёную нотификашку
                     router.go('/profile');
                 }

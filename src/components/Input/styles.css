@@ -9,6 +9,11 @@
     color: var(--color-grey-1);
     padding-left: 16px;
 }
+.input[type="file"] {
+    border-color: transparent;
+    background-color: transparent;
+    padding: 0;
+}
 .input_invalid_true {
     border-bottom-color: var(--color-red);
 }

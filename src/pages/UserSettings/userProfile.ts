@@ -1,7 +1,7 @@
 import { Block, BlockProps } from '../../lib/Block';
 import { compileTemplate } from '../../lib/templator';
 import { router } from '../../lib/Router';
-import { logOut } from '../../api/authorization';
+import { getUserInfo, logOut } from '../../api/authorization';
 // components
 import { Button } from '../../components/Button';
 import { NavLink } from '../../components/NavLink';
@@ -10,9 +10,36 @@ import { Avatar } from '../../components/Avatar';
 import { userSettingsTemplate } from './template';
 
 import './styles.css';
+import { Form, FormProps } from '../../components/Form';
+import { getRequestFromValidationResult } from '../../utils/formValidation';
+import { updateUserAvatar } from '../../api/user';
+import { pageNotification } from '../../lib/showNotification';
 
+
+const getAvatarFormData = (onClick): FormProps => ({
+    fields: [
+        {
+            label: 'Выбрать новый аватар',
+            inputProps: {
+                type: 'file',
+                accept: 'image/jpeg',
+                required: true,
+                'data-field-name': 'file',
+            }
+        }
+    ],
+    buttonProps: {
+        text: 'Загрузить',
+        type: 'submit',
+        onClick
+    }
+});
 
 export class UserProfile extends Block<BlockProps> {
+    props: {
+        avatar
+    }
+
     constructor({
         first_name,
         second_name,
@@ -22,6 +49,31 @@ export class UserProfile extends Block<BlockProps> {
         phone,
         avatar
     }) {
+        const handleCreateChatFormSubmit = (event, validationResult) => {
+            const { isValid, request } = getRequestFromValidationResult(validationResult);
+
+            if (isValid) {
+                const formData = new FormData();
+
+                formData.append('avatar', request.file[0]);
+
+                updateUserAvatar(formData)
+                    .then((res) => {
+                        if (res.ok) {
+                            getUserInfo()
+                                .then((res) => {
+                                    if (res.ok) {
+                                        pageNotification.showNotification({
+                                            text: 'Успешно обновили аватарку! Перезагрузите страничку, чтобы убедиться',
+                                            type: 'info'
+                                        });
+                                        // this.setProps({ avatar: (res.response as { avatar }).avatar });
+                                    }
+                                })
+                        }
+                    });
+            }
+        };
         const name = `${first_name} ${second_name}`;
 
         super('article', {
@@ -34,13 +86,9 @@ export class UserProfile extends Block<BlockProps> {
             email,
             login,
             phone,
+            avatar,
 
             // template components
-            avatar: new Avatar({
-                isOnline: false,
-                className: 'user-profile__avatar',
-                source: avatar
-            }),
             chatsLink: new NavLink({ pathname: '/chats', text: '← Все чаты' }),
             settingsLink: new NavLink({ pathname: '/edit-profile', text: 'Изменить данные' }),
             passwordLink: new NavLink({ pathname: '/edit-password', text: 'Сменить пароль' }),
@@ -56,6 +104,7 @@ export class UserProfile extends Block<BlockProps> {
                         });
                 }
             }),
+            avatarForm: new Form(getAvatarFormData(handleCreateChatFormSubmit)),
             button: new Button({
                 text: 'Изменить данные',
                 className: 'user-settings__change-data',
@@ -63,7 +112,15 @@ export class UserProfile extends Block<BlockProps> {
         });
     }
 
+
+
     render() {
-        return compileTemplate(userSettingsTemplate, this.props);
+        const avatar = new Avatar({
+            isOnline: false,
+            className: 'user-profile__avatar',
+            source: this.props.avatar
+        });
+
+        return compileTemplate(userSettingsTemplate, { ...this.props, avatar });
     }
 }

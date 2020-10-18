@@ -38,5 +38,12 @@
 
 .notification-type-error {
     background: var(--color-red);
+}
 
+.notification-type-info {
+    background: var(--color-green);
+}
+
+.notification-type-warning {
+    background: var(--color-yellow);
 }

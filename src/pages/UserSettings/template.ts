@@ -23,7 +23,8 @@ export const userSettingsTemplate = `<article class="user-profile">
 
                 <aside>
                     {{avatar}}
-                    <input class="user-profile__select-avatar-image" type="file" accept="image/jpeg">
+
+                    {{avatarForm}}
                 </aside>
             </header>
 

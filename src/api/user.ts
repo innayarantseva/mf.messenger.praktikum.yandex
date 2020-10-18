@@ -9,6 +9,7 @@ import {
 const USER_URL = `${BASE_URL}/user`;
 
 const UPDATE_PROFILE_URL = `${USER_URL}/profile`;
+const UPDATE_AVATAR_URL = `${USER_URL}/profile/avatar`;
 const UPDATE_PASSWORD_URL = `${USER_URL}/password`;
 const SEARCH_USER_URL = `${USER_URL}/search`;
 
@@ -65,6 +66,22 @@ export const searchUserByLogin = (formData: { login: string }): Promise<FetcherR
 
     return Fetcher
         .post(SEARCH_USER_URL, options)
+        .then((response) => handleFetcherResponse(response))
+        .catch((error) => handleUnexpectedError(error));
+};
+
+export const updateUserAvatar = (formData: FormData): Promise<FetcherResponse> => {
+    const options = {
+        credentials: 'include',
+        mode: 'cors',
+        // headers: {
+        //     'content-type': 'multipart/form-data',
+        // },
+        data: formData
+    };
+
+    return Fetcher
+        .put(UPDATE_AVATAR_URL, options)
         .then((response) => handleFetcherResponse(response))
         .catch((error) => handleUnexpectedError(error));
 };

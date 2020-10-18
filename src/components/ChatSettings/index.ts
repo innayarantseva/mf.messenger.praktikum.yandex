@@ -168,13 +168,14 @@ export class ChatSettings extends Block<BlockProps> {
                 chatId: this.props.id
             }).then((res) => {
                 if (res.ok) {
-                    // запросить новые данные по пользователям
-                    // обновить пропсы
                     getChatUsers(this.props.id).then((res) => {
                         if (res.ok) {
                             this.setProps({ users: res.response });
                         }
-                        pageNotification.showNotification({ text: 'Успешно удалили пользователя' })
+                        pageNotification.showNotification({
+                            text: 'Успешно удалили пользователя',
+                            type: 'info'
+                        })
                     });
                 }
             });
@@ -186,20 +187,20 @@ export class ChatSettings extends Block<BlockProps> {
                 chatId: this.props.id
             }).then((res) => {
                 if (res.ok) {
-                    // запросить новые данные по пользователям
-                    // обновить пропсы
                     getChatUsers(this.props.id).then((res) => {
                         if (res.ok) {
                             this.setProps({ users: res.response });
                         }
-                        pageNotification.showNotification({ text: 'Успешно добавили пользователя' })
+                        pageNotification.showNotification({
+                            text: 'Успешно добавили пользователя',
+                            type: 'info'
+                        })
                     });
                 }
             });
         };
 
         const avatar = new Avatar({ source: this.props.avatar });
-
 
         const usersList = this.props.users.map(({
             display_name,
@@ -222,8 +223,6 @@ export class ChatSettings extends Block<BlockProps> {
             avatar,
             usersList,
             addUserContainer
-            // searchUserForm,
-            // foundUsers
         }
 
         return compileTemplate(template, renderContext);

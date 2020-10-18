@@ -3,10 +3,15 @@ import { chatsTemplate, chatsContainer, noChats } from './template';
 import { compileTemplate } from '../../lib/templator';
 import { ChatListItem } from '../../components/ChatListItem';
 import { NavLink } from '../../components/NavLink';
-import { Form } from '../../components/Form';
-import { getChatUsers } from '../../api/chats';
-import { NewChatForm } from './data';
+import { Form, FormProps } from '../../components/Form';
+import { createChat, getChats, getChatUsers } from '../../api/chats';
+// import { NewChatForm } from './data';
 import { ChatSettings } from '../../components/ChatSettings';
+import { Avatar } from '../../components/Avatar';
+import { getRequestFromValidationResult } from '../../utils/formValidation';
+// import { getRequestFromValidationResult } from '../../utils/formValidation';
+// import { createChat } from '../../api/chats';
+// import { FormProps } from '../../components/Form';
 import './styles.css';
 
 
@@ -44,11 +49,48 @@ class ChatsList extends Block<BlockProps> {
         });
     }
 
+    get NewChatForm(): FormProps {
+        const handleCreateChatFormSubmit = (event, validationResult) => {
+            const { isValid, request } = getRequestFromValidationResult(validationResult);
+
+            if (isValid) {
+                createChat(request)
+                    .then((response) => {
+                        if (response.ok) {
+                            getChats().then((res) => {
+                                if (res.ok) {
+                                    this.setProps({ chats: res.response });
+                                }
+                            })
+                        }
+                    });
+            }
+        };
+
+        return {
+            fields: [
+                {
+                    label: 'Название чата',
+                    inputProps: {
+                        type: 'text',
+                        required: true,
+                        'data-field-name': 'title',
+                    }
+                }
+            ],
+            buttonProps: {
+                text: 'Создать новый чат',
+                onClick: handleCreateChatFormSubmit,
+                type: 'submit'
+            }
+        };
+    }
+
     render() {
         if (!this.props.chats.length) {
             return compileTemplate(
                 noChats,
-                { createNewChatForm: new Form(NewChatForm) }
+                { createNewChatForm: new Form(this.NewChatForm) }
             );
         } else {
             const chatList = this.props.chats.map((chat) =>
@@ -71,12 +113,14 @@ class ChatsList extends Block<BlockProps> {
                 })
             );
 
+            const newChat = new Form(this.NewChatForm);
+
             // FIXME: сделать один инстанс и обновлять его
             const conversationContainer = this.props.conversation
                 ? new ChatSettings(this.props.conversation)
                 : new Empty();
 
-            return compileTemplate(chatsContainer, { chatList, conversationContainer })
+            return compileTemplate(chatsContainer, { chatList, conversationContainer, newChat })
         }
     }
 }
@@ -97,6 +141,7 @@ export class Chats extends Block<BlockProps> {
             data,
 
             chatsContainer,
+            avatar: new Avatar({ source: data.userData.avatar }),
             settingsLink: new NavLink({
                 pathname: '/profile',
                 text: name,

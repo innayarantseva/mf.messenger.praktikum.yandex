@@ -5,21 +5,22 @@ import './styles.css';
 
 export type NotificationProps = {
     className?: string;
-    text: string,
+    text: string;
+    type?: 'info' | 'error' | 'warning';
     // TODO: сделать type = warning | error | info
 };
 
 export class Notification extends Block<BlockProps> {
     props: BlockProps;
 
-    constructor({ text, className = '' }: NotificationProps) {
+    constructor({ text, className = '', type = 'error' }: NotificationProps) {
         super('div', {
             text,
             attributes: {
                 // TODO: добавить утилиту classnames
                 className: [
                     'notification',
-                    'notification-type-error',
+                    `notification-type-${type}`,
                     className
                 ].join(' '),
             },

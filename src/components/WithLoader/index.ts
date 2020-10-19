@@ -1,6 +1,5 @@
 import { Block, BlockProps } from '../../lib/Block';
 import { compileTemplate } from '../../lib/templator';
-import { isEqual } from '../../utils/mydash/isEqual';
 import './styles.css';
 
 

@@ -17,7 +17,7 @@ export class WithLoader extends Block<BlockProps> {
     constructor({ blockClass, data, getData }) {
         super('div', {
             attributes: {
-                className: 'with-loader-container',
+                className: 'with-loader-container'
             },
 
             blockClass,

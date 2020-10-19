@@ -6,11 +6,12 @@ import { Form } from '../../components/Form/index';
 import { NavLink } from '../../components/NavLink/index';
 import './styles.css';
 
+
 export class SignIn extends Block<BlockProps> {
     constructor() {
         super('div', {
             attributes: {
-                className: 'authorization',
+                className: 'authorization'
             },
             heading: 'Вход',
             form: new Form(form),

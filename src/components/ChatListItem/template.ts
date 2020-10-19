@@ -1,5 +1,6 @@
 import { CHAT_CLASS } from './consts';
 
+
 export const chatTemplate = `<section class="${CHAT_CLASS}" data-chat-title="{{title}}">
     <aside>
         {{avatar}}

@@ -1,5 +1,5 @@
 import { Block, BlockProps } from './Block';
-import { Route, Router } from './Router';
+import { Route } from './Router';
 
 class MyBlock extends Block<BlockProps> {
     constructor({ className }) {

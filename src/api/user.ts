@@ -1,6 +1,7 @@
 import { BASE_URL } from './baseUrl';
 import { Fetcher } from './fetcher';
 
+
 const USER_URL = `${BASE_URL}/user`;
 
 const UPDATE_PROFILE_URL = `${USER_URL}/profile`;
@@ -33,7 +34,7 @@ export const updateUserAvatar = (formData: FormData) => {
     const options = {
         headers: {
             // ресет дефолтного content-type
-            'content-type': undefined,
+            'content-type': undefined
         },
         data: formData
     };

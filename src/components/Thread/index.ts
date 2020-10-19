@@ -6,6 +6,7 @@ import { Message } from '../Message';
 import { template } from './template';
 import './styles.css';
 
+
 export class Thread extends Block<BlockProps> {
     _messages;
 
@@ -14,7 +15,7 @@ export class Thread extends Block<BlockProps> {
 
         super('section', {
             attributes: {
-                className: 'conversation__messages',
+                className: 'conversation__messages'
             },
             date,
             messages: messagesBlocks

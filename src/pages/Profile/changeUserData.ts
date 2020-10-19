@@ -29,11 +29,11 @@ export class ChangeUserData extends Block<BlockProps> {
 
         super('div', {
             attributes: {
-                className: 'user-settings',
+                className: 'user-settings'
             },
             form: new Form(mapDatatoFormProps(currentUser)),
             chatsLink: new NavLink({ pathname: '/chats', text: '← Все чаты' }),
-            profileLink: new NavLink({ pathname: '/profile', text: 'Отменить' }),
+            profileLink: new NavLink({ pathname: '/profile', text: 'Отменить' })
         });
     }
 

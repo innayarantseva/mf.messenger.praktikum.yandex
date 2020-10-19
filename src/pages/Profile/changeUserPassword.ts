@@ -10,11 +10,11 @@ export class ChangeUserPassword extends Block<BlockProps> {
     constructor() {
         super('div', {
             attributes: {
-                className: 'user-settings',
+                className: 'user-settings'
             },
             form: new Form({ fields: passwordFields, buttonProps: passwordButtonProps }),
             chatsLink: new NavLink({ pathname: '/chats', text: '← Все чаты' }),
-            profileLink: new NavLink({ pathname: '/profile', text: 'Отменить' }),
+            profileLink: new NavLink({ pathname: '/profile', text: 'Отменить' })
         });
     }
 

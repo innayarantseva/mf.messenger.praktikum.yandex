@@ -2,6 +2,7 @@ import { router } from '../../lib/Router';
 import { Block, BlockProps } from '../../lib/Block';
 import { compileTemplate } from '../../lib/templator';
 
+
 export class NavLink extends Block<BlockProps> {
     constructor({ pathname, text, className = '' }) {
         super('a', {
@@ -11,7 +12,7 @@ export class NavLink extends Block<BlockProps> {
                     event.preventDefault();
                     router.go(pathname);
                 },
-                className: ['navlink', className].join(' '),
+                className: ['navlink', className].join(' ')
             },
             text
         })

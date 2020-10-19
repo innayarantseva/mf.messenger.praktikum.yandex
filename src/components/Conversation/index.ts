@@ -1,9 +1,6 @@
 import { Block, BlockProps } from '../../lib/Block';
 import { compileTemplate } from '../../lib/templator';
-// import { isEqual } from '../../utils/mydash/isEqual';
-
 import { Avatar } from '../Avatar';
-
 import { template } from './template';
 import './styles.css';
 
@@ -30,7 +27,7 @@ export class Conversation extends Block<BlockProps> {
 
         super('article', {
             attributes: {
-                className: 'conversation',
+                className: 'conversation'
             },
             // data
             title,

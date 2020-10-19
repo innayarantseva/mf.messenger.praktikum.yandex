@@ -2,6 +2,7 @@ import { Block, BlockProps } from '../../lib/Block';
 import { compileTemplate } from '../../lib/templator';
 import './styles.css';
 
+
 const template = '<div>{{text}}</div>';
 
 export type ButtonProps = {
@@ -18,15 +19,15 @@ export class Button extends Block<BlockProps> {
         className = '',
         type = 'button',
         text,
-        onClick,
+        onClick
     }: ButtonProps) {
         super('button', {
             text,
             attributes: {
                 className: ['button', className].join(' '),
                 onClick,
-                type,
-            },
+                type
+            }
         });
     }
 

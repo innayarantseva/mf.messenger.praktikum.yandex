@@ -1,15 +1,18 @@
 import { Block, BlockProps } from '../../lib/Block';
 import { compileTemplate } from '../../lib/templator';
+import { pageNotification } from '../../lib/showNotification';
+// components
+import { getRequestFromValidationResult } from '../../utils/formValidation';
 import { Avatar } from '../Avatar';
 import { Form, FormProps } from '../Form';
-import { getRequestFromValidationResult } from '../../utils/formValidation';
-import { chatUserTemplate, foundUsersTemplate, searchUserTemplate, template } from './template';
-import { searchUserByLogin } from '../../api/user';
-import { addNewUsersToChat, deleteUsersFromChat, getChatUsers } from '../../api/chats';
-import './styles.css';
-import { pageNotification } from '../../lib/showNotification';
 import { Button } from '../Button';
-
+// data
+import { chatUserTemplate, foundUsersTemplate, searchUserTemplate, template } from './template';
+// api
+import { addNewUsersToChat, deleteUsersFromChat, getChatUsers } from '../../api/chats';
+import { searchUserByLogin } from '../../api/user';
+// styles
+import './styles.css';
 
 
 class User extends Block<BlockProps> {
@@ -25,7 +28,7 @@ class User extends Block<BlockProps> {
     constructor({ name, id, avatar, action, onClick }) {
         super('li', {
             attributes: {
-                className: 'chat-user',
+                className: 'chat-user'
             },
             name,
             id,
@@ -87,7 +90,7 @@ class AddNewUser extends Block<BlockProps> {
                         type: 'text',
                         placeholder: 'Введите логин',
                         required: true,
-                        'data-field-name': 'login',
+                        'data-field-name': 'login'
                     }
                 }
             ],
@@ -149,7 +152,7 @@ export class ChatSettings extends Block<BlockProps> {
     }) {
         super('article', {
             attributes: {
-                className: 'chat-settings',
+                className: 'chat-settings'
             },
             // data
             title,

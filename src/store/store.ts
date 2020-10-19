@@ -1,6 +1,7 @@
 import { AuthUserInfo } from '../api/authorization';
 import { cloneDeep } from '../utils/mydash/deepClone';
 
+
 type AppStore = {
     currentUser?: AuthUserInfo;
 }

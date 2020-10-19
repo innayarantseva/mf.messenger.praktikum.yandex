@@ -10,7 +10,7 @@
         "start:dev": "webpack-dev-server",
         "start:prod": "node ./server/server.js",
         "lint": "eslint ./src && stylelint ./src",
-        "lint:fix": "eslint ./src --fix"
+        "lint:fix": "eslint --fix . --ext .js,.ts src"
     },
     "husky": {
         "hooks": {

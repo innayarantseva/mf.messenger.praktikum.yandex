@@ -4,6 +4,7 @@ import { getRequestFromValidationResult } from '../../utils/formValidation';
 import { router } from '../../lib/Router';
 import { pageNotification } from '../../lib/showNotification';
 
+
 const handleFormClick = (event, validationResult) => {
     const { isValid, request } = getRequestFromValidationResult(validationResult);
 
@@ -47,16 +48,16 @@ export const fields = [
         inputProps: {
             type: 'text',
             required: true,
-            'data-field-name': 'first_name',
-        },
+            'data-field-name': 'first_name'
+        }
     },
     {
         label: 'Фамилия',
         inputProps: {
             type: 'text',
             required: true,
-            'data-field-name': 'second_name',
-        },
+            'data-field-name': 'second_name'
+        }
     },
     {
         label: 'Имя для отображения',
@@ -65,33 +66,33 @@ export const fields = [
             // это реал странно, но в апишке написано, что это обязательное поле
             // см. модель в https://ya-praktikum.tech/api/v2/swagger/#/Users/put_user_profile
             required: true,
-            'data-field-name': 'display_name',
-        },
+            'data-field-name': 'display_name'
+        }
     },
     {
         label: 'Логин',
         inputProps: {
             type: 'text',
             required: true,
-            'data-field-name': 'login',
-        },
+            'data-field-name': 'login'
+        }
     },
     {
         label: 'Почта',
         inputProps: {
             type: 'email',
             required: true,
-            'data-field-name': 'email',
-        },
+            'data-field-name': 'email'
+        }
     },
     {
         label: 'Телефон',
         inputProps: {
             type: 'tel',
             required: true,
-            'data-field-name': 'phone',
-        },
-    },
+            'data-field-name': 'phone'
+        }
+    }
 ];
 
 export const passwordFields = [
@@ -100,17 +101,17 @@ export const passwordFields = [
         inputProps: {
             type: 'password',
             required: true,
-            'data-field-name': 'oldPassword',
-        },
+            'data-field-name': 'oldPassword'
+        }
     },
     {
         label: 'Новый пароль',
         inputProps: {
             type: 'password',
             required: true,
-            'data-field-name': 'newPassword',
-        },
-    },
+            'data-field-name': 'newPassword'
+        }
+    }
 ];
 
 export const passwordButtonProps: ButtonProps = {

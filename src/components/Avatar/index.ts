@@ -2,12 +2,13 @@ import { Block, BlockProps } from '../../lib/Block';
 import { compileTemplate } from '../../lib/templator';
 import './styles.css';
 
+
 class Indicator extends Block<BlockProps> {
     constructor() {
         super('div', {
             attributes: {
-                className: 'avatar-indicator',
-            },
+                className: 'avatar-indicator'
+            }
         });
     }
 
@@ -32,7 +33,7 @@ export class Avatar extends Block<BlockProps> {
                 style: Boolean(source) && `background-image: url('https://ya-praktikum.tech${source}')`
             },
             isOnline,
-            indicator: new Indicator(),
+            indicator: new Indicator()
         });
     }
 

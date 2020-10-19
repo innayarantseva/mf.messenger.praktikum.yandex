@@ -1,11 +1,10 @@
 import { Block, BlockProps } from '../../lib/Block';
 import { compileTemplate } from '../../lib/templator';
-
 import { Button, ButtonProps } from '../Button';
 import { FormField, FormFieldProps } from '../Formfield';
-
 import { template } from './template';
 import './styles.css';
+
 
 export type FormProps = {
     fields: FormFieldProps[];
@@ -31,11 +30,11 @@ export class Form extends Block<BlockProps> {
                     console.log(validationResult);
 
                     buttonProps.onClick && buttonProps.onClick(event, validationResult);
-                },
+                }
             }),
             attributes: {
-                className: [className, 'form'].filter(v => !!v).join(' '),
-            },
+                className: [className, 'form'].filter(v => !!v).join(' ')
+            }
         });
     }
 

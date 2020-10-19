@@ -1,4 +1,3 @@
-import { cloneDeep } from '../utils/mydash/deepClone';
 import { Block, BlockNode } from './Block';
 
 const blockInstanceProps = {

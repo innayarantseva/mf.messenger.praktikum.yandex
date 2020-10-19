@@ -1,11 +1,10 @@
 import { Block, BlockProps } from '../../lib/Block';
 import { compileTemplate } from '../../lib/templator';
 import { validateInput } from '../../utils/formValidation';
-
 import { Input, InputProps } from '../Input';
-
 import { template } from './template';
 import './styles.css';
+
 
 export type FormFieldProps = {
     className?: string;
@@ -22,7 +21,7 @@ export class FormField extends Block<BlockProps> {
         error = '',
         inputProps = {},
         label,
-        className = '',
+        className = ''
     }: FormFieldProps) {
         super('div', {
             label,
@@ -46,12 +45,12 @@ export class FormField extends Block<BlockProps> {
                     );
 
                     this.setProps({ error: error || '' });
-                },
+                }
             }),
             error,
             attributes: {
-                className: [className, 'formfield'].join(' '),
-            },
+                className: [className, 'formfield'].join(' ')
+            }
         });
     }
 

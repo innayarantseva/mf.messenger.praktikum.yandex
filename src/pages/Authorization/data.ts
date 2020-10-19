@@ -43,28 +43,28 @@ export const signInForm: FormProps = {
             inputProps: {
                 type: 'text',
                 required: true,
-                'data-field-name': 'login',
-            },
+                'data-field-name': 'login'
+            }
         },
         {
             label: 'Пароль',
             inputProps: {
                 type: 'password',
                 required: true,
-                'data-field-name': 'password',
-            },
-        },
+                'data-field-name': 'password'
+            }
+        }
     ],
     buttonProps: {
         text: 'Войти',
         type: 'submit',
         onClick: handleSignInFormSubmit
-    },
+    }
 };
 export const signInSecondaryAction = {
     href: './signUp.html',
     info: 'Нет аккаунта?',
-    linkText: 'Зарегистрироваться',
+    linkText: 'Зарегистрироваться'
 };
 
 export const signUpForm: FormProps = {
@@ -74,58 +74,58 @@ export const signUpForm: FormProps = {
             inputProps: {
                 type: 'text',
                 required: true,
-                'data-field-name': 'first_name',
-            },
+                'data-field-name': 'first_name'
+            }
         },
         {
             label: 'Фамилия',
             inputProps: {
                 type: 'text',
                 required: true,
-                'data-field-name': 'second_name',
-            },
+                'data-field-name': 'second_name'
+            }
         },
         {
             label: 'Почта',
             inputProps: {
                 type: 'email',
                 required: true,
-                'data-field-name': 'email',
-            },
+                'data-field-name': 'email'
+            }
         },
         {
             label: 'Телефон',
             inputProps: {
                 type: 'tel',
                 required: true,
-                'data-field-name': 'phone',
-            },
+                'data-field-name': 'phone'
+            }
         },
         {
             label: 'Логин',
             inputProps: {
                 type: 'text',
                 required: true,
-                'data-field-name': 'login',
-            },
+                'data-field-name': 'login'
+            }
         },
         {
             label: 'Пароль',
             inputProps: {
                 type: 'password',
                 required: true,
-                'data-field-name': 'password',
-            },
-        },
+                'data-field-name': 'password'
+            }
+        }
     ],
     buttonProps: {
         text: 'Зарегистрироваться',
         type: 'submit',
         onClick: handleSignUpFormSubmit
-    },
+    }
 };
 export const signUpSecondaryAction = {
     href: './signIn.html',
     info: 'Уже зарегистрированы?',
-    linkText: 'Войти',
+    linkText: 'Войти'
 };

@@ -1,6 +1,7 @@
 import { BASE_URL } from './baseUrl';
 import { Fetcher } from './fetcher';
 
+
 const AUTH_URL = `${BASE_URL}/auth`;
 
 const GET_USER_INFO_URL = `${AUTH_URL}/user`;

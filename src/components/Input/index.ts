@@ -3,6 +3,7 @@ import { compileTemplate } from '../../lib/templator';
 import { validateInput } from '../../utils/formValidation';
 import './styles.css';
 
+
 export type InputProps = {
     type?;
     placeholder?;
@@ -35,14 +36,14 @@ export class Input extends Block<BlockProps> {
                 className: [
                     'input',
                     `input_invalid_${Boolean(props.error)}`,
-                    props.className,
+                    props.className
                 ].join(' '),
                 onInput: (event) => {
                     this.setProps({ value: event.target.value });
-                },
+                }
             },
             error: props.error,
-            value: props.value,
+            value: props.value
         });
     }
 

@@ -11,9 +11,10 @@ import { ChangeUserPassword } from './pages/Profile/changeUserPassword';
 import { getUserInfo } from './api/authorization';
 import { getChats } from './api/chats';
 import { setValue } from './store/store'
-
+// styles
 import './colors.css';
 import './main.css';
+
 
 router
     .use('/chats', WithLoader, { blockClass: Chats, getData: getChats })

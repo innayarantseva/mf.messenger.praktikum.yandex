@@ -6,7 +6,8 @@
 
 import { Block, BlockNode, BlockNodeProps } from './Block';
 import { get } from '../utils/mydash/getValueByKey';
-import last from '../utils/mydash/last'; // FIXME: исправить импорты на именованные
+import last from '../utils/mydash/last';
+// FIXME: исправить импорты на именованные
 
 const SELF_CLOSING_TAGS = [
     'area',
@@ -22,7 +23,7 @@ const SELF_CLOSING_TAGS = [
     'param',
     'source',
     'track',
-    'wbr',
+    'wbr'
 ];
 
 /** Return given tag's name. */
@@ -123,7 +124,7 @@ export const createElementTreeNode = (chunk: string, context: object): BlockNode
     return {
         type: getTagName(chunk),
         children: [],
-        props: tagAttributes,
+        props: tagAttributes
     };
 };
 
@@ -204,7 +205,7 @@ export const htmlParser = (htmlStr, context: object): BlockNode => {
                 ) {
                     currLevel.children = [
                         ...currLevel.children,
-                        ...data.map((item) => item.getNode()),
+                        ...data.map((item) => item.getNode())
                     ]; // FIXME
                     insertion = insertion.replace(new RegExp(key[0], 'gi'), '');
                 }

@@ -26,7 +26,7 @@ const getAvatarFormData = (onClick): FormProps => ({
                 type: 'file',
                 accept: 'image/jpeg',
                 required: true,
-                'data-field-name': 'file',
+                'data-field-name': 'file'
             }
         }
     ],
@@ -83,7 +83,7 @@ export class UserProfile extends Block<BlockProps> {
 
         super('article', {
             attributes: {
-                className: 'user-profile',
+                className: 'user-profile'
             },
             // data
             name,
@@ -112,8 +112,8 @@ export class UserProfile extends Block<BlockProps> {
             avatarForm: new Form(getAvatarFormData(handleCreateChatFormSubmit)),
             button: new Button({
                 text: 'Изменить данные',
-                className: 'user-settings__change-data',
-            }),
+                className: 'user-settings__change-data'
+            })
         });
     }
 

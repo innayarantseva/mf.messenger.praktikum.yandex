@@ -3,6 +3,7 @@ import { compileTemplate } from '../../lib/templator';
 import { template } from './template';
 import './styles.css';
 
+
 export type NotificationProps = {
     className?: string;
     text: string;
@@ -22,8 +23,8 @@ export class Notification extends Block<BlockProps> {
                     'notification',
                     `notification-type-${type}`,
                     className
-                ].join(' '),
-            },
+                ].join(' ')
+            }
         });
 
         // add event listener for close button

@@ -20,8 +20,8 @@ class Empty extends Block<BlockProps> {
     constructor() {
         super('div', {
             attributes: {
-                className: 'chats__empty',
-            },
+                className: 'chats__empty'
+            }
         });
     }
 
@@ -44,7 +44,7 @@ class ChatsList extends Block<BlockProps> {
     constructor(chats = []) {
         super('div', {
             attributes: {
-                className: 'chats-container',
+                className: 'chats-container'
             },
             chats
         });
@@ -75,7 +75,7 @@ class ChatsList extends Block<BlockProps> {
                     inputProps: {
                         type: 'text',
                         required: true,
-                        'data-field-name': 'title',
+                        'data-field-name': 'title'
                     }
                 }
             ],
@@ -137,7 +137,7 @@ export class Chats extends Block<BlockProps> {
 
         super('div', {
             attributes: {
-                className: 'chats',
+                className: 'chats'
             },
 
             currentUser,
@@ -149,7 +149,7 @@ export class Chats extends Block<BlockProps> {
                 pathname: '/profile',
                 text: name,
                 className: 'chats__user-name'
-            }),
+            })
         });
 
         this._chatsContainer = chatsContainer;

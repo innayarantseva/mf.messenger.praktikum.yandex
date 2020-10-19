@@ -1,6 +1,7 @@
 import { BASE_URL } from './baseUrl';
 import { Fetcher } from './fetcher';
 
+
 const CHATS_URL = `${BASE_URL}/chats`;
 
 const CHAT_USERS_URL = `${CHATS_URL}/users`;

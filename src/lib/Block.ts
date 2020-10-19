@@ -1,6 +1,7 @@
 import { EventBus } from './EventBus';
 import { cloneDeep } from '../utils/mydash/deepClone';
 
+
 export type BlockProps = object;
 
 export type BlockNodeProps = Record<string, string | number | boolean | object | Function>;
@@ -22,7 +23,7 @@ export class Block<T extends BlockProps> {
         INIT: 'init',
         FLOW_CDM: 'flow:component-did-mount',
         FLOW_CDU: 'flow:component-did-update',
-        FLOW_RENDER: 'flow:render',
+        FLOW_RENDER: 'flow:render'
     };
 
     constructor(tagName = 'div', props: T) {
@@ -30,7 +31,7 @@ export class Block<T extends BlockProps> {
 
         this._meta = {
             tagName,
-            props,
+            props
         };
 
         this.props = this._makePropsProxy(props);
@@ -52,13 +53,13 @@ export class Block<T extends BlockProps> {
     _createResources() {
         const {
             tagName,
-            props: { attributes = {} },
+            props: { attributes = {} }
         } = this._meta;
 
         this._element = this._createElement({
             type: tagName,
             props: attributes,
-            children: [],
+            children: []
         });
     }
 
@@ -341,7 +342,7 @@ export class Block<T extends BlockProps> {
             type: this._meta.tagName,
             props: (this.props as { attributes }).attributes, // FIXME: для props прописать нормально тип
             children: [this.node],
-            element: this.element,
+            element: this.element
         };
     }
 
@@ -362,7 +363,7 @@ export class Block<T extends BlockProps> {
 
             deleteProperty() {
                 throw new Error('Нет доступа');
-            },
+            }
         });
 
         return propsProxy;

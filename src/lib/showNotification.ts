@@ -1,6 +1,7 @@
 import { Notification, NotificationProps } from '../components/Notification';
 import { APP_ROOT_QUERY, renderToDom } from './Router';
 
+
 class PageNotification {
     _block;
 

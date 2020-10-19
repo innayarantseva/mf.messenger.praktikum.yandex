@@ -10,7 +10,7 @@ export class ChatListItem extends Block<BlockProps> {
     constructor({
         title,
         id,
-        onClick = () => undefined,
+        onClick = () => undefined
     }: {
         title: string;
         id: number;
@@ -18,7 +18,7 @@ export class ChatListItem extends Block<BlockProps> {
     }) {
         super('li', {
             attributes: {
-                onClick: () => onClick(id),
+                onClick: () => onClick(id)
             },
             avatar: new Avatar({}),
             title

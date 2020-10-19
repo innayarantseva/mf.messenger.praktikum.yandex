@@ -2,11 +2,11 @@ module.exports = {
     root: true,
     plugins: [
         '@typescript-eslint',
-        'import',
+        'import'
     ],
     env: {
         es6: true,
-        node: true,
+        node: true
     },
     parser: '@typescript-eslint/parser',
     parserOptions: {
@@ -18,7 +18,7 @@ module.exports = {
         }
     },
     extends: [
-        'eslint:recommended',
+        // 'eslint:recommended'
         // когда будет время включить проверку тайпингов
         // 'plugin:@typescript-eslint/eslint-recommended',
         // 'plugin:@typescript-eslint/recommended',
@@ -27,5 +27,7 @@ module.exports = {
     rules: {
         quotes: ['error', 'single'],
         indent: ['error', 4],
+        'comma-dangle': ['error', 'never'],
+        'import/newline-after-import': ['error', { 'count': 2 }]
     }
 };

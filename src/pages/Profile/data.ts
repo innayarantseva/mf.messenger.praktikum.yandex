@@ -14,7 +14,8 @@ const handleFormClick = (event, validationResult) => {
                     pageNotification.showNotification({
                         text: 'Обновили данные успешно. Обновите страницу, чтобы убедиться :)',
                         type: 'info'
-                    })
+                    });
+
                     // разобраться, почему не обновляется компонент
                     router.go('/profile', { data: response.response });
                 }
@@ -32,8 +33,8 @@ const handleChangePassword = (event, validationResult) => {
                     pageNotification.showNotification({
                         text: 'Обновили пароль успешно',
                         type: 'info'
-                    })
-                    // TODO: показать зелёную нотификашку
+                    });
+
                     router.go('/profile');
                 }
             });
@@ -61,6 +62,8 @@ export const fields = [
         label: 'Имя для отображения',
         inputProps: {
             type: 'text',
+            // это реал странно, но в апишке написано, что это обязательное поле
+            // см. модель в https://ya-praktikum.tech/api/v2/swagger/#/Users/put_user_profile
             required: true,
             'data-field-name': 'display_name',
         },

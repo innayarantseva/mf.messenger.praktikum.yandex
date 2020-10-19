@@ -1,6 +1,5 @@
-import { getUserInfo } from './authorization';
 import { BASE_URL } from './baseUrl';
-import { Fetcher, FetchResponse } from './fetcher';
+import { Fetcher } from './fetcher';
 
 const CHATS_URL = `${BASE_URL}/chats`;
 
@@ -28,31 +27,3 @@ export const addNewUsersToChat = (formData: { users: number[]; chatId: number })
 export const deleteUsersFromChat = (formData: { users: number[]; chatId: number }) => {
     return Fetcher.delete(CHAT_USERS_URL, { data: JSON.stringify(formData) });
 };
-
-export const getChatsData = (): Promise<FetchResponse> => {
-
-    return new Promise((resolve) => {
-        getUserInfo()
-            .then((res) => {
-                if (res.ok) {
-                    return res.response;
-                } else {
-                    resolve(res);
-                }
-            })
-            .then((userData) => {
-                getChats()
-                    .then((res) => {
-                        if (res.ok) {
-                            resolve({
-                                ok: true,
-                                response: {
-                                    userData,
-                                    chats: res.response
-                                }
-                            })
-                        }
-                    })
-            });
-    });
-}

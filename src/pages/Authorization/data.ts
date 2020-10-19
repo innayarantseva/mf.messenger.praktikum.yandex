@@ -1,6 +1,7 @@
 import { signUp, signIn } from '../../api/authorization';
 import { FormProps } from '../../components/Form/index';
 import { router } from '../../lib/Router';
+import { setValue } from '../../store/store';
 import { getRequestFromValidationResult } from '../../utils/formValidation';
 
 
@@ -13,6 +14,7 @@ const handleSignUpFormSubmit = (event, validationResult) => {
         signUp(request)
             .then((response) => {
                 if (response.ok) {
+                    setValue({ currentUser: response.response });
                     router.go('/chats');
                 }
             });
@@ -27,6 +29,7 @@ const handleSignInFormSubmit = (event, validationResult) => {
         signIn(request)
             .then((response) => {
                 if (response.ok) {
+                    setValue({ currentUser: response.response });
                     router.go('/chats');
                 }
             });

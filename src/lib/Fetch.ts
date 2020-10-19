@@ -1,3 +1,5 @@
+// временно удалила тесты, так как они всё равно были такие себе
+// а теперь начали падать из-за того, что jest не может загрузить css из нотификаций
 import { pageNotification } from '../lib/showNotification';
 
 enum METHODS {

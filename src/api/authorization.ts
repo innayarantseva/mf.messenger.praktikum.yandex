@@ -9,6 +9,17 @@ const SIGN_UP_URL = `${AUTH_URL}/signup`;
 const LOGOUT_URL = `${AUTH_URL}/logout`;
 
 
+export type AuthUserInfo = {
+    id: number;
+    first_name: string;
+    second_name: string;
+    display_name: string | null;
+    login: string;
+    email: string;
+    phone: string;
+    avatar: string | null;
+}
+
 export const getUserInfo = () => {
     return Fetcher.get(GET_USER_INFO_URL);
 };

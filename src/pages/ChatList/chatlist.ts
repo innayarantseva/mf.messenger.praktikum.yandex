@@ -1,17 +1,18 @@
 import { Block, BlockProps } from '../../lib/Block';
-import { chatsTemplate, chatsContainer, noChats } from './template';
 import { compileTemplate } from '../../lib/templator';
+import { getRequestFromValidationResult } from '../../utils/formValidation';
+// components
 import { ChatListItem } from '../../components/ChatListItem';
 import { NavLink } from '../../components/NavLink';
 import { Form, FormProps } from '../../components/Form';
-import { createChat, getChats, getChatUsers } from '../../api/chats';
-// import { NewChatForm } from './data';
 import { ChatSettings } from '../../components/ChatSettings';
 import { Avatar } from '../../components/Avatar';
-import { getRequestFromValidationResult } from '../../utils/formValidation';
-// import { getRequestFromValidationResult } from '../../utils/formValidation';
-// import { createChat } from '../../api/chats';
-// import { FormProps } from '../../components/Form';
+// data
+import { chatsTemplate, chatsContainer, noChats } from './template';
+import { getValue } from '../../store/store';
+// api
+import { createChat, getChats, getChatUsers } from '../../api/chats';
+// styles
 import './styles.css';
 
 
@@ -128,20 +129,22 @@ class ChatsList extends Block<BlockProps> {
 export class Chats extends Block<BlockProps> {
     _chatsContainer
 
-    constructor(data) {
-        const chatsContainer = new ChatsList(data.chats);
+    constructor(chats) {
+        const chatsContainer = new ChatsList(chats);
 
-        const name = data.userData.display_name || `${data.userData.first_name} ${data.userData.second_name}`
+        const { currentUser } = getValue();
+        const name = `${currentUser.first_name} ${currentUser.second_name}`;
 
         super('div', {
             attributes: {
                 className: 'chats',
             },
 
-            data,
+            currentUser,
+            chats,
 
             chatsContainer,
-            avatar: new Avatar({ source: data.userData.avatar }),
+            avatar: new Avatar({ source: currentUser.avatar }),
             settingsLink: new NavLink({
                 pathname: '/profile',
                 text: name,

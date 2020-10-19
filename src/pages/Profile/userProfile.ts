@@ -1,19 +1,21 @@
 import { Block, BlockProps } from '../../lib/Block';
 import { compileTemplate } from '../../lib/templator';
 import { router } from '../../lib/Router';
-import { getUserInfo, logOut } from '../../api/authorization';
+import { pageNotification } from '../../lib/showNotification';
+import { getRequestFromValidationResult } from '../../utils/formValidation';
 // components
 import { Button } from '../../components/Button';
 import { NavLink } from '../../components/NavLink';
 import { Avatar } from '../../components/Avatar';
+import { Form, FormProps } from '../../components/Form';
 // data
 import { userSettingsTemplate } from './template';
-
-import './styles.css';
-import { Form, FormProps } from '../../components/Form';
-import { getRequestFromValidationResult } from '../../utils/formValidation';
+import { getValue } from '../../store/store';
+// api
 import { updateUserAvatar } from '../../api/user';
-import { pageNotification } from '../../lib/showNotification';
+import { getUserInfo, logOut } from '../../api/authorization';
+// styles
+import './styles.css';
 
 
 const getAvatarFormData = (onClick): FormProps => ({
@@ -40,15 +42,7 @@ export class UserProfile extends Block<BlockProps> {
         avatar
     }
 
-    constructor({
-        first_name,
-        second_name,
-        display_name,
-        email,
-        login,
-        phone,
-        avatar
-    }) {
+    constructor() {
         const handleCreateChatFormSubmit = (event, validationResult) => {
             const { isValid, request } = getRequestFromValidationResult(validationResult);
 
@@ -74,6 +68,17 @@ export class UserProfile extends Block<BlockProps> {
                     });
             }
         };
+        const {
+            currentUser: {
+                first_name,
+                second_name,
+                display_name,
+                email,
+                login,
+                phone,
+                avatar
+            }
+        } = getValue();
         const name = `${first_name} ${second_name}`;
 
         super('article', {

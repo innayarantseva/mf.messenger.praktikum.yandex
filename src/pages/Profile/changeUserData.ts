@@ -5,6 +5,7 @@ import { compileTemplate } from '../../lib/templator';
 import { Form } from '../../components/Form/index';
 import { FormProps } from '../../components/Form/index';
 import { NavLink } from '../../components/NavLink/index';
+import { getValue } from '../../store/store';
 
 
 const mapDatatoFormProps = (data): FormProps => {
@@ -23,12 +24,14 @@ const mapDatatoFormProps = (data): FormProps => {
 }
 
 export class ChangeUserData extends Block<BlockProps> {
-    constructor(data) {
+    constructor() {
+        const { currentUser } = getValue();
+
         super('div', {
             attributes: {
                 className: 'user-settings',
             },
-            form: new Form(mapDatatoFormProps(data)),
+            form: new Form(mapDatatoFormProps(currentUser)),
             chatsLink: new NavLink({ pathname: '/chats', text: '← Все чаты' }),
             profileLink: new NavLink({ pathname: '/profile', text: 'Отменить' }),
         });

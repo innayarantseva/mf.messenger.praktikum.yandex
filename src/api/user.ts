@@ -1,10 +1,5 @@
 import { BASE_URL } from './baseUrl';
-import {
-    Fetcher,
-    FetcherResponse,
-    handleFetcherResponse,
-    handleUnexpectedError
-} from './fetcher';
+import { Fetcher } from './fetcher';
 
 const USER_URL = `${BASE_URL}/user`;
 
@@ -22,66 +17,26 @@ type UpdateUserProfileData = {
     email: string;
     phone: string;
 }
-export const updateUserProfile = (formData: UpdateUserProfileData): Promise<FetcherResponse> => {
-    const options = {
-        credentials: 'include',
-        mode: 'cors',
-        headers: {
-            'content-type': 'application/json',
-        },
-        data: JSON.stringify(formData)
-    };
-
-    return Fetcher
-        .put(UPDATE_PROFILE_URL, options)
-        .then((response) => handleFetcherResponse(response))
-        .catch((error) => handleUnexpectedError(error));
+export const updateUserProfile = (formData: UpdateUserProfileData) => {
+    return Fetcher.put(UPDATE_PROFILE_URL, { data: JSON.stringify(formData) });
 };
 
-export const updateUserPassword = (formData: { oldPassword: string; newPassword: string }): Promise<FetcherResponse> => {
-    const options = {
-        credentials: 'include',
-        mode: 'cors',
-        headers: {
-            'content-type': 'application/json',
-        },
-        data: JSON.stringify(formData)
-    };
-
-    return Fetcher
-        .put(UPDATE_PASSWORD_URL, options)
-        .then((response) => handleFetcherResponse(response))
-        .catch((error) => handleUnexpectedError(error));
+export const updateUserPassword = (formData: { oldPassword: string; newPassword: string }) => {
+    return Fetcher.put(UPDATE_PASSWORD_URL, { data: JSON.stringify(formData) });
 };
 
-export const searchUserByLogin = (formData: { login: string }): Promise<FetcherResponse> => {
-    const options = {
-        credentials: 'include',
-        mode: 'cors',
-        headers: {
-            'content-type': 'application/json',
-        },
-        data: JSON.stringify(formData)
-    };
-
-    return Fetcher
-        .post(SEARCH_USER_URL, options)
-        .then((response) => handleFetcherResponse(response))
-        .catch((error) => handleUnexpectedError(error));
+export const searchUserByLogin = (formData: { login: string }) => {
+    return Fetcher.post(SEARCH_USER_URL, { data: JSON.stringify(formData) });
 };
 
-export const updateUserAvatar = (formData: FormData): Promise<FetcherResponse> => {
+export const updateUserAvatar = (formData: FormData) => {
     const options = {
-        credentials: 'include',
-        mode: 'cors',
-        // headers: {
-        //     'content-type': 'multipart/form-data',
-        // },
+        headers: {
+            // ресет дефолтного content-type
+            'content-type': undefined,
+        },
         data: formData
     };
 
-    return Fetcher
-        .put(UPDATE_AVATAR_URL, options)
-        .then((response) => handleFetcherResponse(response))
-        .catch((error) => handleUnexpectedError(error));
+    return Fetcher.put(UPDATE_AVATAR_URL, options);
 };

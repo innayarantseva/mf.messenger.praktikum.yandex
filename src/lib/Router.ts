@@ -57,6 +57,7 @@ export class Router {
     history: History;
     _currentRoute: Route;
     _rootQuery: string;
+    _badRequestRoute
 
     constructor(rootQuery) {
         // чтобы typescript не ругался на то, что __instance не существует в typeof Router
@@ -96,6 +97,7 @@ export class Router {
 
         if (!route) {
             // можно добавить 404?..
+            // TODO: придумать, как нарисовать 404 без перенаправления
             return;
         }
 
@@ -108,15 +110,6 @@ export class Router {
     }
 
     go(pathname, newBlockProps = undefined) {
-        // логика: если зашли по /chats, проверить авторизацию
-        // если не авторизован, перейти на /
-        // если зашли на / или /sign-up и авторизованы
-        // перейти на /chats
-
-        // куда лучше поместить эту логику?
-
-
-
         this.history.pushState({}, '', pathname);
         this._onRoute(pathname, newBlockProps);
     }

@@ -1,10 +1,5 @@
 import { BASE_URL } from './baseUrl';
-import {
-    Fetcher,
-    FetcherResponse,
-    handleFetcherResponse,
-    handleUnexpectedError
-} from './fetcher';
+import { Fetcher } from './fetcher';
 
 const AUTH_URL = `${BASE_URL}/auth`;
 
@@ -14,44 +9,16 @@ const SIGN_UP_URL = `${AUTH_URL}/signup`;
 const LOGOUT_URL = `${AUTH_URL}/logout`;
 
 
-export const getUserInfo = (): Promise<FetcherResponse> => {
-    const options = {
-        credentials: 'include',
-        mode: 'cors'
-    };
-
-    return Fetcher
-        .get(GET_USER_INFO_URL, options)
-        .then((response) => handleFetcherResponse(response))
-        .catch((error) => handleUnexpectedError(error));
+export const getUserInfo = () => {
+    return Fetcher.get(GET_USER_INFO_URL);
 };
 
 export const logOut = () => {
-    const options = {
-        credentials: 'include',
-        mode: 'cors'
-    };
-
-    return Fetcher
-        .post(LOGOUT_URL, options)
-        .then((response) => handleFetcherResponse(response))
-        .catch((error) => handleUnexpectedError(error));
+    return Fetcher.post(LOGOUT_URL);
 };
 
 export const signIn = (formData: { login: string, password: string }) => {
-    const options = {
-        credentials: 'include',
-        mode: 'cors',
-        headers: {
-            'content-type': 'application/json',
-        },
-        data: JSON.stringify(formData)
-    };
-
-    return Fetcher
-        .post(SIGN_IN_URL, options)
-        .then((response) => handleFetcherResponse(response))
-        .catch((error) => handleUnexpectedError(error));
+    return Fetcher.post(SIGN_IN_URL, { data: JSON.stringify(formData) });
 };
 
 type SignUpData = {
@@ -63,17 +30,5 @@ type SignUpData = {
     phone: string;
 }
 export const signUp = (formData: SignUpData) => {
-    const options = {
-        credentials: 'include',
-        mode: 'cors',
-        headers: {
-            'content-type': 'application/json',
-        },
-        data: JSON.stringify(formData)
-    };
-
-    return Fetcher
-        .post(SIGN_UP_URL, options)
-        .then((response) => handleFetcherResponse(response))
-        .catch((error) => handleUnexpectedError(error));
+    return Fetcher.post(SIGN_UP_URL, { data: JSON.stringify(formData) });
 };

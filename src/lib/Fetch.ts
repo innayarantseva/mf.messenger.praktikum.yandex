@@ -1,9 +1,79 @@
+import { pageNotification } from '../lib/showNotification';
+
 enum METHODS {
     GET = 'GET',
     POST = 'POST',
     PUT = 'PUT',
     DELETE = 'DELETE'
 }
+
+
+export type FetchResponse = {
+    ok: boolean;
+    response?: string | object;
+}
+
+const getErrorText = (
+    response: string | undefined,
+    status: number,
+    statusText: string
+): string => {
+    let error: string;
+
+    try {
+        const json = JSON.parse(response);
+        error = json.reason;
+    } catch {
+        error = `${status} ${statusText}. Ответ сервера: ${response}`;
+    }
+
+    return error;
+};
+
+const getResponse = (responseStirng) => {
+    let response: string;
+
+    try {
+        const json = JSON.parse(responseStirng);
+        response = json;
+    } catch {
+        response = responseStirng;
+    }
+
+    return response;
+};
+
+const handleFetchResponse = ({ response, status, statusText }): FetchResponse => {
+    if (status === 204) {
+        // не уверенна, насколько это правильно
+        // но я по 204 коду ответа не хочу производить действия, как по 200
+        return {
+            ok: false
+        };
+    } else if (status === 200) {
+        pageNotification.hideNotification();
+
+        return {
+            ok: true,
+            response: getResponse(response)
+        };
+    } else {
+        const error = getErrorText(response, status, statusText);
+        pageNotification.showNotification({ text: `Произошла ошибка: ${error}` });
+
+        return {
+            ok: false
+        };
+    }
+};
+
+// const handleUnexpectedError = (error): FetchResponse => {
+//     pageNotification.showNotification({ text: `Произошла ошибка: ${error}` });
+
+//     return {
+//         ok: false
+//     };
+// };
 
 
 type Headers = Record<string, string>;
@@ -23,24 +93,28 @@ export type Options = {
 }
 
 export class Fetch {
-    get = function (url: string, options: Options = {}): Promise<XMLHttpRequest> {
+    get(url: string, options: Options = {}) {
         return this.request(url, { ...options, method: METHODS.GET }, options.timeout);
     }
 
-    post = function (url: string, options: Options = {}): Promise<XMLHttpRequest> {
+    post(url: string, options: Options = {}) {
         return this.request(url, { ...options, method: METHODS.POST }, options.timeout);
     }
 
-    put = function (url: string, options: Options = {}): Promise<XMLHttpRequest> {
+    put(url: string, options: Options = {}) {
         return this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
     }
 
-    delete = function (url: string, options: Options = {}): Promise<XMLHttpRequest> {
+    delete(url: string, options: Options = {}) {
         return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
     }
 
-    request = (url: string, options: RequestOptions, timeout = 5000) => {
-        const { method, headers, data } = options;
+    request(url: string, options: RequestOptions, timeout = 5000): Promise<FetchResponse> {
+        const { method, headers: headersFromOptions, data } = options;
+        const headers = {
+            'content-type': 'application/json',
+            ...headersFromOptions
+        }
 
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
@@ -62,11 +136,14 @@ export class Fetch {
             // set headers
             if (headers) {
                 Object.entries(headers).forEach(([header, value]) => {
-                    xhr.setRequestHeader(header, value);
+                    value && xhr.setRequestHeader(header, value);
                 });
             }
 
-            xhr.onload = () => resolve(xhr);
+            xhr.onload = () => {
+                const response = handleFetchResponse(xhr);
+                resolve(response);
+            };
 
             xhr.onabort = reject;
             xhr.onerror = reject;
@@ -78,5 +155,5 @@ export class Fetch {
                 xhr.send(data);
             }
         })
-    };
+    }
 }
